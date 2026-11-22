@@ -60,9 +60,18 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .nwb{display:inline-block;margin-left:4px;padding:0 6px;border-radius:9px;background:var(--ac);color:var(--bg);font-size:11px;font-weight:bold;font-family:inherit}
 .chip{display:inline-block;border:1px solid var(--bd);border-radius:12px;padding:1px 8px;margin:2px;font-size:12px;color:var(--tx);background:var(--bg)}
 .pet.rd{cursor:pointer;border-color:var(--ok);box-shadow:0 0 6px var(--ok)}
+.card[data-ck]>h2{cursor:pointer;user-select:none}
+.card[data-ck]>h2::after{content:" ▾";color:var(--mut);font-size:12px}
+.card[data-ck].cl>h2::after{content:" ▸"}
+.card[data-ck].cl>:not(h2){display:none}
 .pd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:". t ." "h c r" "s c j" "b w g";gap:8px;margin:6px 0 10px}
 .pdc{border:2px solid var(--bd);border-radius:10px;padding:8px;background:var(--card);min-height:70px;display:flex;flex-direction:column;gap:2px;font-size:13px;overflow:hidden}
 .pdc b{font-size:13px;line-height:1.2}
+.pd.cp{gap:6px;margin:4px 0 0}
+.pd.cp .pdc{min-height:54px;padding:5px 6px;font-size:12px;gap:1px}
+.pd.cp .pde{font-size:18px}
+.pdc .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.pd.cp .pdm{padding:6px}
 .pde{border-style:dashed;align-items:center;justify-content:center;text-align:center;opacity:.65;font-size:22px}
 .pdm{grid-area:c;border:2px solid var(--bd);border-radius:10px;padding:10px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-size:13px}
 #log{font-size:12px;color:var(--mut);height:232px;overflow:hidden}
@@ -92,7 +101,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <h2>Quêtes quotidiennes</h2><div class="mut" style="margin-bottom:8px">De nouvelles quêtes chaque jour (renouvelées à minuit, heure locale). Elles dépendent de ta progression. Les raids rapportent les meilleures récompenses.</div>
 <div id="questList"></div></div>
 <div id="eqView" style="display:none">
-<h2>Équipement</h2><div class="mut" style="margin-bottom:8px">Les champions de zone, les boss de donjon et les boss de raid laissent des objets : un bonus par objet, huit emplacements. Les boss du raid Cœur du Magma peuvent aussi laisser une pièce de la panoplie de ta classe (tête, épaules, torse, mains, jambes) : des bonus supplémentaires à 2, 4 et 5 pièces. L’équipement et les panoplies sont remis à zéro à chaque renaissance, sauf les deux légendaires uniques : Sulfuras (Ragnaros) et le Cœur de C’Thun.</div>
+<h2>Équipement</h2><div class="mut" style="margin-bottom:8px">Ton équipement s’affiche toujours à droite, sous ta classe : cet onglet sert à gérer la réserve. Les champions de zone, les boss de donjon et les boss de raid laissent des objets : un bonus par objet, huit emplacements. Les boss du raid Cœur du Magma peuvent aussi laisser une pièce de la panoplie de ta classe (tête, épaules, torse, mains, jambes) : des bonus supplémentaires à 2, 4 et 5 pièces. L’équipement et les panoplies sont remis à zéro à chaque renaissance, sauf les deux légendaires uniques : Sulfuras (Ragnaros) et le Cœur de C’Thun.</div>
 <div id="eqbox"></div></div>
 <div id="raidView" style="display:none">
 <h2>Raids</h2><div class="mut" style="margin-bottom:8px">Contenu de fin de jeu : ouvert à toutes les classes une fois le boss de la dernière zone de ton monde vaincu. Zul’Gurub et les Ruines d’Ahn’Qiraj sont libres. Les autres raids demandent des composants rares, qui tombent sur des boss précis des raids ouverts et des donjons de fin de jeu.</div>
@@ -123,10 +132,11 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 </div>
 
 <div>
-<div class="card" style="margin-bottom:12px"><h2>Classe <span class="mut" id="facn"></span></h2><div class="zones" id="cbtns"></div><div class="mut" id="cdesc" style="margin:8px 0"></div><button id="ab" style="width:100%">Choisis une classe</button><div id="wab" style="display:none;gap:6px"></div></div>
-<div class="card"><h2>Améliorations</h2><div id="ups"></div></div>
-<div class="card" style="margin-top:12px"><h2>Collection — <span id="cz"></span> <span class="mut" id="cc"></span></h2><div class="mut" style="margin-bottom:6px">Bats une créature 10 fois : son champion peut alors apparaître au hasard (1 chance sur 20) et l’ajouter à ta collection. Les boss de zone rejoignent la collection dès qu’ils sont vaincus.</div><div class="col" id="col"></div></div>
-<div class="card" id="prest" style="margin-top:12px;display:none"><h2>Renaissance</h2><div class="mut" id="prinfo" style="margin-bottom:6px"></div><button id="rebirth" style="width:100%;margin-bottom:8px">🌟 Renaissance</button><div id="esshop"></div></div>
+<div class="card" data-ck="classe" style="margin-bottom:12px"><h2>Classe <span class="mut" id="facn"></span></h2><div class="zones" id="cbtns"></div><div class="mut" id="cdesc" style="margin:8px 0"></div><button id="ab" style="width:100%">Choisis une classe</button><div id="wab" style="display:none;gap:6px"></div></div>
+<div class="card" id="eqPanel" data-ck="eq" style="margin-bottom:12px"></div>
+<div class="card" data-ck="ups"><h2>Améliorations</h2><div id="ups"></div></div>
+<div class="card" data-ck="col" style="margin-top:12px"><h2>Collection — <span id="cz"></span> <span class="mut" id="cc"></span></h2><div class="mut" style="margin-bottom:6px">Bats une créature 10 fois : son champion peut alors apparaître au hasard (1 chance sur 20) et l’ajouter à ta collection. Les boss de zone rejoignent la collection dès qu’ils sont vaincus.</div><div class="col" id="col"></div></div>
+<div class="card" id="prest" data-ck="prest" style="margin-top:12px;display:none"><h2>Renaissance</h2><div class="mut" id="prinfo" style="margin-bottom:6px"></div><button id="rebirth" style="width:100%;margin-bottom:8px">🌟 Renaissance</button><div id="esshop"></div></div>
 </div>
 </div>
 <div id="svwin" style="display:none;position:fixed;inset:0;z-index:9998;background:#000a;align-items:center;justify-content:center;padding:14px"><div class="card" style="max-width:560px;width:100%;max-height:90vh;overflow:auto"><h2>💾 Sauvegarde de la partie</h2>
@@ -1064,15 +1074,16 @@ let eqSig="";
 function eqUI(){
  const box=$("eqbox");if(!box)return;
  const sig=JSON.stringify([S.cls,S.eq]);if(sig===eqSig)return;eqSig=sig;
+ {const ep0=$("eqPanel");if(ep0)ep0.style.display=S.cls?"":"none"}
  if(!S.cls){box.innerHTML="";return}
- let h=`<h3 style="margin:6px 0">Équipé</h3>`;
+ let h="";
  const tot={};EQS.forEach(sl=>{const it=S.eq.e[sl.k];if(it){tot[it.b.k]=(tot[it.b.k]||0)+it.b.v;if(it.b2)tot[it.b2.k]=(tot[it.b2.k]||0)+it.b2.v}});
  {const esc=t=>String(t||"").replace(/"/g,"&quot;"),cell=k=>{const sl=EQS.find(x=>x.k===k),it=S.eq.e[k];
-  if(!it)return `<div class="pdc pde" style="grid-area:${k}"><div>${sl.i}</div><div class="mut" style="font-size:13px">${sl.n}<br>vide</div></div>`;
-  return `<div class="pdc" style="grid-area:${k};border-color:${EQR[it.r].c}" title="${sl.n} · ${EQR[it.r].n} · niv. ${it.l} — ${esc(it.src)}${it.u?" — objet légendaire unique : conservé après une renaissance":""}"><div style="color:${EQR[it.r].c}"><b>${sl.i} ${it.n}</b>${it.set?` <span style="color:#2e7d32;font-size:11px;font-weight:600">(T${itTier(it)})</span>`:""}</div><div>${eqTxtI(it)}</div></div>`};
+  if(!it)return `<div class="pdc pde" style="grid-area:${k}" title="${sl.n} — vide"><div>${sl.i}</div><div class="mut" style="font-size:11px">${sl.n}</div></div>`;
+  return `<div class="pdc" style="grid-area:${k};border-color:${EQR[it.r].c}" title="${sl.n} · ${EQR[it.r].n} · niv. ${it.l} — ${esc(it.src)}${it.u?" — objet légendaire unique : conservé après une renaissance":""}"><div style="color:${EQR[it.r].c};font-weight:700;font-size:12px">${sl.i} ${eqTxtI(it)}</div><div class="nm" style="color:${EQR[it.r].c}">${it.n}${it.set?` (T${itTier(it)})`:""}</div></div>`};
   const tl=Object.keys(tot).map(k=>eqTxt({k,v:Math.round(tot[k]*100)/100}));
-  const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t);return `<div style="margin-top:6px;border-top:1px solid var(--bd);padding-top:6px;width:100%;text-align:left" title="Les pièces (tête, épaules, torse, mains, jambes) tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent, y compris entre paliers."><b style="font-size:12px">🧩 ${setN(t)}</b> <span class="mut" style="font-size:11px">${n}/5</span>`+SETTS[t].map(x=>`<div style="font-size:11px;${n>=x.n?"color:#2e7d32;font-weight:600":"opacity:.6"}">${n>=x.n?"✔":"○"} ${x.n} p. : ${["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")}</div>`).join("")+`</div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:6px">🧩 Aucune pièce de panoplie</div>`;
-  h+=`<div class="pd">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:42px">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b><div class="mut" style="font-size:12px">Total des bonus</div>${tl.length?tl.map(x=>`<div>${x}</div>`).join(""):`<div class="mut">aucun bonus</div>`}${sh}</div></div>`}
+  const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t);return `<div style="margin-top:5px;border-top:1px solid var(--bd);padding-top:5px;width:100%;text-align:left" title="Les pièces (tête, épaules, torse, mains, jambes) tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent, y compris entre paliers."><b style="font-size:11px">🧩 ${setN(t)}</b> <span class="mut" style="font-size:11px">${n}/5</span>`+SETTS[t].map(x=>`<div style="font-size:11px;${n>=x.n?"color:#2e7d32;font-weight:600":"opacity:.6"}">${n>=x.n?"✔":"○"} ${x.n} p. : ${["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")}</div>`).join("")+`</div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:5px">🧩 Aucune pièce de panoplie</div>`;
+  const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pd cp">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:30px">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b><div class="mut" style="font-size:11px">Total des bonus</div>${tl.length?tl.map(x=>`<div style="font-size:12px">${x}</div>`).join(""):`<div class="mut" style="font-size:12px">aucun bonus</div>`}${sh}</div></div>`}
   h+=`<h3 style="margin:10px 0 6px">Objets en réserve (${S.eq.r.length}/10)</h3>`;if(S.eq.r.length>=10)h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe ou vends pour faire de la place.</div>`;
  if(!S.eq.r.length)h+=`<div class="mut">Aucun objet pour l’instant. Les boss de zone, de donjon et de raid peuvent en laisser.</div>`;
  else h+=`<button id="eqsa" style="margin-bottom:6px">Tout vendre (hors objets bloqués)</button>`;
@@ -1196,6 +1207,10 @@ abUI();
 spawn();ui();
 /* préchargement progressif des cartes de zone (évite les chargements visibles pendant les combats en ligne) */
 setTimeout(()=>{try{WLD().forEach((z,n)=>{if(ZM[z]&&ZM[z].img)setTimeout(()=>pre("images/"+ZM[z].img),n*500)})}catch(e){}},3000);
+/* fenêtres repliables : un clic sur le titre replie ou déplie la fenêtre (état conservé) */
+(function(){let cl={};try{cl=JSON.parse(localStorage.getItem("azer_cl")||"{}")}catch(e){}
+ const ap=()=>document.querySelectorAll(".card[data-ck]").forEach(c=>c.classList.toggle("cl",!!cl[c.dataset.ck]));ap();
+ document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest(".card[data-ck]>h2");if(!h)return;const c=h.parentNode,k=c.dataset.ck;cl[k]=!cl[k];c.classList.toggle("cl",!!cl[k]);try{localStorage.setItem("azer_cl",JSON.stringify(cl))}catch(x){}})})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5da38fe70342471c8944e1c6dd7a0680"}'></script><!-- End Cloudflare Web Analytics -->
 </body></html>
