@@ -57,6 +57,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .col{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
 .pet{border:1px solid var(--bd);border-radius:8px;padding:4px;text-align:center;font-size:12px}
 .pet.no{opacity:.3;filter:grayscale(1)}.pet.sh{border-color:var(--ac);box-shadow:0 0 6px var(--ac)}
+.nwb{display:inline-block;margin-left:4px;padding:0 6px;border-radius:9px;background:var(--ac);color:var(--bg);font-size:11px;font-weight:bold;font-family:inherit}
 .chip{display:inline-block;border:1px solid var(--bd);border-radius:12px;padding:1px 8px;margin:2px;font-size:12px;color:var(--tx);background:var(--bg)}
 .pet.rd{cursor:pointer;border-color:var(--ok);box-shadow:0 0 6px var(--ok)}
 #log{font-size:12px;color:var(--mut);height:54px;overflow:hidden}
@@ -579,14 +580,14 @@ function zDone(i){return !!S.boss[i]&&zCre(i)>=10*Z[i].m.length&&zDun(i).every(d
 function prCan(){return !!S.cls&&zDone(prLast())}
 const WLD=c=>{const w=WLD0(c);return(c===undefined&&prCan())?w.concat(EXTRAZ.filter(i=>!w.includes(i))):w};
 const zOpen=i=>{const w=WLD(),j=w.indexOf(i);return j===0||(j>0&&!!(zDone(w[j-1])&&(i!==2||S.dd[1]||S.col[Z[1].n+"|Edwin Van Cleef"])))};
-const PF=["gold","zone","kills","boss","dd","lv","bk","col","mats","fg","ab","keys","es","eb","pn","tk","hf","rc","eq","dq","we","ms"];
+const PF=["gold","zone","kills","boss","dd","lv","bk","col","mats","fg","ab","keys","es","eb","pn","tk","hf","rc","eq","dq","we","ms","nt"];
 const HFN=[50,100,500,1000],HFR={50:{g:500},100:{g:2000},500:{e:10},1000:{e:20,g:2000000}};
 const hfGive=m=>{const r=HFR[m];if(r.g)S.gold+=r.g;if(r.e)S.es=(S.es||0)+r.e};
 const hfTxt=m=>{const r=HFR[m],a=[];if(r.e)a.push(r.e+" essences");if(r.g)a.push(fmt(r.g)+" or");return a.join(" + ")};
 const hfSync=()=>{S.kills.forEach((k,i)=>{const id="z:"+i;if(k>(S.tk[id]||0))S.tk[id]=k});Object.keys(S.tk).forEach(id=>HFN.forEach(m=>{if(S.tk[id]>=m&&!S.hf[id+"|"+m]){S.hf[id+"|"+m]=1;hfGive(m)}}))};
-const fixP=()=>{if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0};fixP();
+const fixP=()=>{if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
 if(S.cls&&!WLD().includes(S.zone))S.zone=WLD()[0];
-const freshProf=c=>({gold:0,zone:WLD(c)[0],kills:Z.map(()=>0),boss:Z.map(()=>0),dd:{},lv:{},bk:{},col:{},mats:{},fg:{},ab:{h:0,r:0},keys:{},es:0,eb:{},pn:0,tk:{},hf:{},rc:{},dq:{d:"",q:[]},we:{s:0,d:0,n:0,a:0},ms:{p:0,r:{},f:{}},eq:{e:{},r:[],seen:[0,0,0,0,0]}});
+const freshProf=c=>({gold:0,zone:WLD(c)[0],kills:Z.map(()=>0),boss:Z.map(()=>0),dd:{},lv:{},bk:{},col:{},mats:{},fg:{},ab:{h:0,r:0},keys:{},es:0,eb:{},pn:0,tk:{},hf:{},rc:{},dq:{d:"",q:[]},we:{s:0,d:0,n:0,a:0},ms:{p:0,r:{},f:{}},nt:{},eq:{e:{},r:[],seen:[0,0,0,0,0]}});
 /* === FORGE : composants rares des champions -> améliorations des sorts === */
 const MAT=["Croc d’Elwynn","Épi maudit","Écaille carmin","Poussière spectrale","Griffe de jungle","Essence de marais","Fragment d’obsidienne","Cœur de lave","Éclat gangrené","Braise draconique","Plume de chouette","Perle de Salvassio","Écorce de tréant","Éclat de granit","Poussière de Désolace","Écaille de marécage","Grain de sable doré","Plume de Féralas","Cristal d’Un’Goro","Carapace de Silithus","Fourrure de loup des neiges","Peau de crocolisque de Loch Modan","Insigne de nain Sombrefer","Écaille de naga","Croc d’ogre d’Alterac","Talisman de troll Fanécorce","Plume de griffon sauvage","Essence de spectre","Aile de chauve-souris de peste","Piquant de quilboar","Crinière de lion des Tarides","Plume de harpie","Sève de tréant","Plume des falaises","Éclat de centaure kolkar","Perle d’Azshara","Sève gangrenée","Cristal de givre","Carapace de Silithus rouge","Sabot de Mulgore","Linceul de Tirisfal","Aiguille de pin argenté","Éclat de nécrolithe","Écaille de dragon noir"];
 const XC={scholo:42,stratH:42,stratU:42,pic:43}; /* composants de forge tombant sur les boss finaux des donjons de fin de jeu (mondes à moins de 10 zones) */
@@ -743,7 +744,7 @@ function cityUI(){
 let curV="zone";
 function setView(v){
  if(curV==="eq"&&v!=="eq"&&S.eq&&S.eq.r){S.eq.r.forEach(x=>{delete x.nw});eqSig=""}
- curV=v;
+ curV=v;if(S.nt){if(v==="raid")S.nt.r=1;if(v==="mastery")S.nt.m=1}
  $("zoneView").style.display=v=="zone"?"":"none";$("cityView").style.display=v=="ville"?"":"none";$("raidView").style.display=v=="raid"?"":"none";$("eqView").style.display=v=="eq"?"":"none";$("questView").style.display=v=="quest"?"":"none";$("masteryView").style.display=v=="mastery"?"":"none";$("tabM").className=v=="mastery"?"on":"";msSig="";msUI();$("tabQ").className=v=="quest"?"on":"";dqSig="";dqUI();$("tabE").className=v=="eq"?"on":"";$("tabR").className=v=="raid"?"on":"";raidSig="";raidUI();
  $("tabZ").className=v=="zone"?"on":"";$("tabV").className=v=="ville"?"on":"";cityUI();
 }
@@ -901,7 +902,7 @@ let msSig="";
 function msUI(){
  const tb=$("tabM");if(!tb||!S.cls)return;
  const ok=prCan()||S.ms.p>0;tb.disabled=!ok;tb.title=ok?"":"Disponible après la dernière zone de ton monde (" +Z[prLast()].n+")";
- tb.textContent="🎓 Maîtrise"+(msFree()>0?" ("+msFree()+")":"");
+ tb.style.display=ok?"":"none";tb.innerHTML="🎓 Maîtrise"+(msFree()>0?" ("+msFree()+")":"")+(ok&&!(S.nt||{}).m?" <span class='nwb'>🆕 Nouveau</span>":"");
  if(!ok&&$("masteryView").style.display!=="none"){setView("zone");return}
  const sig=JSON.stringify([S.cls,S.ms]);if(sig===msSig)return;msSig=sig;
  let h="<div class='mut' style='margin-bottom:8px'><b>Gagne des points de Maîtrise en battant le boss final d’un raid :</b><br>• Ragnaros +"+MSP.mc+" · Nefarian +"+MSP.bwl+" · C’Thun +"+MSP.aq40+" · dragons du Cauchemar +1<br>• 1re victoire : +"+MSFIRST+" points en plus<br>• Ensuite : "+Math.round(MSREP*100)+" % de chance de gagner les points<br>• 1 point = 1 rang de talent. Points conservés après une renaissance.</div>"
@@ -960,7 +961,7 @@ const endOk=k=>ENDD.includes(k)&&prCan()&&!(DG[k].needKey&&!(S.keys&&S.keys[DG[k
 let raidSig="";
 function raidUI(){
  const tb=$("tabR");if(!tb)return;
- const can=prCan();tb.disabled=!can;tb.title=can?"":"Disponible après la dernière zone de ton monde";
+ const can=prCan();tb.disabled=!can;tb.title=can?"":"Disponible après la dernière zone de ton monde";tb.style.display=can?"":"none";tb.innerHTML="🐉 Raids"+(can&&!(S.nt||{}).r?" <span class='nwb'>🆕 Nouveau</span>":"");
  if(!can&&$("raidView").style.display!=="none"){setView("zone")}
  const sig=JSON.stringify([S.cls,can,S.rc,RAIDS.concat(ENDD).map(k=>[raidDone(k),S.gold>=DG[k].cost]),(S.keys||{}).stratkey||0]);if(sig===raidSig)return;raidSig=sig;
  const mk=(box,list,okf,reqf)=>{box.innerHTML="";list.forEach(k=>{const d=DG[k],ok=okf(k),dn=raidDone(k),r=document.createElement("div");r.className="up";
