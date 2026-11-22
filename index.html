@@ -98,7 +98,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <div id="masteryView" style="display:none">
 <h2>Maîtrise</h2><div id="msBox"></div></div>
 <div id="questView" style="display:none">
-<h2>Quêtes quotidiennes</h2><div class="mut" style="margin-bottom:8px">De nouvelles quêtes chaque jour (renouvelées à minuit, heure locale). Elles dépendent de ta progression. Les raids rapportent les meilleures récompenses.</div>
+<h2>Quêtes</h2><div class="mut" style="margin-bottom:8px">De nouvelles quêtes chaque heure (renouvelées à l’heure pile, heure locale). Une quête terminée est conservée jusqu’à ce que tu la récupères. Le coffre du jour et le compteur de quêtes achetées se renouvellent à minuit. Elles dépendent de ta progression. Les raids rapportent les meilleures récompenses.</div>
 <div id="questList"></div></div>
 <div id="eqView" style="display:none">
 <h2>Équipement</h2><div class="mut" style="margin-bottom:8px">Ton équipement s’affiche toujours à droite, sous ta classe : cet onglet sert à gérer la réserve. Les champions de zone, les boss de donjon et les boss de raid laissent des objets : un bonus par objet, huit emplacements. Les boss du raid Cœur du Magma peuvent aussi laisser une pièce de la panoplie de ta classe (tête, épaules, torse, mains, jambes) : des bonus supplémentaires à 2, 4 et 5 pièces. L’équipement et les panoplies sont remis à zéro à chaque renaissance, sauf les deux légendaires uniques : Sulfuras (Ragnaros) et le Cœur de C’Thun.</div>
@@ -532,8 +532,10 @@ function spawn(){
  draw();
 }
 function dmg(n,x,y){
- hp-=n;if(hp<=0&&Date.now()-mobT<MOBMIN)hp=1; /* plafond : un monstre ne meurt pas avant 1 seconde (les dégâts en trop sont perdus) */
- if(x!=null){const p=document.createElement("div");p.className="pop";p.textContent="-"+fmt(n);p.style.left=x+"px";p.style.top=y+"px";document.body.appendChild(p);setTimeout(()=>p.remove(),700)}
+ const shown=n;
+ if(hp-n<=0&&Date.now()-mobT<MOBMIN)n=0; /* plafond : un monstre ne meurt pas avant 1 seconde : le coup mortel trop précoce est ignoré (il ne reste donc pas bloqué à 1 PV) */
+ hp-=n;
+ if(x!=null){const p=document.createElement("div");p.className="pop";p.textContent="-"+fmt(shown);p.style.left=x+"px";p.style.top=y+"px";document.body.appendChild(p);setTimeout(()=>p.remove(),700)}
  if(hp<=0)kill();else bar();
 }
 function startConf(name,boss){
@@ -793,6 +795,7 @@ $("tabZ").onclick=()=>setView("zone");$("tabV").onclick=()=>setView("ville");$("
 /* === QUÊTES QUOTIDIENNES : monstres, champions, donjons, raids === */
 let dqSig="";
 const dqDay=()=>new Date().toLocaleDateString("sv");
+const dqHour=()=>dqDay()+"-"+String(new Date().getHours()).padStart(2,"0"); /* les quêtes sont renouvelées chaque heure ; le coffre et les achats restent quotidiens */
 const dqPk=a=>a[Math.floor(Math.random()*a.length)];
 const dqEl=()=>WLD().filter(i=>S.kills[i]>0||S.boss[i]||i===S.zone).slice(-3);
 const dqDunOk=k=>DG[k]&&!RAIDS.includes(k)&&(!ENDD.includes(k)||WLD().includes(DG[k].z)||endOk(k));
@@ -807,9 +810,11 @@ const dqNew=t=>dqMk[t]()||dqMk.mob()||dqMk.dun();
 const dqValid=q=>q.t==="mob"?WLD().includes(q.z):q.t==="champ"?WLD().includes(q.z)&&(S.bk[Z[q.z].n+"|"+q.k]||0)>=10:q.t==="dun"?dqDunOk(q.k):raidOk(q.k);
 function dqCheck(){
  if(!S.cls)return;
- if(!S.dq||S.dq.d!==dqDay()||!S.dq.q.length){
-  const q=[dqNew("mob"),dqNew("champ"),dqNew("dun"),dqNew("raid")].filter(Boolean);
-  S.dq={d:dqDay(),q,b:0,nb:0};save();return;
+ if(!S.dq||S.dq.h!==dqHour()||!S.dq.q.length){
+  const q=[dqNew("mob"),dqNew("champ"),dqNew("dun"),dqNew("raid")].filter(Boolean),old=S.dq&&S.dq.q?S.dq:null,same=!!(old&&old.d===dqDay());
+  /* les quêtes terminées mais pas encore récupérées sont conservées ; le coffre et le compteur d’achats restent quotidiens */
+  const keep=old?old.q.filter(x=>!x.claimed&&x.have>=x.need):[];
+  S.dq={d:dqDay(),h:dqHour(),q:q.concat(keep),b:same?(old.b||0):0,nb:same?(old.nb||0):0};save();return;
  }
  S.dq.q=S.dq.q.map(q=>(q.have>0||q.claimed||dqValid(q))?q:(dqNew(q.t)||q));
 }
@@ -826,7 +831,7 @@ function dqAdd(t,k,z){
   if(q.t!==t||q.claimed||q.have>=q.need)return;
   if((t==="mob"||t==="champ")&&(q.k!==k||q.z!==z))return;
   if((t==="dun"||t==="raid")&&q.k!==k)return;
-  q.have++;if(q.have>=q.need){log("📜 Quête quotidienne terminée : "+dqTxt(q)+" — récupère ta récompense dans l’onglet Quêtes !");try{hfToast("Quête terminée !")}catch(e){}}
+  q.have++;if(q.have>=q.need){log("📜 Quête terminée : "+dqTxt(q)+" — récupère ta récompense dans l’onglet Quêtes !");try{hfToast("Quête terminée !")}catch(e){}}
  });
 }
 const dqTxt=q=>q.t==="mob"?"Tuer "+q.need+" × "+q.k+" ("+Z[q.z].n+")":q.t==="champ"?"Vaincre "+q.need+" fois le champion "+q.k+" ("+Z[q.z].n+")":q.t==="dun"?"Terminer "+q.need+" fois "+DG[q.k].n:"Terminer "+q.need+" fois le raid "+DG[q.k].n;
@@ -844,10 +849,10 @@ function dqUI(){
  dqCheck();
  const q=S.dq.q,n=q.filter(x=>!x.claimed&&x.have>=x.need).length,all=q.length&&q.slice(0,4).every(x=>x.claimed);
  $("tabQ").textContent="📜 Quêtes"+(n?" ("+n+")":"");
- const sig=S.dq.d+"|"+q.map(x=>x.have+","+(x.claimed||0)+x.k).join(";")+"|"+(S.dq.b||0)+"|"+(S.dq.nb||0)+"|"+(S.es||0);
+ const sig=S.dq.h+"|"+q.map(x=>x.have+","+(x.claimed||0)+x.k).join(";")+"|"+(S.dq.b||0)+"|"+(S.dq.nb||0)+"|"+(S.es||0);
  if(sig===dqSig)return;dqSig=sig;
  const ic={mob:"🗡️",champ:"⚔️",dun:"🏰",raid:"🐉"};
- $("questList").innerHTML=(q.every(x=>x.claimed)?"<div class='card mut' style='margin-bottom:8px'>✅ Toutes tes quêtes sont terminées ("+q.length+"/"+q.length+"). Reviens demain, ou achète-en d’autres avec des essences.</div>":"")+q.map((x,i)=>{if(x.claimed)return "";const ok=x.have>=x.need,pc=Math.min(100,x.have/x.need*100);
+ $("questList").innerHTML=(q.every(x=>x.claimed)?"<div class='card mut' style='margin-bottom:8px'>✅ Toutes tes quêtes sont terminées ("+q.length+"/"+q.length+"). Reviens à la prochaine heure pleine, ou achète-en d’autres avec des essences.</div>":"")+q.map((x,i)=>{if(x.claimed)return "";const ok=x.have>=x.need,pc=Math.min(100,x.have/x.need*100);
   return "<div class='card' style='margin-bottom:8px;display:flex;gap:10px;align-items:center'><div style='font-size:28px'>"+ic[x.t]+"</div><div style='flex:1'><b>"+dqTxt(x)+"</b><div style='background:#222;border-radius:4px;height:10px;margin:5px 0;overflow:hidden'><div style='width:"+pc+"%;height:100%;background:"+(ok?"#2ecc71":"#c9a030")+"'></div></div><div class='mut'>"+Math.min(x.have,x.need)+" / "+x.need+" — "+dqRTxt(x)+"</div></div>"+(x.claimed?"<span class='mut'>✅ Récupérée</span>":"<button data-q='"+i+"'"+(ok?"":" disabled")+">Récupérer</button>")+"</div>"}).join("")
   +"<div class='card'>"+(S.dq.b?"<span class='mut'>🎁 Coffre du jour récupéré</span>":all?"<button data-q='b'>🎁 Ouvrir le coffre du jour (+8 essences)</button>":"<span class='mut'>🎁 Termine et récupère les quatre premières quêtes pour ouvrir le coffre du jour (+8 essences).</span>")+"</div>"
   +"<div class='card'><b>Quêtes supplémentaires</b> <span class='mut'>(achetées avec des essences — le prix augmente de 1 à chaque achat, "+(S.dq.nb||0)+"/"+DQMAX+" aujourd’hui ; tu as ✨ "+(S.es||0)+")</span><div style='margin-top:8px;display:flex;gap:6px;flex-wrap:wrap'>"+Object.keys(DQB).map(t=>{const c=DQB[t]+(S.dq.nb||0),no=(S.dq.nb||0)>=DQMAX||(S.es||0)<c||!dqMk[t]();return "<button data-t='"+t+"'"+(no?" disabled":"")+">"+ic[t]+" "+DQN[t]+" — ✨ "+c+"</button>"}).join("")+"</div></div>";
