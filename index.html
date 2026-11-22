@@ -60,6 +60,11 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .nwb{display:inline-block;margin-left:4px;padding:0 6px;border-radius:9px;background:var(--ac);color:var(--bg);font-size:11px;font-weight:bold;font-family:inherit}
 .chip{display:inline-block;border:1px solid var(--bd);border-radius:12px;padding:1px 8px;margin:2px;font-size:12px;color:var(--tx);background:var(--bg)}
 .pet.rd{cursor:pointer;border-color:var(--ok);box-shadow:0 0 6px var(--ok)}
+.pd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:". t ." "h c r" "s c j" "b w g";gap:8px;margin:6px 0 10px}
+.pdc{border:2px solid var(--bd);border-radius:10px;padding:8px;background:var(--card);min-height:70px;display:flex;flex-direction:column;gap:2px;font-size:13px;overflow:hidden}
+.pdc b{font-size:13px;line-height:1.2}
+.pde{border-style:dashed;align-items:center;justify-content:center;text-align:center;opacity:.65;font-size:22px}
+.pdm{grid-area:c;border:2px solid var(--bd);border-radius:10px;padding:10px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-size:13px}
 #log{font-size:12px;color:var(--mut);height:232px;overflow:hidden}
 .pop{position:fixed;pointer-events:none;font-weight:bold;color:var(--ac);animation:u .7s forwards}
 @keyframes u{to{transform:translateY(-40px);opacity:0}}
@@ -1061,11 +1066,14 @@ function eqUI(){
  const sig=JSON.stringify([S.cls,S.eq]);if(sig===eqSig)return;eqSig=sig;
  if(!S.cls){box.innerHTML="";return}
  let h=`<h3 style="margin:6px 0">Équipé</h3>`;
- const tot={};EQS.forEach(sl=>{const it=S.eq.e[sl.k];if(it)tot[it.b.k]=(tot[it.b.k]||0)+it.b.v});
- EQS.forEach(sl=>{const it=S.eq.e[sl.k];h+=`<div class="up">${it?eqCard(it,false):`<div class="mut">${sl.i} ${sl.n} — vide</div>`}</div>`});
- [1,2,3].forEach(t=>{const n=setCnt(t),SS=SETTS[t];h+=`<div class="up" style="display:block"><b>🧩 ${setN(t)}</b> <span class="mut">— ${n}/5 pièces (tête, épaules, torse, mains, jambes ; elles tombent sur les boss de ${SETSRC[t]} : 20 % par boss, 40 % sur le boss final ; les bonus se cumulent, y compris entre paliers)</span>`+SS.map(x=>`<div style="font-size:13px;${n>=x.n?"color:#2e7d32;font-weight:600":"opacity:.65"}">${n>=x.n?"✔":"○"} ${x.n} pièces : ${["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"dégâts de clic":k==="d"?"DPS":"d’essences gagnées")).join(" · ")}</div>`).join("")+`</div>`});
- h+=`<div class="mut" style="margin:6px 0">Total : ${Object.keys(tot).length?Object.keys(tot).map(k=>eqTxt({k,v:Math.round(tot[k]*100)/100})).join(" · "):"aucun bonus"}</div>`;
- h+=`<h3 style="margin:10px 0 6px">Objets en réserve (${S.eq.r.length}/10)</h3>`;if(S.eq.r.length>=10)h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe ou vends pour faire de la place.</div>`;
+ const tot={};EQS.forEach(sl=>{const it=S.eq.e[sl.k];if(it){tot[it.b.k]=(tot[it.b.k]||0)+it.b.v;if(it.b2)tot[it.b2.k]=(tot[it.b2.k]||0)+it.b2.v}});
+ {const esc=t=>String(t||"").replace(/"/g,"&quot;"),cell=k=>{const sl=EQS.find(x=>x.k===k),it=S.eq.e[k];
+  if(!it)return `<div class="pdc pde" style="grid-area:${k}"><div>${sl.i}</div><div class="mut" style="font-size:13px">${sl.n}<br>vide</div></div>`;
+  return `<div class="pdc" style="grid-area:${k};border-color:${EQR[it.r].c}" title="${sl.n} · ${EQR[it.r].n} · niv. ${it.l} — ${esc(it.src)}${it.u?" — objet légendaire unique : conservé après une renaissance":""}"><div style="color:${EQR[it.r].c}"><b>${sl.i} ${it.n}</b>${it.set?` <span style="color:#2e7d32;font-size:11px;font-weight:600">(T${itTier(it)})</span>`:""}</div><div>${eqTxtI(it)}</div></div>`};
+  const tl=Object.keys(tot).map(k=>eqTxt({k,v:Math.round(tot[k]*100)/100}));
+  const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t);return `<div style="margin-top:6px;border-top:1px solid var(--bd);padding-top:6px;width:100%;text-align:left" title="Les pièces (tête, épaules, torse, mains, jambes) tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent, y compris entre paliers."><b style="font-size:12px">🧩 ${setN(t)}</b> <span class="mut" style="font-size:11px">${n}/5</span>`+SETTS[t].map(x=>`<div style="font-size:11px;${n>=x.n?"color:#2e7d32;font-weight:600":"opacity:.6"}">${n>=x.n?"✔":"○"} ${x.n} p. : ${["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")}</div>`).join("")+`</div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:6px">🧩 Aucune pièce de panoplie</div>`;
+  h+=`<div class="pd">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:42px">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b><div class="mut" style="font-size:12px">Total des bonus</div>${tl.length?tl.map(x=>`<div>${x}</div>`).join(""):`<div class="mut">aucun bonus</div>`}${sh}</div></div>`}
+  h+=`<h3 style="margin:10px 0 6px">Objets en réserve (${S.eq.r.length}/10)</h3>`;if(S.eq.r.length>=10)h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe ou vends pour faire de la place.</div>`;
  if(!S.eq.r.length)h+=`<div class="mut">Aucun objet pour l’instant. Les boss de zone, de donjon et de raid peuvent en laisser.</div>`;
  else h+=`<button id="eqsa" style="margin-bottom:6px">Tout vendre (hors objets bloqués)</button>`;
  S.eq.r.forEach(it=>{h+=`<div class="up">${eqCard(it,true)}<div style="display:flex;flex-direction:column;gap:4px"><button data-eq="${it.id}">Équiper</button><button data-sell="${it.id}"${it.lk?" disabled":""}>Vendre ${fmt(eqPrice(it))}</button><button data-lock="${it.id}" title="${it.lk?"Objet bloqué : il ne peut pas être vendu (ni par « Tout vendre »). Clique pour le débloquer.":"Bloquer l’objet pour éviter de le vendre par erreur"}">${it.lk?"🔒 Bloqué":"🔓 Bloquer"}</button></div></div>`});
