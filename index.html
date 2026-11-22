@@ -84,7 +84,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <div style="display:flex;gap:6px"><button id="svbtn">💾 Sauvegarde</button><button id="reset">Réinitialiser</button></div></div>
 
 <div class="card">
-<div class="zones" id="tabs" style="margin-bottom:10px"><button id="tabZ" class="on">🗺️ Zones</button><button id="tabV">🏰 Villes</button><button id="tabR">🐉 Raids</button><button id="tabE">🎒 Équipement</button><button id="tabQ">📜 Quêtes</button><button id="tabM">🎓 Maîtrise</button></div>
+<div class="zones" id="tabs" style="margin-bottom:10px"><button id="tabZ" class="on">🗺️ Zones</button><button id="tabV">🏰 Ville</button><button id="tabR">🐉 Raids</button><button id="tabE">🎒 Équipement</button><button id="tabQ">📜 Quêtes</button><button id="tabM">🎓 Maîtrise</button></div>
 <div id="zoneView">
 <h2>Zone</h2><div id="evBanner" class="card" style="display:none;margin-bottom:8px;border-color:#e67e22"></div><div class="zones" id="zones"></div>
 <div class="c mut" id="zinfo" style="margin-top:8px"></div>
@@ -110,7 +110,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <h2 style="margin-top:14px">Donjons de fin de jeu</h2><div class="mut" style="margin-bottom:8px">Donjons de haut niveau, ouverts à toutes les classes après la dernière zone. Ils lâchent les composants rares d’accès aux raids.</div>
 <div id="endList"></div></div>
 <div id="cityView" style="display:none">
-<h2>Villes</h2><div class="zones" id="cities"></div>
+<h2 id="cityTtl">Ville</h2><div class="zones" id="cities"></div>
 <div class="mut" id="cityHint" style="margin-top:8px">Choisis une ville pour y entrer.</div>
 <div id="cstage" style="position:relative;aspect-ratio:3/2;border-radius:10px;overflow:hidden;border:1px solid var(--bd);margin-top:8px;display:none"><div id="cmap" style="position:absolute;inset:0"></div></div>
 <div id="hfView" style="display:none">
@@ -121,6 +121,8 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <h2 style="margin-top:10px" id="sttl">🧺 Marchand de composants</h2>
 <div class="mut" style="margin-bottom:6px">Pas de chance au butin ? Achète ici les composants de forge dont tu as besoin. Plus la zone est avancée, plus ils coûtent cher.</div>
 <div id="shopList"></div>
+<h2 style="margin-top:14px">🎒 Sacs</h2><div class="mut" style="margin-bottom:6px">Pas assez de place en réserve ? Chaque sac ajoute 5 emplacements pour tes objets.</div>
+<div id="bagBox"></div>
 </div>
 <div id="forgeWin" style="display:none">
 <button id="fback">← Retour</button>
@@ -656,10 +658,21 @@ const SHOP_P=[20000,31000,48000,74000,1e6,2.3e6,5.1e6,11.7e6,26.5e6,60e6]; /* pr
 const shopZones=()=>{const w=WLD(),seen=new Set();recipes().forEach(r=>seen.add(r.z));return [...seen].sort((a,b)=>{const x=w.indexOf(a),y=w.indexOf(b);return (x<0?99:x)-(y<0?99:y)})};
 const shopPrice=z=>{const i=WLD().indexOf(z);return SHOP_P[Math.min(i<0?WLD().length-1:i,SHOP_P.length-1)]};
 function shopBuy(z,n){const c=shopPrice(z)*n;if(S.gold<c)return;S.gold-=c;S.mats[z]=(S.mats[z]||0)+n;log("🧺 Acheté : "+n+" × "+MAT[z]+" ("+fmt(c)+" or)");save();ui()}
+/* Sacs : chaque sac acheté chez le marchand ajoute 5 emplacements à la réserve (10 au départ, 50 au maximum). Conservés après une renaissance. */
+const BAGN=8,BAGS=5,BAGP=[50e3,250e3,1e6,5e6,20e6,100e6,500e6,2e9];
+const eqCap=()=>10+BAGS*Math.min(BAGN,((S.eq||{}).bags||0));
+function bagBuy(){const n=(S.eq.bags||0);if(n>=BAGN||S.gold<BAGP[n])return;S.gold-=BAGP[n];S.eq.bags=n+1;log("🎒 Sac acheté : la réserve passe à "+eqCap()+" emplacements ("+fmt(BAGP[n])+" or)");eqSig="";save();ui()}
+let bagBuilt=false;
+function bagUI(){const box=$("bagBox");if(!box||!S.cls||!S.eq)return;
+ if(!bagBuilt){bagBuilt=true;box.innerHTML=`<div class="up"><div><span id="bagTxt"></span><br><span class="mut" id="bagSub"></span></div><button id="bagBtn"></button></div>`;$("bagBtn").onclick=bagBuy}
+ const n=S.eq.bags||0,mx=n>=BAGN;
+ $("bagTxt").textContent="🎒 Sac supplémentaire ("+n+"/"+BAGN+")";
+ $("bagSub").textContent="+"+BAGS+" emplacements en réserve · actuellement "+eqCap()+" emplacements"+(mx?" (maximum)":" · conservé après une renaissance");
+ const b=$("bagBtn");b.textContent=mx?"Max":"💰 "+fmt(BAGP[n]);b.disabled=mx||S.gold<BAGP[n]}
 let shopSig="";
 /* la liste est construite une seule fois ; ensuite seuls les textes et l'état des boutons sont mis à jour (sinon les boutons sont recréés sous la souris et le clic est perdu) */
 function shopUI(){
- const box=$("shopList");if(!box||$("shopWin").style.display==="none")return;
+ const box=$("shopList");if(!box||$("shopWin").style.display==="none")return;bagUI();
  const zs=shopZones(),sig=JSON.stringify([S.cls,zs]);
  if(sig!==shopSig){shopSig=sig;box.innerHTML="";
   zs.forEach(z=>{const p=shopPrice(z),d=document.createElement("div");d.className="up";d.dataset.z=z;
@@ -670,13 +683,13 @@ function shopUI(){
 
 /* === PRESTIGE : Renaissance + Essences (par classe) === */
 const GM=()=>msv("g")*GOLDX*(1+0.05*((S.eb||{}).o||0)+EQ("g")/100);
-const ESH=[{id:"p",n:"⚔️ Puissance",d:"+5 % de dégâts de clic et de DPS par niveau",c:2},{id:"o",n:"💰 Prospérité",d:"+5 % d’or gagné par niveau",c:2},{id:"t",n:"💎 Chasseur de trésors",d:"+3 % de chance de composant (accès et forge) et de butin sur les boss de donjon et de raid, par niveau",c:2},{id:"s",n:"🚀 Départ rapide",d:"+200 or au départ de chaque renaissance par niveau",c:1},{id:"a",n:"🤖 Automatisme",d:"+0,3 clic automatique par seconde par niveau",c:3}];
+const ESH=[{id:"p",n:"⚔️ Puissance",d:"+5 % de dégâts de clic et de DPS par niveau",c:2},{id:"o",n:"💰 Prospérité",d:"+5 % d’or gagné par niveau",c:2},{id:"t",n:"💎 Chasseur de trésors",d:"+3 % de chance de composant (accès et forge) et de butin sur les boss de donjon et de raid, par niveau",c:2},{id:"s",n:"🚀 Départ rapide",d:"+200 or au départ de chaque renaissance par niveau",c:1},{id:"a",n:"🤖 Automatisme",d:"+0,3 clic automatique par seconde par niveau (utile surtout en donjon et en raid : en zone, un monstre ne meurt pas avant 1 s)",c:3}];
 const tcm=()=>1+0.03*((S.eb||{}).t||0); /* Chasseur de trésors : multiplicateur de chance sur les boss de donjon et de raid */
 const ESMAX=20,escost=(h,l)=>Math.ceil(h.c*Math.pow(1.329,l));
 const prGain=()=>{const z=WLD().filter(i=>S.boss[i]).length,dd=Object.keys(S.dd||{}).filter(x=>/^\d+$/.test(x)).length,k=WLD().reduce((t,i)=>t+(S.kills[i]||0),0);return Math.ceil((3*z+2*dd+Math.floor(k/50))*msv("e")*(1+SB("e")/100))};
 function rebirth(){
  if(!prCan())return;const g=prGain();
- if(!confirm("Renaissance : ton or, tes sorts, tes zones, tes donjons, ton équipement, tes clés et tes composants d’accès aux donjons et aux raids repartent de zéro. Tu gardes la forge, la collection, les hauts faits et tes essences, et tu gagnes "+g+" essences. Continuer ?"))return;
+ if(!confirm("Renaissance : ton or, tes sorts, tes zones, tes donjons, ton équipement, tes clés et tes composants d’accès aux donjons et aux raids repartent de zéro. Tu gardes la forge, la collection, les hauts faits, tes sacs et tes essences, et tu gagnes "+g+" essences. Continuer ?"))return;
  S.es+=g;S.pn++;{const ke={};Object.keys(S.eq.e).forEach(k=>{if(S.eq.e[k]&&S.eq.e[k].u)ke[k]=S.eq.e[k]});S.eq.e=ke}S.eq.r=S.eq.r.filter(x=>x.u);eqSig="";S.gold=200*((S.eb||{}).s||0);S.zone=WLD()[0];S.kills=Z.map(()=>0);S.boss=Z.map(()=>0);S.dd={};S.lv={};S.ab={h:0,r:0};S.keys={};S.rc={};
  conf=null;dun=null;rz=null;autoDun=false;abReady=0;buffEnd=0;bleedEnd=0;wReady={h:0,r:0};prSig="";
  log("🌟 Renaissance ! +"+g+" essences (total "+S.es+")");save();spawn();ui();abUI();
@@ -742,6 +755,8 @@ function citySvg(){
 function cityUI(){
  const vis=CITIES.map((c,i)=>cityOk(c)?i:-1).filter(i=>i>=0),sg=vis.join(",");
  if(sg!==citySig){citySig=sg;const bx=$("cities");bx.innerHTML="";vis.forEach(i=>{const b=document.createElement("button");b.dataset.i=i;b.textContent="🏰 "+CITIES[i].n;b.onclick=()=>{cityI=i;inForge=false;inHF=false;inShop=false;cityUI()};bx.appendChild(b)});if(cityI!==null&&!vis.includes(cityI)){cityI=null;inForge=false;inHF=false;inShop=false}$("cstage").dataset.c=""}
+ if(cityI===null&&vis.length===1)cityI=vis[0]; /* une seule ville par classe : on y entre directement */
+ $("cities").style.display=vis.length>1?"":"none";$("cityTtl").textContent=vis.length===1&&cityI!==null?"🏰 "+CITIES[cityI].n:"Ville";
  $("cities").querySelectorAll("button").forEach(x=>{x.className=cityI===+x.dataset.i?"on":""});
  if(cityI!==null){$("fttl").textContent="🔨 Forge de "+CITIES[cityI].n;$("hback").textContent="← Retour à "+CITIES[cityI].n;$("fback").textContent="← Retour à "+CITIES[cityI].n;$("sback").textContent="← Retour à "+CITIES[cityI].n}
  $("cityHint").textContent=vis.length?"Choisis une ville pour y entrer. La forge et les hauts faits se trouvent à "+vis.map(i=>CITIES[i].n).join(" et à ")+".":"Aucune ville pour l’instant.";
@@ -1028,13 +1043,13 @@ const eqTxt=b=>"+"+b.v.toLocaleString("fr-FR")+(EQK[b.k].u==="%"?" % ":" ")+EQK[
 const eqPrice=it=>Math.ceil(Math.pow(10,it.l)*0.05*(it.r+1)*10);
 function eqGive(it){
  S.eq.seen[it.r]=(S.eq.seen[it.r]||0)+1;it.nw=1;S.eq.r.push(it); /* le nouvel objet va en bas de la liste : les objets déjà en réserve ne bougent plus */
- while(S.eq.r.length>10){let j=S.eq.r.length-1;while(j>0&&S.eq.r[j].u)j--;if(S.eq.r[j].u)break;const o=S.eq.r.splice(j,1)[0];S.gold+=eqPrice(o)}
+ while(S.eq.r.length>eqCap()){let j=S.eq.r.length-1;while(j>0&&S.eq.r[j].u)j--;if(S.eq.r[j].u)break;const o=S.eq.r.splice(j,1)[0];S.gold+=eqPrice(o)}
  log("🎒 Objet "+EQR[it.r].n.toLowerCase()+" : "+it.n+" ("+eqTxtI(it)+") — "+it.src);hfToast("🎒 "+EQR[it.r].n+" : "+it.n);
  eqSig="";setTimeout(()=>hfAll(),0);
 }
 function eqDrop(zi,src,kind,dk){
  /* kind : zone | dmid | dfin | rmid | rfin */
- if(S.eq.r.length>=10)return;
+ if(S.eq.r.length>=eqCap())return;
  const T=eqTier(zi);let ch=0,w=[];const chm=(1+0.08*(msR().l||0))*(kind==="zone"?1:tcm());
  if(kind==="zone"){ch=.2;w=[65,28,7]}
  else if(kind==="dmid"){ch=.25;w=[30,45,25]}
@@ -1042,7 +1057,7 @@ function eqDrop(zi,src,kind,dk){
  else if(kind==="rmid"){ch=.35;w=[0,0,0,1]}
  else if(kind==="rfin"){ch=1;w=[0,0,0,1]}
  const st=SETRAID[dk];
- if(st&&(kind==="rmid"||kind==="rfin")&&S.cls&&S.eq.r.length<10&&Math.random()<Math.min(1,(kind==="rfin"?.40:.20)*chm)){
+ if(st&&(kind==="rmid"||kind==="rfin")&&S.cls&&S.eq.r.length<eqCap()&&Math.random()<Math.min(1,(kind==="rfin"?.40:.20)*chm)){
   {const sk=SETP[Math.floor(Math.random()*SETP.length)],it=eqGen(3,T,src);it.s=sk;it.set=S.cls;it.tier=st;it.n=EQBASE[sk]+" "+SETN[S.cls][st-1];[it.b,it.b2].forEach(b=>{if(b)b.v=Math.round(b.v*SETSTAT[st]*100)/100});eqGive(it);return}
  }
  if(Math.random()<Math.min(1,ch*chm))eqGive(eqGen(eqRoll(w),T,src));
@@ -1084,7 +1099,7 @@ function eqUI(){
   const tl=Object.keys(tot).map(k=>eqTxt({k,v:Math.round(tot[k]*100)/100}));
   const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t);return `<div style="margin-top:5px;border-top:1px solid var(--bd);padding-top:5px;width:100%;text-align:left" title="Les pièces (tête, épaules, torse, mains, jambes) tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent, y compris entre paliers."><b style="font-size:11px">🧩 ${setN(t)}</b> <span class="mut" style="font-size:11px">${n}/5</span>`+SETTS[t].map(x=>`<div style="font-size:11px;${n>=x.n?"color:#2e7d32;font-weight:600":"opacity:.6"}">${n>=x.n?"✔":"○"} ${x.n} p. : ${["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")}</div>`).join("")+`</div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:5px">🧩 Aucune pièce de panoplie</div>`;
   const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pd cp">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:30px">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b><div class="mut" style="font-size:11px">Total des bonus</div>${tl.length?tl.map(x=>`<div style="font-size:12px">${x}</div>`).join(""):`<div class="mut" style="font-size:12px">aucun bonus</div>`}${sh}</div></div>`}
-  h+=`<h3 style="margin:10px 0 6px">Objets en réserve (${S.eq.r.length}/10)</h3>`;if(S.eq.r.length>=10)h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe ou vends pour faire de la place.</div>`;
+  h+=`<h3 style="margin:10px 0 6px">Objets en réserve (${S.eq.r.length}/${eqCap()})</h3>`;if(S.eq.r.length>=eqCap())h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe, vends ou achète un sac chez le marchand pour faire de la place.</div>`;
  if(!S.eq.r.length)h+=`<div class="mut">Aucun objet pour l’instant. Les boss de zone, de donjon et de raid peuvent en laisser.</div>`;
  else h+=`<button id="eqsa" style="margin-bottom:6px">Tout vendre (hors objets bloqués)</button>`;
  S.eq.r.forEach(it=>{h+=`<div class="up">${eqCard(it,true)}<div style="display:flex;flex-direction:column;gap:4px"><button data-eq="${it.id}">Équiper</button><button data-sell="${it.id}"${it.lk?" disabled":""}>Vendre ${fmt(eqPrice(it))}</button><button data-lock="${it.id}" title="${it.lk?"Objet bloqué : il ne peut pas être vendu (ni par « Tout vendre »). Clique pour le débloquer.":"Bloquer l’objet pour éviter de le vendre par erreur"}">${it.lk?"🔒 Bloqué":"🔓 Bloquer"}</button></div></div>`});
