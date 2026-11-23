@@ -81,17 +81,40 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .pd.cp{gap:6px;margin:4px 0 0}
 .pd.cp .pdc{min-height:54px;padding:5px 6px;font-size:12px;gap:1px}
 .pd.cp .pde{font-size:18px}
+.pdt{cursor:default;gap:0!important;justify-content:center}
+.pdh{display:flex;justify-content:space-between;font-size:10px;color:var(--mut)}
+.pdl{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pdk{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:3px 6px;width:100%;box-sizing:border-box}
+.pdk b{display:block;font-size:14px;font-weight:600}.pdk span{font-size:10px;color:var(--mut)}
+.pds{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 8px;margin-top:8px;border-top:1px solid var(--bd);padding-top:6px;font-size:12px;cursor:help}
+.pdp{color:#2e7d32;letter-spacing:1px}.pdp .mut{letter-spacing:1px}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.rt{border:2px solid var(--bd);border-radius:10px;background:var(--card);padding:6px 8px;cursor:pointer;min-width:0;display:flex;flex-direction:column;gap:1px}
+.rt:hover{background:var(--bg)}.rt.sel{background:var(--bg);box-shadow:0 0 0 2px var(--tx)}
+.fb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:10px 0 8px}
+.ch{background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:999px;padding:2px 10px;font-size:11px;cursor:pointer;user-select:none}
+.ch.on{background:var(--ac);color:#1b150d;border-color:var(--ac)}
+.bar2{position:sticky;bottom:0;margin-top:10px;background:var(--card);border:1px solid var(--ac);border-radius:10px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;z-index:5}
+.bar2 button{font-size:12px;padding:3px 10px}
+.pdb{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 0 8px;flex-wrap:wrap}.pdb button{font-size:12px;padding:3px 10px;background:var(--ac);color:#1b150d;border-color:var(--ac)}
+.pdt{position:relative;overflow:visible!important}
+.pdu{position:absolute;top:-7px;right:-4px;background:#3fae5a;color:#1b150d;border-radius:999px;font-size:10px;font-weight:700;padding:1px 6px;z-index:2;cursor:help}
+.rth{display:flex;justify-content:space-between;align-items:center}
+.nmr{display:flex;align-items:center;gap:4px;min-width:0}.nmr .nm{flex:1;min-width:0}.tb{font-size:10px;font-weight:700;color:#2e7d32;background:#e8f5e9;border:1px solid #2e7d32;border-radius:4px;padding:0 4px;line-height:14px;flex:none}
+.rt .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;margin-top:1px}
+.rtf{display:flex;gap:4px;margin-top:4px}.rtf button{font-size:11px;padding:2px 6px;flex:1}.rtf button:last-child{flex:none}
 .pdc .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
 .pd.cp .pdm{padding:6px}
 .pde{border-style:dashed;align-items:center;justify-content:center;text-align:center;opacity:.65;font-size:22px}
 .pdm{grid-area:c;border:2px solid var(--bd);border-radius:10px;padding:10px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-size:13px}
 #log{font-size:12px;color:var(--mut);height:232px;overflow:hidden}
 .pop{position:fixed;pointer-events:none;font-weight:bold;color:var(--ac);animation:u .7s forwards}
+.pop.crit{color:#ff6a3d;font-size:1.35em;text-shadow:0 0 6px rgba(255,106,61,.6)}
 @keyframes u{to{transform:translateY(-40px);opacity:0}}
 </style></head><body>
 <div class="wrap">
 <div class="card top"><h1>⚔️ AzerClicker</h1>
-<div class="stats">💰 <b id="gold">0</b> · Clic <b id="cd">1</b> · DPS <b id="dps">0</b></div>
+<div class="stats">💰 <b id="gold">0</b> · Clic <b id="cd">1</b> · DPS <b id="dps">0</b> · <span id="crtw" style="cursor:help">Crit <b id="crt">5</b> %</span></div>
 <div style="display:flex;gap:6px"><button id="svbtn">💾 Sauvegarde</button><button id="reset">Réinitialiser</button></div></div>
 
 <div class="card">
@@ -329,12 +352,18 @@ const ZF=z=>ZFZ[z]!==undefined?ZFZ[z]:(ZHP[WLD().indexOf(z)]||1);
 const ZHP=[0.099,0.54,0.84,2.9,5.1,8.7,6.6,5.7,4.9,8.7];
 const need=b=>b?1:10;
 const $=i=>document.getElementById(i);
+const fmtB=n=>{n=Math.floor(n);const g=x=>String(x).replace(/\B(?=(\d{3})+(?!\d))/g,"\u202f");if(n<1e6)return g(n);const m=n/1e6;return (m>=100?g(Math.floor(m)):(Math.floor(m*10)/10).toString().replace(".",","))+"\u202fM"};
 const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e3?(n/1e3).toFixed(1)+"k":Math.floor(n);
 const CAPS=[20,20,20,20,20,20]; /* niveau maximum de chaque sort selon sa position (les derniers sorts montent plus haut) */
 const maxl=u=>CAPS[Math.max(0,UL().indexOf(u))]||15;
 const cost=u=>Math.ceil(u.c*Math.pow(u.g,L(u.id)));
 const msR=()=>{const r=(S.ms&&S.ms.r)||{};if(r.p)delete r.p;return r};
 const msv=k=>{const r=msR();return k==="c"?(1+0.05*(r.c||0))*(1+0.02*(r.w||0)):k==="d"?(1+0.05*(r.d||0))*(1+0.02*(r.w||0)):k==="g"?1+0.05*(r.g||0):k==="e"?1+0.05*(r.e||0):k==="r"?1-0.03*(r.r||0):k==="p"?1+0.05*(r.p||0):1};
+const CRITB=5,CRITMAX=75;
+const critP=()=>Math.min(CRITMAX,CRITB+EQ("x"));
+const critM=()=>((CL[S.cls]||{}).cdm||2)+EQ("y")/100;
+const critE=()=>1+critP()/100*(critM()-1); /* multiplicateur moyen : appliqué au DPS (régulier), les clics tirent leur critique au hasard */
+const critRoll=()=>Math.random()*100<critP();
 const cd=()=>Math.ceil(msv("c")*(1+fx("c"))*(1+(EQ("c")+SB("c"))/100)*(1+PAN()/100)*(1+RFB("c")/100)*(1+0.05*((S.eb||{}).p||0))*((CL[S.cls]||{}).cm||1)*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).ck||1:1)*(1+0.1*(S.fg.gC||0)+0.05*(S.fg.gT||0)));
 /* === PANTHÉON DES RAIDS : bonus commun à toutes les classes (compte) selon le nombre de classes ayant terminé chaque raid === */
 const PANR=[{k:"mc",n:"Cœur du Magma",i:"🌋",keys:["mc"],v:[1,2,3],t:"Maître du Magma"},{k:"bwl",n:"Repaire de l’Aile noire",i:"🐲",keys:["bwl"],v:[2,3,4],t:"Briseur de l’Aile noire"},{k:"aq40",n:"Temple d’Ahn’Qiraj",i:"🦂",keys:["aq40","aq40H"],v:[2,4,5],t:"Vainqueur des Qiraji"}];
@@ -353,7 +382,7 @@ function panUI(){
   h+=`<div class="up" style="display:block"><b>${r.i} ${r.n}</b> <span style="color:#b8860b">${"★".repeat(t)}${"☆".repeat(3-t)}</span> <span class="mut">— ${n} classe${n>1?"s":""} · bonus actuel : <b>+${cur} %</b>${t<3?" · prochain palier ("+(t+1)+" classe"+(t+1>1?"s":"")+") : +"+nx+" %":" · palier maximum"}</span><div style="font-size:15px;margin-top:3px">${list.map(k=>`<span title="${CL[k].n}" style="${c.includes(k)?"":"opacity:.35;filter:grayscale(1)"}">${CL[k].i}${c.includes(k)?"✔":""}</span>`).join(" ")}</div>${t>=3?`<div class="mut" style="font-size:12px">Titre : « ${r.t} »</div>`:""}</div>`});
  h+=`<div style="margin-top:6px"><b>Bonus total du Panthéon : +${PANR.reduce((a,r)=>a+panVal(r),0)} %</b> de dégâts de clic et de DPS</div>`;box.innerHTML=h;
 }
-const dps=()=>msv("d")*(1+0.05*((S.eb||{}).p||0))*(1+(EQ("d")+SB("d"))/100)*(1+PAN()/100)*(1+RFB("d")/100)*(fx("d")+((CL[S.cls]||{}).db||0))*((CL[S.cls]||{}).dm||1)*(1+fx("m"))*(1+0.1*(S.fg.gD||0)+0.05*(S.fg.gT||0))*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).dk||1:1);
+const dps=()=>msv("d")*(1+0.05*((S.eb||{}).p||0))*(1+(EQ("d")+SB("d"))/100)*(1+PAN()/100)*(1+RFB("d")/100)*(fx("d")+((CL[S.cls]||{}).db||0))*((CL[S.cls]||{}).dm||1)*(1+fx("m"))*(1+0.1*(S.fg.gD||0)+0.05*(S.fg.gT||0))*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).dk||1:1)*critE();
 const LOGS=[];function log(t){const l=$("log");LOGS.unshift(t);if(LOGS.length>15)LOGS.length=15;l.innerHTML=LOGS.join("<br>")} /* journal : 15 dernières lignes */
 /* === CARTE : mets ton image dans images/carte-elwynn.webp (ou .png/.jpg), sinon une carte dessinée s'affiche === */
 function mapHtml(zi){const b="images/"+ZM[zi].img;return `<img src="${b}.${EXT[xi(b)]}" data-b="${b}" data-i="${xi(b)}" data-n="__map${zi}" alt="${Z[zi].n}" style="width:100%;height:100%;object-fit:cover" onerror="nx(this)">`}
@@ -542,11 +571,11 @@ function spawn(){
  gmax=Math.ceil(z.hp*Math.min(2,1+k*0.04)*(isBoss?8:champ?6:1));max=hp=Math.max(1,Math.ceil(gmax*HPM*ZF(S.zone)));
  draw();
 }
-function dmg(n,x,y){
+function dmg(n,x,y,crit){
  const shown=n;
  if(hp-n<=0&&Date.now()-mobT<MOBMIN)n=0; /* plafond : un monstre ne meurt pas avant 1 seconde : le coup mortel trop précoce est ignoré (il ne reste donc pas bloqué à 1 PV) */
  hp-=n;
- if(x!=null){const p=document.createElement("div");p.className="pop";p.textContent="-"+fmt(shown);p.style.left=x+"px";p.style.top=y+"px";document.body.appendChild(p);setTimeout(()=>p.remove(),700)}
+ if(x!=null){const p=document.createElement("div");p.className="pop"+(crit?" crit":"");p.textContent=(crit?"💥 ":"")+"-"+fmt(shown);p.style.left=x+"px";p.style.top=y+"px";document.body.appendChild(p);setTimeout(()=>p.remove(),700)}
  if(hp<=0)kill();else bar();
 }
 function startConf(name,boss){
@@ -621,7 +650,12 @@ const HFN=[50,100,500,1000],HFR={50:{g:500},100:{g:2000},500:{e:10},1000:{e:20,g
 const hfGive=m=>{const r=HFR[m];if(r.g)S.gold+=r.g;if(r.e)S.es=(S.es||0)+r.e};
 const hfTxt=m=>{const r=HFR[m],a=[];if(r.e)a.push(r.e+" essences");if(r.g)a.push(fmt(r.g)+" or");return a.join(" + ")};
 const hfSync=()=>{S.kills.forEach((k,i)=>{const id="z:"+i;if(k>(S.tk[id]||0))S.tk[id]=k});Object.keys(S.tk).forEach(id=>HFN.forEach(m=>{if(S.tk[id]>=m&&!S.hf[id+"|"+m]){S.hf[id+"|"+m]=1;hfGive(m)}}))};
-const fixP=()=>{if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
+/* retrait des bonus d’objets « or », « composant » et « clic automatique » : les anciens objets sont convertis (même rareté) */
+const EQMIG={g:["c",1],t:["x",1.5],a:["y",100]};
+function eqMig(){const cv=b=>{if(b&&EQMIG[b.k]){const m=EQMIG[b.k];b.k=m[0];b.v=Math.round(b.v*m[1]*100)/100}};
+ const fx=it=>{if(!it||!it.b)return;if(it.id==="cthun"){it.b={k:"y",v:50};it.b2={k:"d",v:30};it.b3={k:"x",v:10};return}cv(it.b);cv(it.b2);if(it.b2&&it.b2.k===it.b.k){it.b.v=Math.round((it.b.v+it.b2.v)*100)/100;delete it.b2}};
+ if(S.eq){Object.values(S.eq.e||{}).forEach(fx);(S.eq.r||[]).forEach(fx)}}
+const fixP=()=>{eqMig();if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
 if(S.cls&&!WLD().includes(S.zone))S.zone=WLD()[0];
 const freshProf=c=>({gold:0,zone:WLD(c)[0],kills:Z.map(()=>0),boss:Z.map(()=>0),dd:{},lv:{},bk:{},col:{},mats:{},fg:{},ab:{h:0,r:0},keys:{},es:0,eb:{},pn:0,tk:{},hf:{},rc:{},dq:{d:"",q:[]},we:{s:0,d:0,n:0,a:0},ms:{p:0,r:{},f:{}},nt:{},eq:{e:{},r:[],seen:[0,0,0,0,0]}});
 /* === FORGE : composants rares des champions -> améliorations des sorts === */
@@ -1030,10 +1064,10 @@ const EQS=[{k:"w",n:"Arme",i:"⚔️"},{k:"h",n:"Tête",i:"🪖"},{k:"s",n:"Épa
 const EQR=[{n:"Commun",c:"#8a8a8a"},{n:"Peu commun",c:"#2e9e22"},{n:"Rare",c:"#1a66cc"},{n:"Épique",c:"#8e35c9"},{n:"Légendaire",c:"#e07a10"}];
 const EQBASE={w:{g:"Hache",p:"Sceptre",l:"Marteau",d:"Bâton druidique",s:"Masse",w:"Bâton de sorcier"},h:"Heaume",s:"Épaulières",b:"Plastron",g:"Gantelets",j:"Jambières",t:"Talisman",r:"Anneau"};
 const EQADJ=[["usé","simple","rouillé"],["renforcé","solide","robuste"],["runique","sculpté","ancien"],["du vétéran","de l’ombre","du champion"],["des Titans","d’Azeroth","du Roi des cendres","des Anciens dieux"]];
-const EQK={c:{n:"dégâts de clic",u:"%",b:[2,3.5,5.5,8,12]},d:{n:"DPS",u:"%",b:[2,3.5,5.5,8,12]},g:{n:"d’or gagné",u:"%",b:[2,3.5,5.5,8,12]},t:{n:"de chance de composant",u:"%",b:[.5,1,1.5,2.5,4]},a:{n:"clic automatique/s",u:"",b:[.05,.1,.2,.35,.6]}};
+const EQK={c:{n:"dégâts de clic",u:"%",b:[2,3.5,5.5,8,12]},d:{n:"DPS",u:"%",b:[2,3.5,5.5,8,12]},x:{n:"de chance de critique",u:"%",b:[1,1.5,2.5,4,6]},y:{n:"de dégâts critiques",u:"%",b:[10,18,28,40,60]}};
 const eqTier=zi=>Math.max(1,Math.round(Math.log10(Z[zi].hp)));
 const eqRoll=w=>{let t=w.reduce((a,b)=>a+b,0),r=Math.random()*t;for(let i=0;i<w.length;i++){if((r-=w[i])<0)return i}return w.length-1};
-const eqVal=(it,k)=>it&&it.b?((it.b.k===k?it.b.v:0)+(it.b2&&it.b2.k===k?it.b2.v:0)):0;
+const eqVal=(it,k)=>it&&it.b?((it.b.k===k?it.b.v:0)+(it.b2&&it.b2.k===k?it.b2.v:0)+(it.b3&&it.b3.k===k?it.b3.v:0)):0;
 const EQ=k=>EQS.reduce((t,sl)=>t+eqVal(S.eq.e[sl.k],k),0);
 /* === PANOPLIES DE CLASSE : 5 pièces (tête, épaules, torse, mains, jambes) laissées par les boss de donjon ; bonus à 2, 4 et 5 pièces (cumulés) ; perdues à la renaissance === */
 const SETP=["h","s","b","g","j"];
@@ -1047,7 +1081,8 @@ const SETRAID={mc:1,bwl:2,aq40:3,aq40H:3},SETSRC={1:"Cœur du Magma",2:"Repaire 
 const itTier=it=>it&&it.tier||1;
 const setN=(t)=>"T"+(t||1)+" — Panoplie "+((SETN[S.cls]||[])[(t||1)-1]||"de classe");
 const setCnt=(t)=>S.eq&&S.eq.e?SETP.filter(k=>S.eq.e[k]&&S.eq.e[k].set===S.cls&&itTier(S.eq.e[k])===(t||1)).length:0;
-const SB=k=>[1,2,3].reduce((a,t)=>{const n=setCnt(t);return a+SETTS[t].reduce((u,x)=>u+(n>=x.n?(x[k]||0):0),0)},0);
+let SBOFF=false;
+const SB=k=>SBOFF?0:[1,2,3].reduce((a,t)=>{const n=setCnt(t);return a+SETTS[t].reduce((u,x)=>u+(n>=x.n?(x[k]||0):0),0)},0);
 function eqGen(rar,tier,src){
  const sl=EQS[Math.floor(Math.random()*EQS.length)],kinds=Object.keys(EQK),k=kinds[Math.floor(Math.random()*kinds.length)],K=EQK[k];
  let base=sl.k==="w"?(EQBASE.w[S.cls]||"Arme"):EQBASE[sl.k];
@@ -1055,11 +1090,11 @@ function eqGen(rar,tier,src){
  let v=K.b[rar]*(1+0.15*(tier-1))*(0.85+Math.random()*0.3);v=K.u==="%"?Math.round(v*10)/10:Math.round(v*100)/100;
  return{id:Date.now()+"-"+Math.floor(Math.random()*1e6),s:sl.k,r:rar,l:tier,n:base+" "+adj,b:{k,v},src};
 }
-const eqTxtI=it=>eqTxt(it.b)+(it.b2?" · "+eqTxt(it.b2):"");
+const eqTxtI=it=>eqTxt(it.b)+(it.b2?" · "+eqTxt(it.b2):"")+(it.b3?" · "+eqTxt(it.b3):"");
 const eqTxt=b=>"+"+b.v.toLocaleString("fr-FR")+(EQK[b.k].u==="%"?" % ":" ")+EQK[b.k].n;
 const eqPrice=it=>Math.ceil(Math.pow(10,it.l)*0.05*(it.r+1)*10);
 function eqGive(it){
- S.eq.seen[it.r]=(S.eq.seen[it.r]||0)+1;it.nw=1;S.eq.r.push(it); /* le nouvel objet va en bas de la liste : les objets déjà en réserve ne bougent plus */
+ S.eq.seen[it.r]=(S.eq.seen[it.r]||0)+1;if(S.eq.as&&it.r<S.eq.as&&!it.u){S.gold+=eqPrice(it);log("💰 Vente automatique : "+it.n+" ("+EQR[it.r].n.toLowerCase()+") vendu "+fmt(eqPrice(it))+" or");eqSig="";return}it.nw=1;S.eq.r.push(it); /* le nouvel objet va en bas de la liste : les objets déjà en réserve ne bougent plus */
  while(S.eq.r.length>eqCap()){let j=S.eq.r.length-1;while(j>0&&S.eq.r[j].u)j--;if(S.eq.r[j].u)break;const o=S.eq.r.splice(j,1)[0];S.gold+=eqPrice(o)}
  log("🎒 Objet "+EQR[it.r].n.toLowerCase()+" : "+it.n+" ("+eqTxtI(it)+") — "+it.src);hfToast("🎒 "+EQR[it.r].n+" : "+it.n);
  eqSig="";setTimeout(()=>hfAll(),0);
@@ -1087,7 +1122,7 @@ function sulGive(){
 }
 function cthGive(){
  S.eq.cth=1;
- const it={id:"cthun",s:"t",r:4,l:eqTier(DG.aq40.z),n:"👁️ Cœur de C’Thun",b:{k:"g",v:40},b2:{k:"d",v:30},src:"C’Thun (Temple d’Ahn’Qiraj) — bijou légendaire unique, conservé après la renaissance",u:1};
+ const it={id:"cthun",s:"t",r:4,l:eqTier(DG.aq40.z),n:"👁️ Cœur de C’Thun",b:{k:"y",v:50},b2:{k:"d",v:30},b3:{k:"x",v:10},src:"C’Thun (Temple d’Ahn’Qiraj) — bijou légendaire unique, conservé après la renaissance",u:1};
  eqGive(it);log("👁️👁️ LE CŒUR DE C’THUN ! Le bijou légendaire est à toi.");
 }
 function eqEquip(id){
@@ -1097,6 +1132,28 @@ function eqEquip(id){
 function eqLock(id){const it=S.eq.r.find(x=>x.id===id);if(!it)return;it.lk=it.lk?0:1;eqSig="";save();ui()}
 function eqSell(id){const i=S.eq.r.findIndex(x=>x.id===id);if(i<0||S.eq.r[i].u||S.eq.r[i].lk)return;const it=S.eq.r.splice(i,1)[0];S.gold+=eqPrice(it);eqSig="";save();ui()}
 function eqSellAll(){let g=0;S.eq.r.forEach(x=>{if(!x.u&&!x.lk)g+=eqPrice(x)});S.eq.r=S.eq.r.filter(x=>x.u||x.lk);S.gold+=g;eqSig="";save();ui()}
+const EQSL={c:"clic",d:"DPS",x:"crit.",y:"dég. crit."};
+const eqShort=b=>({v:"+"+(Math.round(b.v*10)/10).toLocaleString("fr-FR")+(EQK[b.k].u==="%"?" %":""),l:EQSL[b.k]||""});
+/* === Score d’un objet : variation (en %) des dégâts estimés par seconde si on l’équipait à la place de la pièce de son emplacement ===
+   dégâts estimés = DPS (critique inclus) + clics (automatiques + 3 clics manuels par seconde) × dégâts de clic × critique */
+const eqD=()=>{const ar=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.1*(S.fg.gA||0));return dps()+(ar+3)*cd()*critE()};
+function eqScore(it){const o=S.eq.e[it.s],d0=eqD();S.eq.e[it.s]=it;let d1;try{d1=eqD()}finally{if(o)S.eq.e[it.s]=o;else delete S.eq.e[it.s]}return d0>0?(d1/d0-1)*100:0}
+const eqPct=n=>(n>0?"+":n<0?"−":"")+(Math.abs(n)<10?(Math.round(Math.abs(n)*10)/10):Math.round(Math.abs(n))).toLocaleString("fr-FR")+" %";
+/* valeur propre d’une pièce (sans l’effet des panoplies) */
+function eqPiece(it){SBOFF=true;try{return eqScore(it)}finally{SBOFF=false}}
+/* plan « passer à la panoplie du palier t » : on équipe, pour chaque emplacement de panoplie, la meilleure pièce de ce palier de la réserve ; gain = variation des dégâts estimés */
+function eqPlan(t){const pick={};SETP.forEach(k=>{const e=S.eq.e[k];let best=null,bs=-1e9;S.eq.r.forEach(x=>{if(x.s===k&&x.set===S.cls&&itTier(x)===t){const sc=eqPiece(x);if(sc>bs){bs=sc;best=x}}});if(!best)return;const eIn=e&&e.set===S.cls&&itTier(e)===t;if(eIn&&bs<=0)return;pick[k]=best});
+ const ks=Object.keys(pick);if(!ks.length)return null;const sv=S.eq.e,D0=eqD();let D1;S.eq.e=Object.assign({},sv,pick);try{D1=eqD()}finally{S.eq.e=sv}
+ const cnt=SETP.filter(k=>{const it=pick[k]||sv[k];return it&&it.set===S.cls&&itTier(it)===t}).length;return{t,pick,n:cnt,gain:(D1/D0-1)*100}}
+function eqPlans(){const o={};[...new Set(S.eq.r.filter(x=>x.set===S.cls).map(itTier))].forEach(t=>{const pl=eqPlan(t);if(pl&&pl.gain>0.05)o[t]=pl});return o}
+function eqCmp(it,plans){const sc=eqScore(it),st=sc>0.05?1:sc<-0.05?-1:0,pl=plans&&it.set===S.cls?plans[itTier(it)]:null;
+ if(st<=0&&pl&&pl.pick[it.s]===it)return{sc,st:2,a:"◆",plan:pl,key:pl.gain,tip:"Panoplie T"+pl.t+" : seule, cette pièce fait perdre le bonus de ta panoplie actuelle ("+eqPct(sc)+"), mais en équipant tes "+pl.n+" pièces T"+pl.t+" (« Panoplie T"+pl.t+" » en haut du panneau Équipement), tes dégâts estimés passent à "+eqPct(pl.gain)+"."}
+ return{sc,st,key:sc,a:st>0?"▲":st<0?"▼":"=",tip:(S.eq.e[it.s]?"":"Emplacement libre — ")+"Dégâts estimés : "+eqPct(sc)+" si tu l’équipes"}}
+function eqApplyPlan(t){const pl=eqPlan(t);if(!pl)return;Object.keys(pl.pick).forEach(k=>{const it=pl.pick[k],i=S.eq.r.indexOf(it);if(i<0)return;S.eq.r.splice(i,1);const old=S.eq.e[k];S.eq.e[k]=it;delete it.nw;if(old){delete old.nw;S.eq.r.splice(i,0,old)}});eqSig="";save();ui()}
+let eqFlt="all",eqSrt="sc",eqSel={},eqUndo=null;
+function eqSellSel(){const ids=Object.keys(eqSel);if(!ids.length)return;const out=S.eq.r.filter(x=>eqSel[x.id]&&!x.u&&!x.lk);if(!out.length)return;let g=0;out.forEach(x=>g+=eqPrice(x));S.eq.r=S.eq.r.filter(x=>!out.includes(x));S.gold+=g;eqSel={};eqUndo={items:out,gold:g,t:Date.now()};setTimeout(()=>{if(eqUndo&&Date.now()-eqUndo.t>=10000){eqUndo=null;eqSig="";ui()}},10300);eqSig="";save();ui()}
+function eqUndoSell(){if(!eqUndo)return;if(S.gold<eqUndo.gold){log("↶ Annulation impossible : tu as déjà dépensé cet or.");return}if(S.eq.r.length+eqUndo.items.length>eqCap()){log("↶ Annulation impossible : la réserve n’a plus assez de place.");return}S.gold-=eqUndo.gold;S.eq.r.push(...eqUndo.items);eqUndo=null;eqSig="";save();ui()}
+function eqEquipBest(){for(let pass=0;pass<3;pass++){let n=0;EQS.forEach(sl=>{let best=null,bs=0.05;S.eq.r.filter(x=>x.s===sl.k).forEach(x=>{const sc=eqScore(x);if(sc>bs){bs=sc;best=x}});if(best){const i=S.eq.r.indexOf(best),old=S.eq.e[sl.k];S.eq.r.splice(i,1);S.eq.e[sl.k]=best;delete best.nw;if(old){delete old.nw;S.eq.r.splice(i,0,old)}n++}});if(!n)break}eqSig="";save();ui()}
 const eqCard=(it,cmp)=>{
  const c=EQR[it.r].c,sl=EQS.find(x=>x.k===it.s);
  let diff="";if(cmp){const o=S.eq.e[it.s];if(!o)diff=`<span style="color:#2e7d32">emplacement libre</span>`;else if(o.b.k===it.b.k){const d=Math.round((it.b.v-o.b.v)*100)/100;diff=`<span style="color:${d>=0?"#2e7d32":"#b03a2e"}">${d>=0?"▲ +":"▼ "}${d.toLocaleString("fr-FR")} vs équipé</span>`}else diff=`<span class="mut">remplace ${eqTxt(o.b)}</span>`}
@@ -1105,29 +1162,49 @@ const eqCard=(it,cmp)=>{
 let eqSig="";
 function eqUI(){
  const box=$("eqbox");if(!box)return;
- const sig=JSON.stringify([S.cls,S.eq]);if(sig===eqSig)return;eqSig=sig;
+ const sig=JSON.stringify([S.cls,S.eq,eqFlt,eqSrt,Object.keys(eqSel).join(),eqUndo&&eqUndo.t,Math.round(dps()),cd(),critP(),critM()]);if(sig===eqSig)return;eqSig=sig;
  {const ep0=$("eqPanel");if(ep0)ep0.style.display=S.cls?"":"none"}
  if(!S.cls){box.innerHTML="";return}
  let h="";
- const tot={};EQS.forEach(sl=>{const it=S.eq.e[sl.k];if(it){tot[it.b.k]=(tot[it.b.k]||0)+it.b.v;if(it.b2)tot[it.b2.k]=(tot[it.b2.k]||0)+it.b2.v}});
+ const tot={};EQS.forEach(sl=>{const it=S.eq.e[sl.k];if(it){tot[it.b.k]=(tot[it.b.k]||0)+it.b.v;if(it.b2)tot[it.b2.k]=(tot[it.b2.k]||0)+it.b2.v;if(it.b3)tot[it.b3.k]=(tot[it.b3.k]||0)+it.b3.v}});
+/* === Design « poupée compacte » : seule la valeur du bonus est visible sur chaque case, le détail est dans l’infobulle === */
+ const cmpAll=S.eq.r.map(x=>({x,sc:eqScore(x)})),up={};cmpAll.forEach(c=>{if(c.sc>0.05&&(!up[c.x.s]||c.sc>up[c.x.s]))up[c.x.s]=c.sc});
+ const plansP=eqPlans(),planTile={};Object.values(plansP).forEach(pl=>Object.keys(pl.pick).forEach(k=>{if(!planTile[k]||pl.gain>planTile[k].gain)planTile[k]=pl}));
+ const nUp=Object.keys(up).length,D0=eqD();let gainAll=0;if(nUp){const sv=JSON.parse(JSON.stringify(S.eq.e)),sr=S.eq.r;try{const tmp={};EQS.forEach(sl=>{let best=null,bs=0.05;sr.filter(x=>x.s===sl.k).forEach(x=>{const sc=eqScore(x);if(sc>bs){bs=sc;best=x}});if(best)S.eq.e[sl.k]=best});gainAll=(eqD()/D0-1)*100}finally{S.eq.e=sv}}
  {const esc=t=>String(t||"").replace(/"/g,"&quot;"),cell=k=>{const sl=EQS.find(x=>x.k===k),it=S.eq.e[k];
   if(!it)return `<div class="pdc pde" style="grid-area:${k}" title="${sl.n} — vide"><div>${sl.i}</div><div class="mut" style="font-size:11px">${sl.n}</div></div>`;
-  return `<div class="pdc" style="grid-area:${k};border-color:${EQR[it.r].c}" title="${sl.n} · ${EQR[it.r].n} · niv. ${it.l} — ${esc(it.src)}${it.u?" — objet légendaire unique : conservé après une renaissance":""}"><div style="color:${EQR[it.r].c};font-weight:700;font-size:12px">${sl.i} ${eqTxtI(it)}</div><div class="nm" style="color:${EQR[it.r].c}">${it.n}${it.set?` (T${itTier(it)})`:""}</div></div>`};
-  const tl=Object.keys(tot).map(k=>eqTxt({k,v:Math.round(tot[k]*100)/100}));
-  const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t);return `<div style="margin-top:5px;border-top:1px solid var(--bd);padding-top:5px;width:100%;text-align:left" title="Les pièces (tête, épaules, torse, mains, jambes) tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent, y compris entre paliers."><b style="font-size:11px">🧩 ${setN(t)}</b> <span class="mut" style="font-size:11px">${n}/5</span>`+SETTS[t].map(x=>`<div style="font-size:11px;${n>=x.n?"color:#2e7d32;font-weight:600":"opacity:.6"}">${n>=x.n?"✔":"○"} ${x.n} p. : ${["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")}</div>`).join("")+`</div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:5px">🧩 Aucune pièce de panoplie</div>`;
-  const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pd cp">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:30px">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b><div class="mut" style="font-size:11px">Total des bonus</div>${tl.length?tl.map(x=>`<div style="font-size:12px">${x}</div>`).join(""):`<div class="mut" style="font-size:12px">aucun bonus</div>`}${sh}</div></div>`}
-  h+=`<h3 style="margin:10px 0 6px">Objets en réserve (${S.eq.r.length}/${eqCap()})</h3>`;if(S.eq.r.length>=eqCap())h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe, vends ou achète un sac chez le marchand pour faire de la place.</div>`;
+  const c=EQR[it.r].c,sb=eqShort(it.b),ex=(it.b2?" · "+eqShort(it.b2).v+" "+eqShort(it.b2).l:"")+(it.b3?" · "+eqShort(it.b3).v+" "+eqShort(it.b3).l:""),bu=up[k];
+  return `<div class="pdc pdt" style="grid-area:${k};border-color:${c}" title="${esc(it.n)} — ${sl.n} · ${EQR[it.r].n}&#10;${esc(eqTxtI(it))}&#10;${esc(it.src)}${it.set?"&#10;"+esc(setN(itTier(it))):""}${it.u?"&#10;Objet légendaire unique : conservé après une renaissance":""}">${!bu&&planTile[k]?`<span class="pdu" style="background:#e67e22" title="Pièce de la panoplie T${planTile[k].t} disponible en réserve : voir le bouton « Panoplie T${planTile[k].t} » en haut du panneau">◆ T${planTile[k].t}</span>`:""}${bu?`<span class="pdu" title="Un objet de ta réserve est meilleur pour cet emplacement : ${eqPct(bu)} de dégâts estimés">▲ ${eqPct(bu).replace("+","")}</span>`:""}<div class="pdh"><span>${sl.n}</span>${it.set?`<span style="color:${c}">T${itTier(it)}</span>`:""}</div><b style="color:${c};font-size:15px">${sb.v}</b><span class="mut pdl">${sb.l}${ex}</span></div>`};
+  const kk=(v,l)=>`<div class="pdk"><b>${v}</b><span>${l}</span></div>`,cr=Math.round(critP()*10)/10,cm=Math.round(critM()*100)/100;
+  const chips=(tot.d?kk("+"+(Math.round(tot.d*10)/10).toLocaleString("fr-FR")+" %","DPS"):"")+(tot.c?kk("+"+(Math.round(tot.c*10)/10).toLocaleString("fr-FR")+" %","dégâts de clic"):"")+kk(cr.toLocaleString("fr-FR")+" % · ×"+cm.toLocaleString("fr-FR"),"critique");
+  const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t),act=SETTS[t].filter(x=>n>=x.n),nxt=SETTS[t].find(x=>n<x.n),det=SETTS[t].map(x=>(n>=x.n?"✔":"○")+" "+x.n+" p. : "+["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")).join("&#10;");
+   return `<div class="pds" title="${esc(setN(t))} — ${n}/5 pièces. Les pièces tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent.&#10;${det}"><span>T${t} · ${(SETN[S.cls]||[])[t-1]||"panoplie"}</span><span class="pdp">${"●".repeat(n)}<span class="mut">${"○".repeat(5-n)}</span></span><span class="mut" style="font-size:11px">${act.length?"palier "+act[act.length-1].n+" p. actif":"aucun palier"}${nxt?" · suivant : "+nxt.n+" p.":""}</span></div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:8px">Aucune pièce de panoplie</div>`;
+  const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pdb"><span title="Dégâts par seconde estimés : DPS, clics et critiques réunis"><b>Puissance ${fmt(Math.round(D0))}</b>${nUp?` <span style="color:#2e7d32;font-size:11px">${eqPct(gainAll)} possible</span>`:""}</span>${Object.values(plansP).map(pl=>`<button data-plan="${pl.t}" style="background:#e67e22;border-color:#e67e22" title="Équipe tes ${pl.n} pièces T${pl.t} (${Object.keys(pl.pick).length} à changer) : les bonus de la panoplie T${pl.t} remplacent ceux de ta panoplie actuelle. Dégâts estimés : ${eqPct(pl.gain)}">◆ Panoplie T${pl.t} (${pl.n}/5) ${eqPct(pl.gain)}</button>`).join(" ")}${nUp?`<button id="eqall" title="Équipe d’un coup la meilleure pièce de ta réserve pour chaque emplacement amélioré">Tout équiper ▲ (${nUp})</button>`:""}</div><div class="pd cp">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:26px;line-height:1">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b>${chips}</div></div>${sh}`}
+  const plans=eqPlans(),cmps=S.eq.r.map(x=>eqCmp(x,plans));Object.keys(eqSel).forEach(k=>{if(!S.eq.r.find(x=>x.id===k))delete eqSel[k]});
+ const idx=S.eq.r.map((x,i)=>i).filter(i=>eqFlt==="all"||(eqFlt==="up"&&(cmps[i].st>0||cmps[i].st===2))||(eqFlt==="dn"&&cmps[i].st<0)),slx=k=>EQS.findIndex(x=>x.k===k);
+ idx.sort((a,b)=>{const A=S.eq.r[a],B=S.eq.r[b],ds=cmps[b].key-cmps[a].key;return eqSrt==="sc"?ds:eqSrt==="r"?(B.r-A.r)||ds:(slx(A.s)-slx(B.s))||ds});
+ const selN=Object.keys(eqSel).length,selG=S.eq.r.filter(x=>eqSel[x.id]).reduce((t,x)=>t+eqPrice(x),0),chip=(k,v,l,on)=>`<span class="ch${on?" on":""}" data-${k}="${v}">${l}</span>`;
+ h+=`<div class="fb"><h3 style="margin:0">Objets en réserve <span class="mut">${S.eq.r.length}/${eqCap()}</span></h3>`+(S.eq.r.length?`<span style="flex:1"></span>${chip("f","all","Tous",eqFlt==="all")}${chip("f","up","▲ Meilleurs",eqFlt==="up")}${chip("f","dn","▼ Moins bons",eqFlt==="dn")}<span class="mut" style="font-size:11px;margin-left:6px">Trier :</span>${chip("s","sc","Score",eqSrt==="sc")}${chip("s","r","Rareté",eqSrt==="r")}${chip("s","sl","Emplacement",eqSrt==="sl")}`:"")+`</div>`;
+ if(S.eq.r.length>=eqCap())h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe, vends ou achète un sac chez le marchand pour faire de la place.</div>`;
  if(!S.eq.r.length)h+=`<div class="mut">Aucun objet pour l’instant. Les boss de zone, de donjon et de raid peuvent en laisser.</div>`;
- else h+=`<button id="eqsa" style="margin-bottom:6px">Tout vendre (hors objets bloqués)</button>`;
- S.eq.r.forEach(it=>{h+=`<div class="up">${eqCard(it,true)}<div style="display:flex;flex-direction:column;gap:4px"><button data-eq="${it.id}">Équiper</button><button data-sell="${it.id}"${it.lk?" disabled":""}>Vendre ${fmt(eqPrice(it))}</button><button data-lock="${it.id}" title="${it.lk?"Objet bloqué : il ne peut pas être vendu (ni par « Tout vendre »). Clique pour le débloquer.":"Bloquer l’objet pour éviter de le vendre par erreur"}">${it.lk?"🔒 Bloqué":"🔓 Bloquer"}</button></div></div>`});
+ else{h+=idx.length?`<div class="rg">`:`<div class="mut">Aucun objet ne correspond à ce filtre.</div>`;idx.forEach(i=>{const it=S.eq.r[i],c=EQR[it.r].c,sl=EQS.find(x=>x.k===it.s),sb=eqShort(it.b),cp=cmps[i],sellable=!it.u&&!it.lk,ex=it.b2?" · "+eqShort(it.b2).v+" "+eqShort(it.b2).l:"";
+  h+=`<div class="rt${eqSel[it.id]?" sel":""}" data-sel="${sellable?it.id:""}" style="border-color:${c}" title="${(it.n+" — "+sl.n+" · "+EQR[it.r].n+"\n"+eqTxtI(it)+"\n"+cp.tip+"\n"+it.src+(it.u?"\nObjet légendaire unique : ne peut pas être vendu":it.lk?"\nObjet bloqué":"\nClique sur la carte pour la sélectionner (vente groupée)")).replace(/"/g,"&quot;")}"><div class="rth"><b style="color:${c};font-size:15px">${eqSel[it.id]?"✔ ":""}${sb.v}</b><span style="color:${cp.st===2?"#d35400":cp.st>0?"#2e7d32":cp.st<0?"#b03a2e":"var(--mut)"};font-weight:700;font-size:12px">${cp.a} ${eqPct(cp.key).replace("+","")}${cp.st===2?" T"+cp.plan.t:""}</span></div><div class="mut pdl">${sb.l}${ex} · ${sl.n}${it.set?` · <b style="color:#2e7d32">T${itTier(it)}</b>`:""}</div><div class="nm" style="color:${c}">${it.nw?"🆕 ":""}${it.n}</div><div class="mut pdl">${it.src}</div><div class="rtf"><button data-eq="${it.id}">Équiper</button><button data-sell="${it.id}"${sellable?"":" disabled"} title="Vendre pour ${fmt(eqPrice(it))} or">💰</button><button data-lock="${it.id}" title="${it.lk?"Objet bloqué : il ne peut pas être vendu. Clique pour le débloquer.":"Bloquer l’objet pour éviter de le vendre par erreur"}">${it.lk?"🔒":"🔓"}</button></div></div>`});if(idx.length)h+=`</div>`;
+  h+=`<div class="bar2"><span>${selN?`<b>${selN} objet${selN>1?"s":""}</b> sélectionné${selN>1?"s":""} · <span style="color:#b9770e">+${fmt(selG)} or</span>`:`<span class="mut">Clique sur des objets pour les sélectionner, puis vends-les ensemble.</span>`}</span><span style="display:flex;gap:6px;flex-wrap:wrap"><button id="eqs1" title="Sélectionne les objets moins bons que ta pièce équipée (hors bloqués)">Les ▼</button><button id="eqs2">Tout</button><button id="eqs3"${selN?"":" disabled"}>Vider</button><button id="eqs4" class="on"${selN?"":" disabled"}>Vendre</button></span></div>`;
+  h+=`<div class="mut" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px"><span>Vente automatique des objets plus faibles que <select id="eqas"><option value="0">— désactivée —</option>${[1,2,3].map(r=>`<option value="${r}"${(S.eq.as||0)===r?" selected":""}>${EQR[r].n}</option>`).join("")}</select></span>${eqUndo&&Date.now()-eqUndo.t<10000?`<button id="equn">↶ Annuler la vente (${eqUndo.items.length} objet${eqUndo.items.length>1?"s":""})</button>`:""}</div>`}
+ h+=`<div class="mut" style="font-size:11px;margin-top:6px">▲ meilleur que ta pièce équipée · ▼ moins bon · ◆ pièce de panoplie à équiper avec les autres (le % est le gain une fois la panoplie montée) : le pourcentage est la variation des dégâts estimés si tu l’équipes (DPS, clics et critiques réunis).</div>`;
  box.innerHTML=h;
- box.querySelectorAll("[data-eq]").forEach(b=>b.onclick=()=>eqEquip(b.dataset.eq));
- box.querySelectorAll("[data-sell]").forEach(b=>b.onclick=()=>eqSell(b.dataset.sell));box.querySelectorAll("[data-lock]").forEach(b=>b.onclick=()=>eqLock(b.dataset.lock));
- const sa=$("eqsa");if(sa)sa.onclick=eqSellAll;
+ box.querySelectorAll("[data-eq]").forEach(b=>b.onclick=e=>{e.stopPropagation();eqEquip(b.dataset.eq)});
+ box.querySelectorAll("[data-sell]").forEach(b=>b.onclick=e=>{e.stopPropagation();eqSell(b.dataset.sell)});box.querySelectorAll("[data-lock]").forEach(b=>b.onclick=e=>{e.stopPropagation();eqLock(b.dataset.lock)});
+ box.querySelectorAll("[data-sel]").forEach(b=>b.onclick=()=>{const id=b.dataset.sel;if(!id)return;if(eqSel[id])delete eqSel[id];else eqSel[id]=1;eqSig="";ui()});
+ box.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{eqFlt=b.dataset.f;eqSig="";ui()});box.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{eqSrt=b.dataset.s;eqSig="";ui()});
+ const sl1=$("eqs1");if(sl1){sl1.onclick=()=>{eqSel={};S.eq.r.forEach((x,i)=>{if(!x.u&&!x.lk&&cmps[i].st<0)eqSel[x.id]=1});eqSig="";ui()};$("eqs2").onclick=()=>{eqSel={};S.eq.r.forEach(x=>{if(!x.u&&!x.lk)eqSel[x.id]=1});eqSig="";ui()};$("eqs3").onclick=()=>{eqSel={};eqSig="";ui()};$("eqs4").onclick=eqSellSel}
+ const asx=$("eqas");if(asx)asx.onchange=()=>{S.eq.as=+asx.value;save();eqSig="";ui()};const unx=$("equn");if(unx)unx.onclick=eqUndoSell;
+ const ea=$("eqall");if(ea)ea.onclick=eqEquipBest;{const ep2=$("eqPanel");if(ep2)ep2.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>eqApplyPlan(+b.dataset.plan))}
+
 }
 const uiSig={};
 function ui(){msUI();dqUI();evUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hfUI();raidUI();panUI();eqUI();
- $("gold").textContent=fmt(S.gold);$("cd").textContent=cd();$("dps").textContent=Math.floor(dps());
+ $("gold").textContent=fmtB(S.gold);$("cd").textContent=fmtB(cd());$("dps").textContent=fmtB(dps());$("crt").textContent=Math.round(critP()*10)/10;$("crtw").title="Chance de coup critique : "+Math.round(critP()*10)/10+" % — un critique inflige ×"+(Math.round(critM()*100)/100).toLocaleString("fr-FR")+" de dégâts (de base pour ta classe : ×"+String((CL[S.cls]||{}).cdm||2).replace(".",",")+"). Le critique est inclus dans le DPS affiché ; les clics, eux, le tirent au hasard.";
  const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(i=>[zOpen(i),zDone(i),Math.round(zPct(i)*100)]),evA&&evA.z]);
  if(zsig!==uiSig.z){uiSig.z=zsig;const zr=document.createElement("div");zr.id="zRow";
  WLD().forEach((i,n)=>{const z=Z[i];
@@ -1165,10 +1242,10 @@ function ui(){msUI();dqUI();evUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hf
  $("cz").textContent=Z[S.zone].n;$("cc").textContent="("+got+"/"+tot+")";}
 }
 function save(){try{localStorage.setItem("azer1",JSON.stringify(S))}catch(e){}}
-$("mob").onclick=e=>dmg(cd(),e.clientX,e.clientY);
+$("mob").onclick=e=>{const c=critRoll();dmg(cd()*(c?critM():1),e.clientX,e.clientY,c)};
 /* taille des monstres : si le monstre a changé de salle pendant que l’onglet Zones était masqué, on recalcule sa taille au retour */
 try{new ResizeObserver(()=>{const w=$("stage").clientWidth;if(w>0&&prevSW===0&&typeof mob!=="undefined"&&mob)placeMob();prevSW=w}).observe($("stage"))}catch(e){}
-setInterval(()=>{const _n=Date.now(),_dt=_n-lastT;lastT=_n;if(_dt>8000)offlineGain(_dt/1000);if(dun){if(Date.now()>dun.end){log("⌛ Temps écoulé : "+DX().n+" échoué (entrée perdue)");autoDun=false;dun=null;spawn();ui();return}bar()}if(conf){if(Date.now()>conf.end){log("⌛ Confrontation perdue : "+conf.name);conf=null;spawn();ui();return}bar()}let t=dps()/10;if(Date.now()<bleedEnd)t+=cd()*0.5;autoAcc+=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.1*(S.fg.gA||0))/10;while(autoAcc>=0.999){autoAcc-=1;t+=cd()}if((curV==="raid"||curV==="eq")&&!dun&&!conf)t=0; /* onglet Raids : la zone est en pause (plus de farm d’équipement de bas niveau) */if(t>0)dmg(t)},100);
+setInterval(()=>{const _n=Date.now(),_dt=_n-lastT;lastT=_n;if(_dt>8000)offlineGain(_dt/1000);if(dun){if(Date.now()>dun.end){log("⌛ Temps écoulé : "+DX().n+" échoué (entrée perdue)");autoDun=false;dun=null;spawn();ui();return}bar()}if(conf){if(Date.now()>conf.end){log("⌛ Confrontation perdue : "+conf.name);conf=null;spawn();ui();return}bar()}let t=dps()/10;if(Date.now()<bleedEnd)t+=cd()*0.5;autoAcc+=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.1*(S.fg.gA||0))/10;while(autoAcc>=0.999){autoAcc-=1;t+=cd()*(critRoll()?critM():1)}if((curV==="raid"||curV==="eq")&&!dun&&!conf)t=0; /* onglet Raids : la zone est en pause (plus de farm d’équipement de bas niveau) */if(t>0)dmg(t)},100);
 setInterval(ui,1500);
 /* === GAINS HORS-LIGNE : récapitulatif de l'or gagné pendant l'absence (50 % du rythme normal en zone, 8 h maximum) === */
 let lastT=S.ls||Date.now();
@@ -1195,6 +1272,8 @@ d:{n:"Druide",i:"🐻",f:"a",cm:1.5,dm:1.8,w:"🌿",desc:"Arme : 🌿 bâton de 
 s:{n:"Chaman",i:"⚡",f:"h",cm:1.5,dm:1.25,ws:"<path d='M19 1L6 18H14L11 31L26 12H17Z' fill='rgb(80,170,255)' stroke='rgb(20,70,160)' stroke-width='1.5' stroke-linejoin='round'/><path d='M18 6L11 17H16L14 25L21 14H16Z' fill='rgb(200,235,255)'/>",w:"🦯",desc:"Arme : éclair bleu. +50 % de dégâts de clic et +25 % de DPS."},
 w:{n:"Démoniste",i:"😈",f:"h",cm:1.5,dm:1.6,ws:"<g fill='rgb(90,200,80)' fill-opacity='.85'><circle cx='8' cy='23' r='8'/><circle cx='24' cy='24' r='8'/><circle cx='16' cy='25' r='7'/><circle cx='6' cy='14' r='5'/></g><text x='9' y='20' font-size='16'>💀</text>",w:"💀",desc:"Arme : tête de mort et nuage vert. +50 % de dégâts de clic et +60 % de DPS."}
 };
+Object.assign(CL.g,{cdm:2});Object.assign(CL.l,{cdm:2});Object.assign(CL.s,{cdm:2});Object.assign(CL.w,{cdm:1.5});Object.assign(CL.p,{cdm:1.5});Object.assign(CL.d,{cdm:1.5});
+Object.keys(CL).forEach(k=>{CL[k].desc+=" Coups critiques : ×"+String(CL[k].cdm).replace(".",",")+" de dégâts de base."});
 const FAC={a:{n:"Alliance",i:"🦁",c:["l","p","d"]},h:{n:"Horde",i:"🐺",c:["g","s","w"]}};
 const WA={h:{n:"Frappe héroïque",c:100,cd:6000,d:"15× tes dégâts de clic"},r:{n:"Pourfendre",c:500,cd:15000,d:"saignement : 5× tes dégâts de clic par seconde pendant 8 s"}};
 let abReady=0,buffEnd=0,bleedEnd=0,wReady={h:0,r:0};
