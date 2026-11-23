@@ -47,13 +47,15 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 @keyframes evp{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.04)}}
 .zones button.ev{box-shadow:0 0 0 2px #e67e22}
 #zH{cursor:pointer;user-select:none;margin:0 0 6px;font-size:14px}#zH::after{content:" ▾";color:var(--mut);font-size:12px}#zH.cl::after{content:" ▸"}
-#zones{gap:5px}#zones.cl button:not(.on){display:none}
-#zones button{position:relative;overflow:hidden;font-size:12px;line-height:1.45;padding:3px 10px;border-radius:999px;border:1px solid var(--ac);background:rgba(224,160,64,.10);color:var(--tx)}
-#zones button i{position:absolute;left:0;bottom:0;height:2px;width:var(--p,0%);background:var(--ac);transition:width .3s}
-#zones button.zd{border-color:#3fae5a;background:rgba(63,174,90,.16)}#zones button.zd i{background:#3fae5a}
-#zones button.on{background:var(--ac);border-color:var(--ac);color:#fff}#zones button.zd.on{background:#2f9a4b;border-color:#3fae5a}
-#zones button.on i{background:rgba(255,255,255,.75)}
-#zones button:disabled{border-color:var(--bd);background:transparent;opacity:.45}
+#zones{display:block}#zRow{display:flex;align-items:center}#zones.cl #zRow{display:none}
+#zones .zn{flex:none;width:22px;height:22px;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;border:2px solid var(--ac);background:transparent;color:var(--tx);position:relative}
+#zones .zn.zd{border-color:#3fae5a;background:#3fae5a;color:#1b150d}
+#zones .zn.on{background:var(--ac);border-color:var(--ac);color:#1b150d;box-shadow:0 0 0 3px rgba(224,160,64,.28)}
+#zones .zn.zd.on{box-shadow:0 0 0 3px rgba(63,174,90,.3)}
+#zones .zn:disabled{border-color:var(--bd);color:var(--mut);opacity:.7}
+#zones .zn.ev{box-shadow:0 0 0 2px #e67e22}
+#zones .zl{flex:1;min-width:2px;height:2px;background:var(--bd)}#zones .zl.zd{background:#3fae5a}
+#zLab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:7px}#zLab b{font-size:15px;color:var(--tx)}#zLab span{font-size:12px;color:var(--mut)}
 #zProg{font-weight:normal;font-size:12px}#zinfo{font-size:12px;margin-top:4px!important}
 .dgn b{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:2px;font-size:10px;font-weight:normal;white-space:nowrap;background:var(--card);color:var(--tx);border-radius:6px;padding:0 4px;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 #mob:active{transform:translate(-50%,-50%) scale(.93)}
@@ -592,7 +594,7 @@ function draw(){
  const z=Z[S.zone],k=S.kills[S.zone];
  $("mob").innerHTML=art(mob.n);placeMob();
  $("mname").textContent=(champ?"⚔️ CHAMPION : ":isBoss?"👑 BOSS : ":mob.mid?"⚔️ BOSS : ":"")+mob.n;
- $("zinfo").textContent=z.n+" — "+k+" victoires"+(S.boss[S.zone]?" · boss vaincu ✔":" · boss à la 10ᵉ victoire")+" · monstres "+zCre(S.zone)+"/"+10*z.m.length+(zDun(S.zone).length?" · donjon "+(zDun(S.zone).every(dgDone)?"✔":"à terminer"):"")+(zDone(S.zone)?" ✔ zone terminée":"");
+ $("zinfo").textContent=k+" victoires"+(S.boss[S.zone]?" · boss vaincu ✔":" · boss à la 10ᵉ victoire")+" · monstres "+zCre(S.zone)+"/"+10*z.m.length+(zDun(S.zone).length?" · donjon "+(zDun(S.zone).every(dgDone)?"✔":"à terminer"):"");
  if(dun)$("zinfo").textContent=DX().n+" — "+(DX().unit||"salle")+" "+(dun.i+1)+"/"+DX().floors+(dun.k!=="ev"?" — ⚔️ "+fmt(S.tk["d:"+dun.k]||0)+" monstres vaincus"+(()=>{const n=S.tk["d:"+dun.k]||0,nx=HFN.find(m=>m>n);return nx?" (prochain haut fait : "+nx+")":""})():"");
  bar();
 }
@@ -1127,14 +1129,17 @@ const uiSig={};
 function ui(){msUI();dqUI();evUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hfUI();raidUI();panUI();eqUI();
  $("gold").textContent=fmt(S.gold);$("cd").textContent=cd();$("dps").textContent=Math.floor(dps());
  const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(i=>[zOpen(i),zDone(i),Math.round(zPct(i)*100)]),evA&&evA.z]);
- if(zsig!==uiSig.z){uiSig.z=zsig;$("zones").innerHTML="";
- WLD().forEach(i=>{const z=Z[i];
-  const b=document.createElement("button");{const dn=zDone(i),pc=Math.round(zPct(i)*100),dd=zDun(i);b.textContent=z.n+(evA&&evA.z===i?" 🌍":"")+(dn?" ✔":"");if(evA&&evA.z===i)b.classList.add("ev");if(dn)b.classList.add("zd");const bi=document.createElement("i");bi.style.setProperty("--p",pc+"%");b.appendChild(bi);b.title=(dn?"Zone terminée":"Progression : "+pc+" %")+" — boss "+(S.boss[i]?"✔":"✘")+" · monstres "+zCre(i)+"/"+10*z.m.length+(dd.length?" · donjons "+dd.filter(dgDone).length+"/"+dd.length:"")}
-  const open=zOpen(i);if(!open&&i===2)b.title="Nécessite : vaincre Vultros et Edwin Van Cleef (Mortemines)";b.disabled=!open;if(!open){const w=WLD(),j=w.indexOf(i),pz=j>0?w[j-1]:null;if(pz!==null&&i!==2){const nd=zDun(pz).filter(k=>!dgDone(k)).map(k=>DG[k].n);b.title="Nécessite dans "+Z[pz].n+" : "+[S.boss[pz]?"":"boss",zCre(pz)>=10*Z[pz].m.length?"":"10 victoires par monstre",nd.length?"donjon(s) : "+nd.join(", "):""].filter(Boolean).join(" · ")}}
+ if(zsig!==uiSig.z){uiSig.z=zsig;const zr=document.createElement("div");zr.id="zRow";
+ WLD().forEach((i,n)=>{const z=Z[i];
+  if(n>0){const l=document.createElement("div");l.className="zl"+(zDone(WLD()[n-1])?" zd":"");zr.appendChild(l)}
+  const b=document.createElement("button"),dn=zDone(i),pc=Math.round(zPct(i)*100),dd=zDun(i);b.className="zn";b.textContent=dn?"✓":n+1;if(dn)b.classList.add("zd");if(evA&&evA.z===i)b.classList.add("ev");
+  b.title=z.n+(evA&&evA.z===i?" 🌍":"")+" — "+(dn?"zone terminée":"progression "+pc+" %")+" · boss "+(S.boss[i]?"✔":"✘")+" · monstres "+zCre(i)+"/"+10*z.m.length+(dd.length?" · donjons "+dd.filter(dgDone).length+"/"+dd.length:"");
+  const open=zOpen(i);if(!open&&i===2)b.title="Nécessite : vaincre Vultros et Edwin Van Cleef (Mortemines)";b.disabled=!open;if(!open){const w=WLD(),j=w.indexOf(i),pz=j>0?w[j-1]:null;if(pz!==null&&i!==2){const nd=zDun(pz).filter(k=>!dgDone(k)).map(k=>DG[k].n);b.title=z.n+" — nécessite dans "+Z[pz].n+" : "+[S.boss[pz]?"":"boss",zCre(pz)>=10*Z[pz].m.length?"":"10 victoires par monstre",nd.length?"donjon(s) : "+nd.join(", "):""].filter(Boolean).join(" · ")}}
   if(i===S.zone)b.classList.add("on");
   b.onclick=()=>{S.zone=i;conf=null;dun=null;spawn();ui()};
-  $("zones").appendChild(b);
- });}
+  zr.appendChild(b)});
+ const cz=S.zone,lab=document.createElement("div");lab.id="zLab";lab.innerHTML="<b></b><span></span>";lab.firstChild.textContent=Z[cz].n+(evA&&evA.z===cz?" 🌍":"");lab.lastChild.textContent=zDone(cz)?"zone terminée ✔":"progression "+Math.round(zPct(cz)*100)+" %";
+ $("zones").replaceChildren(zr,lab)}
  {const w=WLD();$("zProg").textContent="· "+w.filter(zDone).length+"/"+w.length+" terminées"}
  const usig=JSON.stringify([S.cls,S.lv,UL().map(u=>S.gold>=cost(u)&&L(u.id)<maxl(u))]);
  if(usig!==uiSig.u){uiSig.u=usig;$("ups").innerHTML="";
