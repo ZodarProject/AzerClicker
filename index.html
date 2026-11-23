@@ -46,6 +46,15 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .evd b{display:block;width:max-content;margin:2px auto 0;font-size:11px;background:var(--card);color:var(--tx);border:1px solid #e67e22;border-radius:6px;padding:1px 6px;white-space:nowrap}
 @keyframes evp{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.04)}}
 .zones button.ev{box-shadow:0 0 0 2px #e67e22}
+#zH{cursor:pointer;user-select:none;margin:0 0 6px;font-size:14px}#zH::after{content:" ▾";color:var(--mut);font-size:12px}#zH.cl::after{content:" ▸"}
+#zones{gap:5px}#zones.cl button:not(.on){display:none}
+#zones button{position:relative;overflow:hidden;font-size:12px;line-height:1.45;padding:3px 10px;border-radius:999px;border:1px solid var(--ac);background:rgba(224,160,64,.10);color:var(--tx)}
+#zones button i{position:absolute;left:0;bottom:0;height:2px;width:var(--p,0%);background:var(--ac);transition:width .3s}
+#zones button.zd{border-color:#3fae5a;background:rgba(63,174,90,.16)}#zones button.zd i{background:#3fae5a}
+#zones button.on{background:var(--ac);border-color:var(--ac);color:#fff}#zones button.zd.on{background:#2f9a4b;border-color:#3fae5a}
+#zones button.on i{background:rgba(255,255,255,.75)}
+#zones button:disabled{border-color:var(--bd);background:transparent;opacity:.45}
+#zProg{font-weight:normal;font-size:12px}#zinfo{font-size:12px;margin-top:4px!important}
 .dgn b{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:2px;font-size:10px;font-weight:normal;white-space:nowrap;background:var(--card);color:var(--tx);border-radius:6px;padding:0 4px;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 #mob:active{transform:translate(-50%,-50%) scale(.93)}
 #mob:active{transform:scale(.93)}
@@ -86,8 +95,8 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <div class="card">
 <div class="zones" id="tabs" style="margin-bottom:10px"><button id="tabZ" class="on">🗺️ Zones</button><button id="tabV">🏰 Ville</button><button id="tabR">🐉 Raids</button><button id="tabE">🎒 Équipement</button><button id="tabQ">📜 Quêtes</button><button id="tabM">🎓 Maîtrise</button></div>
 <div id="zoneView">
-<h2>Zone</h2><div id="evBanner" class="card" style="display:none;margin-bottom:8px;border-color:#e67e22"></div><div class="zones" id="zones"></div>
-<div class="c mut" id="zinfo" style="margin-top:8px"></div>
+<h2 id="zH">Zones <span class="mut" id="zProg"></span></h2><div id="evBanner" class="card" style="display:none;margin-bottom:8px;border-color:#e67e22"></div><div class="zones" id="zones"></div>
+<div class="c mut" id="zinfo" style="margin-top:4px"></div>
 <div class="c"><button id="dfl" style="display:none">🚪 Quitter le donjon</button> <button id="dauto" style="display:none">🔁 Relance auto : non</button></div>
 <div id="stage"><div id="map"></div><div id="mob">🐗</div></div>
 <div class="c"><b id="mname"></b></div>
@@ -600,6 +609,7 @@ const RAIDS=["zg","aq20","onyxia","mc","bwl","aq40"]; /* ordre d'affichage : le 
 const ENDD=["scholo","stratH","stratU","pic"]; /* donjons de fin de jeu, ouverts à toutes les classes après la dernière zone */
 const zDun=i=>DGZ(i).filter(k=>!RAIDS.includes(k)&&!ENDD.includes(k)&&(!DG[k].tag||/Donjon/.test(DG[k].tag)));
 const dgDone=k=>{const d=DG[k];return !!(S.dd[k]||(S.col[Z[d.z].n+"|"+d.b]&&(S.col[Z[d.z].n+"|"+d.b].n+S.col[Z[d.z].n+"|"+d.b].s>0)))};
+function zPct(i){const z=Z[i],pr=[S.boss[i]?1:0,Math.min(1,zCre(i)/(10*z.m.length))],d=zDun(i);if(d.length)pr.push(d.filter(dgDone).length/d.length);return pr.reduce((a,b)=>a+b,0)/pr.length}
 function zDone(i){return !!S.boss[i]&&zCre(i)>=10*Z[i].m.length&&zDun(i).every(dgDone)}
 function prCan(){return !!S.cls&&zDone(prLast())}
 const WLD=c=>{const w=WLD0(c);return(c===undefined&&prCan())?w.concat(EXTRAZ.filter(i=>!w.includes(i))):w};
@@ -1116,15 +1126,16 @@ function eqUI(){
 const uiSig={};
 function ui(){msUI();dqUI();evUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hfUI();raidUI();panUI();eqUI();
  $("gold").textContent=fmt(S.gold);$("cd").textContent=cd();$("dps").textContent=Math.floor(dps());
- const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(zOpen),evA&&evA.z]);
+ const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(i=>[zOpen(i),zDone(i),Math.round(zPct(i)*100)]),evA&&evA.z]);
  if(zsig!==uiSig.z){uiSig.z=zsig;$("zones").innerHTML="";
  WLD().forEach(i=>{const z=Z[i];
-  const b=document.createElement("button");b.textContent=z.n+(evA&&evA.z===i?" 🌍":"");if(evA&&evA.z===i)b.classList.add("ev");
+  const b=document.createElement("button");{const dn=zDone(i),pc=Math.round(zPct(i)*100),dd=zDun(i);b.textContent=z.n+(evA&&evA.z===i?" 🌍":"")+(dn?" ✔":"");if(evA&&evA.z===i)b.classList.add("ev");if(dn)b.classList.add("zd");const bi=document.createElement("i");bi.style.setProperty("--p",pc+"%");b.appendChild(bi);b.title=(dn?"Zone terminée":"Progression : "+pc+" %")+" — boss "+(S.boss[i]?"✔":"✘")+" · monstres "+zCre(i)+"/"+10*z.m.length+(dd.length?" · donjons "+dd.filter(dgDone).length+"/"+dd.length:"")}
   const open=zOpen(i);if(!open&&i===2)b.title="Nécessite : vaincre Vultros et Edwin Van Cleef (Mortemines)";b.disabled=!open;if(!open){const w=WLD(),j=w.indexOf(i),pz=j>0?w[j-1]:null;if(pz!==null&&i!==2){const nd=zDun(pz).filter(k=>!dgDone(k)).map(k=>DG[k].n);b.title="Nécessite dans "+Z[pz].n+" : "+[S.boss[pz]?"":"boss",zCre(pz)>=10*Z[pz].m.length?"":"10 victoires par monstre",nd.length?"donjon(s) : "+nd.join(", "):""].filter(Boolean).join(" · ")}}
   if(i===S.zone)b.classList.add("on");
   b.onclick=()=>{S.zone=i;conf=null;dun=null;spawn();ui()};
   $("zones").appendChild(b);
  });}
+ {const w=WLD();$("zProg").textContent="· "+w.filter(zDone).length+"/"+w.length+" terminées"}
  const usig=JSON.stringify([S.cls,S.lv,UL().map(u=>S.gold>=cost(u)&&L(u.id)<maxl(u))]);
  if(usig!==uiSig.u){uiSig.u=usig;$("ups").innerHTML="";
  UL().forEach(u=>{
@@ -1231,6 +1242,10 @@ setTimeout(()=>{try{WLD().forEach((z,n)=>{if(ZM[z]&&ZM[z].img)setTimeout(()=>pre
 (function(){let cl={};try{cl=JSON.parse(localStorage.getItem("azer_cl")||"{}")}catch(e){}
  const ap=()=>document.querySelectorAll(".card[data-ck]").forEach(c=>c.classList.toggle("cl",!!cl[c.dataset.ck]));ap();
  document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest(".card[data-ck]>h2");if(!h)return;const c=h.parentNode,k=c.dataset.ck;cl[k]=!cl[k];c.classList.toggle("cl",!!cl[k]);try{localStorage.setItem("azer_cl",JSON.stringify(cl))}catch(x){}})})();
+/* liste des zones repliable : replie = seule la zone choisie reste visible */
+(function(){let c=0;try{c=+localStorage.getItem("azer_zc")||0}catch(e){}
+ const ap=()=>{$("zones").classList.toggle("cl",!!c);$("zH").classList.toggle("cl",!!c)};ap();
+ $("zH").onclick=()=>{c=c?0:1;ap();try{localStorage.setItem("azer_zc",c)}catch(e){}}})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5da38fe70342471c8944e1c6dd7a0680"}'></script>
 </body></html>
