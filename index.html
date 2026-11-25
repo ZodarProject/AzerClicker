@@ -13,6 +13,10 @@ body{margin:0;background:var(--bg);color:var(--tx);font-family:Georgia,"Times Ne
 .wrap{max-width:1280px;margin:auto;display:grid;gap:12px;grid-template-columns:1fr}
 @media(min-width:620px){.wrap{grid-template-columns:1.3fr 1fr}.top{grid-column:1/-1}}
 @media(min-width:900px){.wrap{grid-template-columns:1.7fr 1fr}}
+@media(min-width:1100px){#zoneView{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:start}#zoneView>*{grid-column:2}#zoneView>#zones{grid-column:1;grid-row:1/span 12;width:auto}#zoneView #wmap .wmi{height:min(calc(100vh - 110px),660px)}}
+@media(min-width:1500px){.wrap{max-width:1880px}#zoneView #wmap .wmi{height:min(calc(100vh - 90px),1000px)}}
+/* grand écran : la carte du monde devient une colonne fixe à gauche, sur toute la hauteur ; le reste de la page se décale à droite */
+@media(min-width:1300px){:root{--mh:calc(100vh - 156px)}body.wmside .wrap{margin-left:calc(var(--mh)*.555 + 34px);margin-right:10px;max-width:none}body.wmside #zoneView{display:block}body.wmside #zoneView>#zones{position:fixed;left:10px;top:10px;bottom:10px;z-index:5;width:calc(var(--mh)*.555 + 14px);box-sizing:border-box;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:6px;display:flex;flex-direction:column;flex-wrap:nowrap;gap:4px;overflow:hidden}body.wmside #zoneView #wmap .wmi{height:var(--mh)}body.wmside #wmT{margin-bottom:0}}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px}
 h1{margin:0;font-size:20px;color:var(--ac)}h2{margin:0 0 8px;font-size:15px;color:var(--ac)}
 .top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center}
@@ -47,14 +51,32 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 @keyframes evp{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.04)}}
 .zones button.ev{box-shadow:0 0 0 2px #e67e22}
 #zH{cursor:pointer;user-select:none;margin:0 0 6px;font-size:14px}#zH::after{content:" ▾";color:var(--mut);font-size:12px}#zH.cl::after{content:" ▸"}
-#zones{display:block}#zRow{display:flex;align-items:center}#zones.cl #zRow{display:none}
-#zones .zn{flex:none;width:22px;height:22px;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;border:2px solid var(--ac);background:transparent;color:var(--tx);position:relative}
-#zones .zn.zd{border-color:#3fae5a;background:#3fae5a;color:#1b150d}
-#zones .zn.on{background:var(--ac);border-color:var(--ac);color:#1b150d;box-shadow:0 0 0 3px rgba(224,160,64,.28)}
-#zones .zn.zd.on{box-shadow:0 0 0 3px rgba(63,174,90,.3)}
-#zones .zn:disabled{border-color:var(--bd);color:var(--mut);opacity:.7}
-#zones .zn.ev{box-shadow:0 0 0 2px #e67e22}
-#zones .zl{flex:1;min-width:2px;height:2px;background:var(--bd)}#zones .zl.zd{background:#3fae5a}
+#zones{display:block}#zones.cl #wmT,#zones.cl #wmap{display:none}
+#wmT{display:flex;gap:6px;margin-bottom:6px}#wmT button{flex:1;padding:5px 6px;font-size:12px}#wmT button.on{background:var(--ac);color:#1b150d;border-color:var(--ac)}
+#wmap{display:flex;justify-content:center;background:rgba(0,0,0,.25);border:1px solid var(--bd);border-radius:8px;padding:4px}#wmap .wmi{height:min(560px,72vh)}#wmap .wmi img{height:100%;object-fit:fill}.wmi .wms{position:absolute;transform:translate(-50%,-50%);z-index:3;width:24px;height:24px;padding:0;border-radius:50%;border:2px solid #3a8ee0;background:#10202e;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 5px rgba(0,0,0,.7);overflow:hidden;font-size:13px;line-height:1}
+.wmi .wms img{width:100%;height:100%;border-radius:50%;object-fit:cover}.wmi .wms svg{width:16px;height:16px}
+.wmi .wms.rd{border-color:#e05a4a;width:28px;height:28px}.wmi .wms.dn{border-color:#3fae5a}.wmi .wms.lk{filter:grayscale(1) brightness(.7);border-color:#888}
+.wmi .wms.sel{box-shadow:0 0 0 3px #f0a020,0 1px 5px rgba(0,0,0,.7)}.wmi .wms:hover{transform:translate(-50%,-50%) scale(1.15)}
+#wsCard{position:absolute;inset:0;z-index:8;background:rgba(22,16,10,.94);overflow:auto;padding:12px 14px;border-radius:8px}
+#wsCard .wsh{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}#wsCard .wsh b{font-size:17px;color:var(--ac)}#wsCard .wsh .wsx{margin-left:auto}
+#wsCard .wse{display:flex;gap:10px;align-items:center;padding:8px;border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;background:rgba(0,0,0,.25)}
+#wsCard .wse.lk{opacity:.75}#wsCard .wsi{width:96px;height:64px;flex:none;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000}
+#wsCard .wsi img{width:100%;height:100%;object-fit:cover}#wsCard .wsi svg{width:100%;height:100%}#wsCard .wst{flex:1;min-width:0;font-size:13px;line-height:1.45}
+#wsCard .wse>button{flex:none;white-space:nowrap}#wsCard .chip{display:inline-block;margin:2px 3px 0 0}
+#wmerr{font-size:12px;color:var(--mut);padding:10px;line-height:1.4}
+.wmi{position:relative;line-height:0}.wmi img{display:block}.wmi svg{position:absolute;inset:0;width:100%;height:100%}
+.wmi path{cursor:pointer;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill .15s}
+.wmi path.lk{fill:rgba(20,15,8,.42);stroke:rgba(0,0,0,.35);stroke-width:1;cursor:not-allowed}
+.wmi path.op{fill:rgba(255,200,80,.10);stroke:#e0a040;stroke-width:2;stroke-dasharray:5 3}.wmi path.op:hover{fill:rgba(255,200,80,.28)}
+.wmi path.dn{fill:rgba(63,174,90,.14);stroke:#3fae5a;stroke-width:3}.wmi path.dn:hover{fill:rgba(63,174,90,.3)}.wmi path.dv{fill:rgba(74,159,245,.12);stroke:#4a9ff5;stroke-width:3}.wmi path.dv:hover{fill:rgba(74,159,245,.28)}
+#wmX .wmo i{display:inline-block;width:12px;height:0;border-top:3px solid;margin:0 3px 0 6px;vertical-align:middle}#wmX .wmo i.op{border-top-style:dashed}
+.wmi path.on{fill:rgba(224,160,64,.28);stroke:#f0a020;stroke-width:3.5;stroke-dasharray:none}
+.wmi path.ev{stroke:#e67e22;stroke-width:4}
+.wmi .zn{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;z-index:2;flex:none;width:20px;height:20px;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;border:2px solid var(--ac);background:#1b150d;color:var(--tx)}
+.wmi .zn.zd{border-color:#3fae5a;background:#3fae5a;color:#1b150d}.wmi .zn.d0{background:#3fae5a;border-color:#2a7a3e;color:#0f2414}.wmi .zn.d1{background:#e0c040;border-color:#a08a20;color:#2a2205}.wmi .zn.d2{background:#e08030;border-color:#9a5218;color:#2a1405}.wmi .zn.d3{background:#d04040;border-color:#8a2222;color:#fff}.wmi .zn.rec{background:#2a1f0a;border-color:#f5c842;color:#f5c842;width:26px;height:26px;font-size:15px;z-index:4}.wmi .zn.on{box-shadow:0 0 0 3px #fff,0 0 0 5px rgba(224,160,64,.7)}
+.wmi .wmq{position:absolute;transform:translate(-50%,-50%);z-index:6;font:900 20px Georgia,serif;line-height:1;color:#ffd200;text-shadow:0 0 2px #000,0 0 3px #000,1px 1px 0 #000,-1px -1px 0 #000;cursor:help;animation:wmqb 1.6s ease-in-out infinite}@keyframes wmqb{0%,100%{margin-top:0}50%{margin-top:-3px}}#wmT .wmqt{display:inline-block;background:#1b150d;color:#ffd200;border-radius:50%;width:15px;height:15px;line-height:15px;font-size:11px;font-weight:900;margin-left:4px;text-align:center}
+#wmX{width:0;min-width:100%;box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font-size:11px;color:var(--mut);padding:0 2px}#wmX b{color:#3fae5a}#wmX .wml i{display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 3px 0 6px;vertical-align:0}#wmX .wml i.st{width:auto;height:auto;background:none;color:#f5c842;font-style:normal;margin-left:8px}
+.wmi .zn:disabled{border-color:#555;color:var(--mut);opacity:.85}
 #zLab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:7px}#zLab b{font-size:15px;color:var(--tx)}#zLab span{font-size:12px;color:var(--mut)}
 #zProg{font-weight:normal;font-size:12px}#zinfo{font-size:12px;margin-top:4px!important}
 .dgn b{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:2px;font-size:10px;font-weight:normal;white-space:nowrap;background:var(--card);color:var(--tx);border-radius:6px;padding:0 4px;box-shadow:0 1px 3px rgba(0,0,0,.4)}
@@ -89,6 +111,25 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .pds{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 8px;margin-top:8px;border-top:1px solid var(--bd);padding-top:6px;font-size:12px;cursor:help}
 .pdp{color:#2e7d32;letter-spacing:1px}.pdp .mut{letter-spacing:1px}
 .rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.sh{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr) minmax(0,1fr);gap:10px;align-items:start}.sh-col{display:flex;flex-direction:column;gap:7px}
+.sh-s{position:relative;display:flex;align-items:center;gap:9px;padding:6px 9px;border:1px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer;min-height:56px}.sh-s:hover,.sh-s.on{border-color:var(--ac)!important;box-shadow:0 0 0 1px var(--ac)}.sh-v{border-style:dashed}
+.sh-i{position:relative;width:42px;height:42px;flex:none;border:2px solid #666;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,0,0,.25)}.sh-e{border-style:dashed;opacity:.4;filter:grayscale(1)}.sh-bg{opacity:.7;border-style:dashed}
+.sh-n{font-size:13px;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sh-d{font-size:11px;color:var(--mut);line-height:1.3}
+.sh-b{position:absolute;top:-8px;right:6px;font-size:10px;font-weight:700;background:#2e7d32;color:#fff;border-radius:6px;padding:0 5px}
+.sh-c{background:rgba(0,0,0,.18);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;text-align:center}.sh-p{font-size:42px;line-height:1.15}
+.sh-g{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:left}.sh-k{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:4px 8px;display:flex;flex-direction:column}.sh-k span{font-size:11px;color:var(--mut)}.sh-k b{font-size:15px}
+.sh-o{font-size:11px;color:var(--mut);text-align:left;margin-top:8px;line-height:1.5}.sh-o b{color:var(--tx)}.sh-a{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.sh-2{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px;margin-top:12px;align-items:start}@media(max-width:1000px){.sh,.sh-2{grid-template-columns:1fr}}
+.sh-card{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;background:var(--card)}.sh-h{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.sh-set{display:flex;gap:6px;margin:8px 0}
+.sh-bagg{display:grid;grid-template-columns:repeat(auto-fill,58px);gap:8px 7px;margin-top:10px}.sh-cell{display:flex;flex-direction:column;align-items:center;gap:2px}.sh-cell>span{font-size:11px;font-weight:700;min-height:13px;white-space:nowrap}
+.sh-bagg .sh-it{width:54px;height:54px;font-size:26px}
+.shm{gap:6px;grid-template-columns:minmax(0,1fr) minmax(0,.85fr) minmax(0,1fr)}.shm .sh-n{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.15}.shm .sh-col{gap:5px}.shm .sh-s{min-height:46px;padding:4px 7px;gap:7px}.shm .sh-i{width:34px;height:34px;font-size:18px}.shm .sh-n{font-size:12px}.shm .sh-d{font-size:10.5px}.shm .sh-c{padding:8px;background:rgba(0,0,0,.18)}.shm .sh-p{font-size:30px}.shm .sh-k{padding:3px 7px}.shm .sh-k b{font-size:13px}.shm .sh-o{font-size:10.5px;margin-top:6px}.shm .sh-b{top:-7px}
+#eqTip{position:fixed;z-index:9999;width:300px;background:#17120c;border:2px solid #777;border-radius:10px;padding:8px 11px;font-size:12px;line-height:1.45;color:var(--tx);pointer-events:none;display:none;box-shadow:0 6px 18px rgba(0,0,0,.65)}#eqTip hr{border:0;border-top:1px solid var(--bd);margin:6px 0}#eqTip .tl{display:flex;justify-content:space-between;gap:8px}
+.sh-it{position:relative;width:46px;height:46px;box-sizing:border-box;border:2px solid #666;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;user-select:none}.sh-it:hover{transform:scale(1.07)}
+.sh-it.foc{outline:2px solid var(--ac);outline-offset:2px}.sh-it.sel{outline:2px solid #f1c40f;outline-offset:2px}.sh-it i{position:absolute;font-style:normal;font-size:10px;font-weight:700;line-height:1}
+.sh-it .m{top:-6px;right:-6px;border-radius:6px;padding:1px 3px;color:#fff}.sh-it .t{bottom:2px;left:3px;color:#3fae5a;text-shadow:0 0 2px #000,0 0 2px #000}.sh-it .nw{top:3px;left:3px;width:7px;height:7px;border-radius:50%;background:#f1c40f}.sh-it .lk{bottom:2px;right:2px;font-size:9px}
+.sh-it .ok{inset:0;display:flex;align-items:center;justify-content:center;background:rgba(241,196,15,.35);font-size:20px;border-radius:6px}.sh-it.vide{border:1px dashed var(--bd);cursor:default;opacity:.45}.sh-it.vide:hover{transform:none}
+.sh-det{margin-top:10px;border:2px solid;border-radius:10px;padding:8px 10px;background:rgba(0,0,0,.2)}.sh-dbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .rt{border:2px solid var(--bd);border-radius:10px;background:var(--card);padding:6px 8px;cursor:pointer;min-width:0;display:flex;flex-direction:column;gap:1px}
 .rt:hover{background:var(--bg)}.rt.sel{background:var(--bg);box-shadow:0 0 0 2px var(--tx)}
 .fb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:10px 0 8px}
@@ -135,13 +176,12 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <h2>Quêtes</h2><div class="mut" style="margin-bottom:8px">De nouvelles quêtes chaque heure (renouvelées à l’heure pile, heure locale). Une quête terminée est conservée jusqu’à ce que tu la récupères. Le coffre du jour et le compteur de quêtes achetées se renouvellent à minuit. Elles dépendent de ta progression. Les raids rapportent les meilleures récompenses.</div>
 <div id="questList"></div></div>
 <div id="eqView" style="display:none">
-<h2>Équipement</h2><div class="mut" style="margin-bottom:8px">Ton équipement s’affiche toujours à droite, sous ta classe : cet onglet sert à gérer la réserve. Les champions de zone, les boss de donjon et les boss de raid laissent des objets : un bonus par objet, huit emplacements. Les boss du raid Cœur du Magma peuvent aussi laisser une pièce de la panoplie de ta classe (tête, épaules, torse, mains, jambes) : des bonus supplémentaires à 2, 4 et 5 pièces. L’équipement et les panoplies sont remis à zéro à chaque renaissance, sauf les deux légendaires uniques : Sulfuras (Ragnaros) et le Cœur de C’Thun.</div>
 <div id="eqbox"></div></div>
 <div id="raidView" style="display:none">
-<h2>Raids</h2><div class="mut" style="margin-bottom:8px">Contenu de fin de jeu : ouvert à toutes les classes une fois le boss de la dernière zone de ton monde vaincu. Zul’Gurub et les Ruines d’Ahn’Qiraj sont libres. Les autres raids demandent des composants rares, qui tombent sur des boss précis des raids ouverts et des donjons de fin de jeu.</div>
+<h2>Raids</h2><div class="mut" style="margin-bottom:8px">Contenu de fin de jeu : ouvert à toutes les classes une fois une zone du palier 9 terminée. Zul’Gurub et les Ruines d’Ahn’Qiraj sont libres. Les autres raids demandent des composants rares, qui tombent sur des boss précis des raids ouverts et des donjons de fin de jeu.</div>
 <div id="evBox" class="card" style="margin-bottom:10px"></div>
 <div id="raidList"></div>
-<h2 style="margin-top:14px">Donjons de fin de jeu</h2><div class="mut" style="margin-bottom:8px">Donjons de haut niveau, ouverts à toutes les classes après la dernière zone. Ils lâchent les composants rares d’accès aux raids.</div>
+<h2 style="margin-top:14px">Donjons de fin de jeu</h2><div class="mut" style="margin-bottom:8px">Donjons de haut niveau, ouverts quand leur zone est ouverte. Ils lâchent les composants rares d’accès aux raids.</div>
 <div id="endList"></div></div>
 <div id="cityView" style="display:none">
 <h2 id="cityTtl">Ville</h2><div class="zones" id="cities"></div>
@@ -171,7 +211,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <div class="card" data-ck="classe" style="margin-bottom:12px"><h2>Classe <span class="mut" id="facn"></span></h2><div class="zones" id="cbtns"></div><div class="mut" id="cdesc" style="margin:8px 0"></div><button id="ab" style="width:100%">Choisis une classe</button><div id="wab" style="display:none;gap:6px"></div></div>
 <div class="card" id="eqPanel" data-ck="eq" style="margin-bottom:12px"></div>
 <div class="card" data-ck="ups"><h2>Améliorations</h2><div id="ups"></div></div>
-<div class="card" data-ck="col" style="margin-top:12px"><h2>Collection — <span id="cz"></span> <span class="mut" id="cc"></span></h2><div class="mut" style="margin-bottom:6px">Bats une créature 10 fois : son champion peut alors apparaître au hasard (1 chance sur 20) et l’ajouter à ta collection. Les boss de zone rejoignent la collection dès qu’ils sont vaincus.</div><div class="col" id="col"></div></div>
+<div class="card" data-ck="col" style="margin-top:12px"><h2>Collection — <span id="cz"></span> <span class="mut" id="cc"></span></h2><div class="col" id="col"></div></div>
 <div class="card" id="prest" data-ck="prest" style="margin-top:12px;display:none"><h2>Renaissance</h2><div class="mut" id="prinfo" style="margin-bottom:6px"></div><button id="rebirth" style="width:100%;margin-bottom:8px">🌟 Renaissance</button><div id="esshop"></div></div>
 </div>
 </div>
@@ -235,59 +275,60 @@ const Z=[
 /* fx : c = dégâts de clic, d = DPS, l = chance de capture (par niveau) */
 const UP={
 n:[
-{id:"click",n:"🗡️ Épée affûtée",d:"+1 dégâts/clic",c:13,g:1.35,fx:{c:1}},
-{id:"pet",n:"🪓 Frappe héroïque",d:"+2 DPS",c:33,g:1.4,fx:{d:2}},
-{id:"war",n:"🛡️ Mercenaire",d:"+10 DPS",c:140,g:1.45,fx:{d:10}},
-{id:"mage",n:"🔮 Mage arcanique",d:"+37 DPS",c:530,g:1.5,fx:{d:37}},
-{id:"luck",n:"⏳ Sablier de bronze",d:"+2 s de confrontation",c:91,g:1.6,fx:{l:2}}],
+{id:"click",n:"🗡️ Épée affûtée",d:"+0,53 dégâts/clic",c:10,g:1.255,fx:{c:0.53}},
+{id:"pet",n:"🪓 Frappe héroïque",d:"+0,55 DPS",c:18,g:1.255,fx:{d:0.55}},
+{id:"war",n:"🛡️ Mercenaire",d:"+0,95 DPS",c:40,g:1.255,fx:{d:0.95}},
+{id:"mage",n:"🔮 Mage arcanique",d:"+1,39 DPS",c:84,g:1.255,fx:{d:1.39}},
+{id:"luck",n:"⏳ Sablier de bronze",d:"+2 s de confrontation",c:31,g:1.255,fx:{l:2.0}}],
 g:[
-{id:"g1",n:"🪓 Hache affûtée",d:"+2 dégâts/clic",c:8,g:1.5,fx:{c:2}},
-{id:"g2",n:"🩸 Pourfendre",d:"+8 DPS (saignement)",c:100,g:1.5,fx:{d:8}},
-{id:"g3",n:"⚔️ Frappe héroïque",d:"+120 dégâts/clic",c:1400,g:1.5,fx:{c:120}},
-{id:"g4",n:"🩸 Hémorragie",d:"+260 DPS",c:3800,g:1.5,fx:{d:260}},
-{id:"g5",n:"🌪️ Tourbillon",d:"+2 900 DPS",c:66000,g:1.5,fx:{d:2900}},
-{id:"g6",n:"🏆 Trophées de guerre",d:"+1 clic automatique par seconde",c:47000,g:1.5,fx:{a:1}}],
+{id:"g1",n:"🪓 Hache affûtée",d:"+0,91 dégâts/clic",c:8,g:1.255,fx:{c:0.91}},
+{id:"g2",n:"🩸 Pourfendre",d:"+1,38 DPS (saignement)",c:33,g:1.255,fx:{d:1.38}},
+{id:"g3",n:"⚔️ Frappe héroïque",d:"+1,09 dégâts/clic",c:144,g:1.255,fx:{c:1.09}},
+{id:"g4",n:"🩸 Hémorragie",d:"+4,73 DPS",c:252,g:1.255,fx:{d:4.73}},
+{id:"g5",n:"🌪️ Tourbillon",d:"+12,8 DPS",c:1248,g:1.255,fx:{d:12.8}},
+{id:"g6",n:"🏆 Trophées de guerre",d:"+1 clic automatique par seconde",c:1032,g:1.255,fx:{a:1.0}}],
 p:[
-{id:"p1",n:"🌑 Mot de l’ombre : Douleur",d:"+6 DPS",c:8,g:1.5,fx:{d:6}},
-{id:"p2",n:"🦠 Peste dévorante",d:"+15 DPS",c:180,g:1.5,fx:{d:15}},
-{id:"p3",n:"🧠 Attaque mentale",d:"+91 dégâts/clic",c:1400,g:1.5,fx:{c:91}},
-{id:"p4",n:"🌀 Fouet mental",d:"+140 DPS",c:3800,g:1.5,fx:{d:140}},
-{id:"p5",n:"👤 Forme d’ombre",d:"+1 570 DPS",c:66000,g:1.5,fx:{d:1570}},
-{id:"p6",n:"🕯️ Bénédiction",d:"+10 % de DPS par niveau",c:47000,g:1.5,fx:{m:0.1}}],
+{id:"p1",n:"🌑 Mot de l’ombre : Douleur",d:"+2,16 DPS",c:8,g:1.255,fx:{d:2.16}},
+{id:"p2",n:"🦠 Peste dévorante",d:"+2,54 DPS",c:46,g:1.255,fx:{d:2.54}},
+{id:"p3",n:"🧠 Attaque mentale",d:"+1,22 dégâts/clic",c:144,g:1.255,fx:{c:1.22}},
+{id:"p4",n:"🌀 Fouet mental",d:"+4,33 DPS",c:252,g:1.255,fx:{d:4.33}},
+{id:"p5",n:"👤 Forme d’ombre",d:"+11,7 DPS",c:1248,g:1.255,fx:{d:11.7}},
+{id:"p6",n:"🕯️ Bénédiction",d:"+5 % de DPS par niveau",c:1032,g:1.255,fx:{m:0.05}}],
 l:[
-{id:"l1",n:"🔨 Marteau béni",d:"+2 dégâts/clic",c:8,g:1.5,fx:{c:2}},
-{id:"l2",n:"✨ Jugement",d:"+15 DPS",c:180,g:1.5,fx:{d:15}},
-{id:"l3",n:"🛡️ Consécration",d:"+180 DPS",c:1400,g:1.5,fx:{d:180}},
-{id:"l4",n:"☀️ Exorcisme",d:"+47 dégâts/clic",c:3800,g:1.5,fx:{c:47}},
-{id:"l5",n:"⚔️ Colère vengeresse",d:"+1 590 DPS",c:66000,g:1.5,fx:{d:1590}},
-{id:"l6",n:"🙏 Bénédiction des rois",d:"+10 % de DPS par niveau",c:47000,g:1.5,fx:{m:0.1}}],
+{id:"l1",n:"🔨 Marteau béni",d:"+0,99 dégâts/clic",c:8,g:1.255,fx:{c:0.99}},
+{id:"l2",n:"✨ Jugement",d:"+2,14 DPS",c:46,g:1.255,fx:{d:2.14}},
+{id:"l3",n:"🛡️ Consécration",d:"+5,99 DPS",c:144,g:1.255,fx:{d:5.99}},
+{id:"l4",n:"☀️ Exorcisme",d:"+0,5 dégâts/clic",c:252,g:1.255,fx:{c:0.5}},
+{id:"l5",n:"⚔️ Colère vengeresse",d:"+9,95 DPS",c:1248,g:1.255,fx:{d:9.95}},
+{id:"l6",n:"🙏 Bénédiction des rois",d:"+5 % de DPS par niveau",c:1032,g:1.255,fx:{m:0.05}}],
 d:[
-{id:"d1",n:"🌙 Éclat lunaire",d:"+6 DPS",c:8,g:1.5,fx:{d:6}},
-{id:"d2",n:"💢 Colère",d:"+17 dégâts/clic",c:130,g:1.5,fx:{c:17}},
-{id:"d3",n:"🩸 Lacérer",d:"+180 DPS",c:1400,g:1.5,fx:{d:180}},
-{id:"d4",n:"⭐ Feu stellaire",d:"+55 dégâts/clic",c:3800,g:1.5,fx:{c:55}},
-{id:"d5",n:"🐾 Mutiler",d:"+1 550 DPS",c:66000,g:1.5,fx:{d:1550}},
-{id:"d6",n:"🍃 Don du fauve",d:"+10 % de DPS par niveau",c:47000,g:1.5,fx:{m:0.1}}],
+{id:"d1",n:"🌙 Éclat lunaire",d:"+2,87 DPS",c:8,g:1.255,fx:{d:2.87}},
+{id:"d2",n:"💢 Colère",d:"+0,91 dégâts/clic",c:38,g:1.255,fx:{c:0.91}},
+{id:"d3",n:"🩸 Lacérer",d:"+9,5 DPS",c:144,g:1.255,fx:{d:9.5}},
+{id:"d4",n:"⭐ Feu stellaire",d:"+0,85 dégâts/clic",c:252,g:1.255,fx:{c:0.85}},
+{id:"d5",n:"🐾 Mutiler",d:"+15,5 DPS",c:1248,g:1.255,fx:{d:15.5}},
+{id:"d6",n:"🍃 Don du fauve",d:"+5 % de DPS par niveau",c:1032,g:1.255,fx:{m:0.05}}],
 s:[
-{id:"s1",n:"⚡ Horion de terre",d:"+2 dégâts/clic",c:8,g:1.5,fx:{c:2}},
-{id:"s2",n:"🔥 Totem incendiaire",d:"+15 DPS",c:180,g:1.5,fx:{d:15}},
-{id:"s3",n:"🌩️ Chaîne d’éclairs",d:"+180 DPS",c:1400,g:1.5,fx:{d:180}},
-{id:"s4",n:"🌪️ Rafale",d:"+120 dégâts/clic",c:3800,g:1.5,fx:{c:120}},
-{id:"s5",n:"🌋 Fulguration",d:"+3 940 DPS",c:66000,g:1.5,fx:{d:3940}},
-{id:"s6",n:"🔔 Totem de rage",d:"+1 clic automatique par seconde",c:47000,g:1.5,fx:{a:1}}],
+{id:"s1",n:"⚡ Horion de terre",d:"+0,7 dégâts/clic",c:8,g:1.255,fx:{c:0.7}},
+{id:"s2",n:"🔥 Totem incendiaire",d:"+1,52 DPS",c:46,g:1.255,fx:{d:1.52}},
+{id:"s3",n:"🌩️ Chaîne d’éclairs",d:"+4,27 DPS",c:144,g:1.255,fx:{d:4.27}},
+{id:"s4",n:"🌪️ Rafale",d:"+0,59 dégâts/clic",c:252,g:1.255,fx:{c:0.59}},
+{id:"s5",n:"🌋 Fulguration",d:"+11,8 DPS",c:1248,g:1.255,fx:{d:11.8}},
+{id:"s6",n:"🔔 Totem de rage",d:"+1 clic automatique par seconde",c:1032,g:1.255,fx:{a:1.0}}],
 w:[
-{id:"w1",n:"👿 Corruption",d:"+6 DPS",c:8,g:1.5,fx:{d:6}},
-{id:"w2",n:"🔥 Immolation",d:"+15 DPS",c:180,g:1.5,fx:{d:15}},
-{id:"w3",n:"🩸 Siphon d’âme",d:"+91 dégâts/clic",c:1400,g:1.5,fx:{c:91}},
-{id:"w4",n:"😈 Gangregarde asservi",d:"+130 DPS",c:3800,g:1.5,fx:{d:130}},
-{id:"w5",n:"☄️ Pluie de feu",d:"+1 470 DPS",c:66000,g:1.5,fx:{d:1470}},
-{id:"w6",n:"🕯️ Pacte démoniaque",d:"+10 % de DPS par niveau",c:47000,g:1.5,fx:{m:0.1}}]
+{id:"w1",n:"👿 Corruption",d:"+2,33 DPS",c:8,g:1.255,fx:{d:2.33}},
+{id:"w2",n:"🔥 Immolation",d:"+2,75 DPS",c:46,g:1.255,fx:{d:2.75}},
+{id:"w3",n:"🩸 Siphon d’âme",d:"+1,31 dégâts/clic",c:144,g:1.255,fx:{c:1.31}},
+{id:"w4",n:"😈 Gangregarde asservi",d:"+4,49 DPS",c:252,g:1.255,fx:{d:4.49}},
+{id:"w5",n:"☄️ Pluie de feu",d:"+12,2 DPS",c:1248,g:1.255,fx:{d:12.2}},
+{id:"w6",n:"🕯️ Pacte démoniaque",d:"+5 % de DPS par niveau",c:1032,g:1.255,fx:{m:0.05}}]
 };
 const UL=()=>UP[S.cls||"n"];
 const L=id=>S.lv[id]||0;
 /* Un sort gagne en puissance autant qu'il coûte : le niveau n apporte g^(n-1) fois le gain du niveau 1 (même rendement à chaque niveau) */
 const LV=u=>{const n=L(u.id);return (u.fx.a||u.fx.m)?n:n?(Math.pow(u.g,n)-1)/(u.g-1):0}; /* le clic automatique et le bonus en % de DPS restent linéaires */
-const fx=k=>UL().reduce((t,u)=>t+(u.fx[k]||0)*LV(u)*(1+0.2*(S.fg[u.id]||0)),0);
+const fx=k=>UL().reduce((t,u)=>t+(u.fx[k]||0)*LV(u)*(1+FGS*(S.fg[u.id]||0)),0);
+const FGS=0.12; /* forge d’un sort : +12 % par niveau (rééquilibrage v2) */
 /* === TES IMAGES ===
 Mets tes fichiers dans un dossier "images" à côté de ce fichier HTML.
 Pour chaque créature, indique le nom du fichier. Laisse "" pour garder le dessin SVG. */
@@ -335,6 +376,11 @@ try{const r=localStorage.getItem("azer1");if(r)S=Object.assign(S0(),JSON.parse(r
 for(let i=0;i<Z.length;i++){S.kills[i]=S.kills[i]||0;S.boss[i]=S.boss[i]||0}
 if(!S.fac&&S.cls)S.fac=S.cls=="p"?"a":"h";
 if(!S.pc)S.pc={};
+/* === RÉÉQUILIBRAGE v2 : l’ancienne progression (or, sorts, zones, objets, renaissances, maîtrise) repart de zéro ; collections et hauts faits conservés === */
+if(S.bal!==2){const fresh=()=>({gold:0,kills:Z.map(()=>0),boss:Z.map(()=>0),dd:{},lv:{},mats:{},fg:{},ab:{h:0,r:0},keys:{},es:0,eb:{},pn:0,rc:{},dq:{d:"",q:[]},we:{s:0,d:0,n:0,a:0},ms:{p:0,r:{},f:{}},nt:{},eq:{e:{},r:[],seen:[0,0,0,0,0]}});
+ const had=!!(S.cls||Object.keys(S.pc).length);Object.assign(S,fresh());S.zone=0;
+ Object.keys(S.pc).forEach(c=>{Object.assign(S.pc[c],fresh());delete S.pc[c].zone});
+ S.bal=2;if(had)S.balMsg=1}
 {const o="Marais des Chagrins|"+"Matriarche crocolisque",n="Marais des Chagrins|Somnus";if(S.col[o]&&!S.col[n]){S.col[n]=S.col[o];delete S.col[o]}if(S.bk[o]&&!S.bk[n]){S.bk[n]=S.bk[o];delete S.bk[o]}}
 {const o="Terres ingrates|"+"Basilic ancien",n="Terres ingrates|Anathemus";if(S.col[o]&&!S.col[n]){S.col[n]=S.col[o];delete S.col[o]}if(S.bk[o]&&!S.bk[n]){S.bk[n]=S.bk[o];delete S.bk[o]}}
 {const o="Gorge des Vents brûlants|"+"Chef de forge Sombrefer",n="Gorge des Vents brûlants|Surveillant Maltorius";if(S.col[o]&&!S.col[n]){S.col[n]=S.col[o];delete S.col[o]}if(S.bk[o]&&!S.bk[n]){S.bk[n]=S.bk[o];delete S.bk[o]}}
@@ -347,8 +393,7 @@ const HPM=40;
 /* Les deux premières zones du monde sont plus faciles (multiplicateur de PV, l'or gagné ne change pas) */
 /* Multiplicateur de PV par position de zone dans le monde (réglage de la progression) */
 /* Facteurs de PV propres à certaines zones (prioritaires sur la position dans le monde) : zones de fin de jeu et Terres ingrates */
-const ZFZ={6:10,9:8.7,19:8.7,27:7.2,28:8.7,38:8.7};
-const ZF=z=>ZFZ[z]!==undefined?ZFZ[z]:(ZHP[WLD().indexOf(z)]||1);
+const ZF=z=>PZF[zPal(z)-1]; /* multiplicateur de PV de la zone selon son palier */
 const ZHP=[0.099,0.54,0.84,2.9,5.1,8.7,6.6,5.7,4.9,8.7];
 const need=b=>b?1:10;
 const $=i=>document.getElementById(i);
@@ -358,31 +403,31 @@ const CAPS=[20,20,20,20,20,20]; /* niveau maximum de chaque sort selon sa positi
 const maxl=u=>CAPS[Math.max(0,UL().indexOf(u))]||15;
 const cost=u=>Math.ceil(u.c*Math.pow(u.g,L(u.id)));
 const msR=()=>{const r=(S.ms&&S.ms.r)||{};if(r.p)delete r.p;return r};
-const msv=k=>{const r=msR();return k==="c"?(1+0.05*(r.c||0))*(1+0.02*(r.w||0)):k==="d"?(1+0.05*(r.d||0))*(1+0.02*(r.w||0)):k==="g"?1+0.05*(r.g||0):k==="e"?1+0.05*(r.e||0):k==="r"?1-0.03*(r.r||0):k==="p"?1+0.05*(r.p||0):1};
+const msv=k=>{const r=msR();return k==="c"?(1+0.02*(r.c||0))*(1+0.008*(r.w||0)):k==="d"?(1+0.02*(r.d||0))*(1+0.008*(r.w||0)):k==="g"?1+0.05*(r.g||0):k==="e"?1+0.05*(r.e||0):k==="r"?1-0.03*(r.r||0):k==="p"?1+0.05*(r.p||0):1};
 const CRITB=5,CRITMAX=75;
 const critP=()=>Math.min(CRITMAX,CRITB+EQ("x"));
 const critM=()=>((CL[S.cls]||{}).cdm||2)+EQ("y")/100;
 const critE=()=>1+critP()/100*(critM()-1); /* multiplicateur moyen : appliqué au DPS (régulier), les clics tirent leur critique au hasard */
 const critRoll=()=>Math.random()*100<critP();
-const cd=()=>Math.ceil(msv("c")*(1+fx("c"))*(1+(EQ("c")+SB("c"))/100)*(1+PAN()/100)*(1+RFB("c")/100)*(1+0.05*((S.eb||{}).p||0))*((CL[S.cls]||{}).cm||1)*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).ck||1:1)*(1+0.1*(S.fg.gC||0)+0.05*(S.fg.gT||0)));
+const cd=()=>Math.ceil(XPL()*msv("c")*(1+fx("c"))*(1+(EQ("c")+SB("c"))/100)*(1+PAN()/100)*(1+RFB("c")/100)*(1+0.02*((S.eb||{}).p||0))*((CL[S.cls]||{}).cm||1)*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).ck||1:1)*(1+0.06*(S.fg.gC||0)+0.03*(S.fg.gT||0)));
 /* === PANTHÉON DES RAIDS : bonus commun à toutes les classes (compte) selon le nombre de classes ayant terminé chaque raid === */
-const PANR=[{k:"mc",n:"Cœur du Magma",i:"🌋",keys:["mc"],v:[1,2,3],t:"Maître du Magma"},{k:"bwl",n:"Repaire de l’Aile noire",i:"🐲",keys:["bwl"],v:[2,3,4],t:"Briseur de l’Aile noire"},{k:"aq40",n:"Temple d’Ahn’Qiraj",i:"🦂",keys:["aq40","aq40H"],v:[2,4,5],t:"Vainqueur des Qiraji"}];
+const PANR=[{k:"mc",n:"Cœur du Magma",i:"🌋",keys:["mc"],v:[0.6,1.2,1.8],t:"Maître du Magma"},{k:"bwl",n:"Repaire de l’Aile noire",i:"🐲",keys:["bwl"],v:[1.2,1.8,2.4],t:"Briseur de l’Aile noire"},{k:"aq40",n:"Temple d’Ahn’Qiraj",i:"🦂",keys:["aq40","aq40H"],v:[1.2,2.4,3],t:"Vainqueur des Qiraji"}];
 const panCol=c=>S.cls===c?(S.col||{}):(((S.pc||{})[c]||{}).col||{});
-const panDone=(r,c)=>{const col=panCol(c);return r.keys.some(k=>{const e=col[Z[DG[k].z].n+"|"+DG[k].b];return e&&((e.n||0)+(e.s||0))>0})};
+const panDone=(r,c)=>{const col=panCol(c);return r.keys.filter(k=>DG[k]).some(k=>{const e=col[Z[DG[k].z].n+"|"+DG[k].b];return e&&((e.n||0)+(e.s||0))>0})};
 const panCls=r=>Object.keys(CL).filter(c=>panDone(r,c));
 const panVal=r=>{const n=panCls(r).length;return n?r.v[Math.min(3,n)-1]:0};
 let panC=0,panT=0;
 const PAN=()=>{const n=Date.now();if(n-panT>1000){panT=n;try{panC=S.cls?PANR.reduce((t,r)=>t+panVal(r),0):0}catch(e){panC=0}}return panC};
 let panSig="";
 function panUI(){
- const rv=$("raidView");if(!rv||!S.cls)return;let box=$("panBox");if(!box){box=document.createElement("div");box.id="panBox";box.style.cssText="margin-top:14px";rv.appendChild(box)}
+ const rv=$("masteryView");if(!rv||!S.cls)return;let box=$("panBox");if(!box){box=document.createElement("div");box.id="panBox";box.style.cssText="margin-top:14px";rv.appendChild(box)}
  panT=0;const rows=PANR.map(r=>({r,c:panCls(r)}));const sig=JSON.stringify([S.cls,S.fac,rows.map(x=>x.c)]);if(sig===panSig)return;panSig=sig;
  const own=(FAC[S.fac]||{c:[]}).c;let h="<h3 style='margin:0 0 6px'>🏛️ Panthéon des raids</h3><div class='mut' style='font-size:13px;margin-bottom:6px'>Chaque classe qui termine un raid fait progresser un bonus permanent, partagé par toutes tes classes et conservé après les renaissances (dégâts de clic et DPS).</div>";
  rows.forEach(({r,c})=>{const list=Object.keys(CL).filter(k=>own.includes(k)||c.includes(k)),n=c.length,t=Math.min(3,n),cur=n?r.v[t-1]:0,nx=t<3?r.v[t]:0;
   h+=`<div class="up" style="display:block"><b>${r.i} ${r.n}</b> <span style="color:#b8860b">${"★".repeat(t)}${"☆".repeat(3-t)}</span> <span class="mut">— ${n} classe${n>1?"s":""} · bonus actuel : <b>+${cur} %</b>${t<3?" · prochain palier ("+(t+1)+" classe"+(t+1>1?"s":"")+") : +"+nx+" %":" · palier maximum"}</span><div style="font-size:15px;margin-top:3px">${list.map(k=>`<span title="${CL[k].n}" style="${c.includes(k)?"":"opacity:.35;filter:grayscale(1)"}">${CL[k].i}${c.includes(k)?"✔":""}</span>`).join(" ")}</div>${t>=3?`<div class="mut" style="font-size:12px">Titre : « ${r.t} »</div>`:""}</div>`});
  h+=`<div style="margin-top:6px"><b>Bonus total du Panthéon : +${PANR.reduce((a,r)=>a+panVal(r),0)} %</b> de dégâts de clic et de DPS</div>`;box.innerHTML=h;
 }
-const dps=()=>msv("d")*(1+0.05*((S.eb||{}).p||0))*(1+(EQ("d")+SB("d"))/100)*(1+PAN()/100)*(1+RFB("d")/100)*(fx("d")+((CL[S.cls]||{}).db||0))*((CL[S.cls]||{}).dm||1)*(1+fx("m"))*(1+0.1*(S.fg.gD||0)+0.05*(S.fg.gT||0))*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).dk||1:1)*critE();
+const dps=()=>XPL()*msv("d")*(1+0.02*((S.eb||{}).p||0))*(1+(EQ("d")+SB("d"))/100)*(1+PAN()/100)*(1+RFB("d")/100)*(fx("d")+((CL[S.cls]||{}).db||0))*((CL[S.cls]||{}).dm||1)*(1+fx("m"))*(1+0.06*(S.fg.gD||0)+0.03*(S.fg.gT||0))*(Date.now()<buffEnd?((CL[S.cls]||{}).ab||{}).dk||1:1)*critE();
 const LOGS=[];function log(t){const l=$("log");LOGS.unshift(t);if(LOGS.length>15)LOGS.length=15;l.innerHTML=LOGS.join("<br>")} /* journal : 15 dernières lignes */
 /* === CARTE : mets ton image dans images/carte-elwynn.webp (ou .png/.jpg), sinon une carte dessinée s'affiche === */
 function mapHtml(zi){const b="images/"+ZM[zi].img;return `<img src="${b}.${EXT[xi(b)]}" data-b="${b}" data-i="${xi(b)}" data-n="__map${zi}" alt="${Z[zi].n}" style="width:100%;height:100%;object-fit:cover" onerror="nx(this)">`}
@@ -512,6 +557,24 @@ DG.brd={z:7,sv:"forge",n:"Profondeurs de Rochenoire",img:"donjon-profondeurs-de-
 DG.pic={z:9,sv:"lava",n:"Pic Roche Noire",img:"donjon-pic-roche-noire",ent:[40,27],rar:"499/400",bar:"738/414",bpos:[56,34],bsz:.36,spots:[[28,64],[42,72],[56,62],[70,68],[20,80],[50,84],[78,80],[60,52]],hpx:4,bm:17.4,cost:740000,floors:9,mm:2.5,mbm:2.2,mb:{0:"Pyrogarde Ardemer",1:"Solakar Brûlesang",2:"Jed Guetteur-des-runes",3:"Goraluk Fendenclume",4:"Chef de guerre Rend Blackhand",5:"Gyth",6:"La Bête",7:"Seigneur Valthalak"},mbp:{"Pyrogarde Ardemer":[40,80,.44,.9,.1],"Solakar Brûlesang":[63,81,.36,.88],"Jed Guetteur-des-runes":[37,85,.5,.75],"Goraluk Fendenclume":[62,83,.52,.72],"Chef de guerre Rend Blackhand":[40,84,.52,1],"Gyth":[52,72,.4,1.66,.35],"La Bête":[60,82,.42,.8],"Seigneur Valthalak":[42,85,.52,.85]},mbpos:[52,72],mbsz:.26,m:["Draconide","Dragonnet noir","Ogre"],b:"Général Drakkisath",unit:"salle",em:"🏰",tag:"🏰 Donjon"};
 DG.mc={z:9,sv:"lava",n:"Cœur du Magma",img:"raid-coeur-du-magma",ent:[27,22],hpx:37.4,gx:43.9,cost:2000000000,floors:10,mbm:4,mb:{0:"Lucifron",1:"Magmadar",2:"Gehennas",3:"Garr",4:"Shazzrah",5:"Baron Geddon",6:"Seigneur-Chirurgien Sulfuron",7:"Golemagg l’Incinérateur",8:"Majordome Exécutus"},mbpos:[50,66],mbsz:.3,bpos:[47,61],bsz:.38,mm:4,bm:40,m:["Chien du Magma","Élémentaire de lave"],b:"Ragnaros",unit:"salle",em:"🌋",fin:"Raid terminé",tag:"🌋 Raid",icon:'<svg viewBox="0 0 32 32"><path d="M16 3Q26 13 24 21Q22 29 16 29Q10 29 8 21Q6 14 16 3Z" fill="#e05a1a" stroke="#f5c842" stroke-width="2"/><path d="M16 14Q21 19 19 24Q17 27 16 27Q14 27 13 24Q11 19 16 14Z" fill="#f5c842"/></svg>'};
 DG.bwl={z:9,sv:"lava",n:"Repaire de l’Aile noire",img:"raid-repaire-aile-noire",ent:[56,17],hpx:125.4,gx:90,cost:3000000000,floors:8,mbm:4,mb:{0:"Tranchetripe l’Indompté",1:"Vaelastrasz le Corrompu",2:"Seigneur des couvées Lashlayer",3:"Gueule-de-feu",4:"Ebonroc",5:"Flamegor",6:"Chromaggus"},mbpos:[50,66],mbsz:.38,mbx:{"Vaelastrasz le Corrompu":1.3,"Gueule-de-feu":2,"Ebonroc":1.55,"Flamegor":1.3},bpos:[50,64],bsz:.5,mm:4,bm:40,m:["Drakonide noir","Dragonnet de l’Aile noire"],b:"Nefarian",unit:"salle",em:"🐲",fin:"Raid terminé",tag:"🐲 Raid",icon:'<svg viewBox="0 0 32 32"><path d="M3 20Q9 6 16 12Q23 6 29 20Q22 15 16 24Q10 15 3 20Z" fill="#3a2a30" stroke="#d04a2a" stroke-width="2"/><circle cx="16" cy="14" r="2" fill="#f5c842"/></svg>'};
+/* === MONDE OUVERT : chaque zone a un palier fixe (1 à 9) ; terminer une zone d’un palier ouvre tout le palier suivant === */
+const ZAL={31:13,32:12,34:14,38:19}; /* zones en double (anciens mondes de classe) -> zone unique */
+const cz=i=>ZAL[i]!==undefined?ZAL[i]:i;
+const ZPAL=[[0,20,40,10,29,39],[1,21,41,11,30],[2,22,12,13],[3,23,33],[4,24,25,14],[5,6,15,26,17],[7,8,16,35,18],[27,36,37],[9,28,19]];
+const PZB=[9, 19, 40, 79, 156, 301, 584, 1127, 2189]; /* or gagné (et base des PV) par palier — rééquilibrage v2 */
+const PZF=[0.0556, 0.1789, 0.2641, 0.9164, 1.3347, 3.0812, 2.4807, 2.2337, 1.8809]; /* PV d’un monstre = PZB × 40 × PZF : 20 PV au palier 1 … ~165 000 au palier 9 */
+const PZF0=[0.099,0.54,0.84,2.9,5.1,8.7,6.6,7.2,8.7]; /* anciens multiplicateurs (avant v2) : servent à recalculer les PV des donjons */
+const ZP={};ZPAL.forEach((a,p)=>a.forEach(i=>ZP[i]=p+1));Object.keys(ZAL).forEach(a=>ZP[a]=ZP[ZAL[a]]);
+const ALLZ=ZPAL.flat(),zPal=i=>ZP[i]||1;
+/* les PV de base suivent le palier ; le prix des donjons suit le même rapport */
+{const old=Z.map(z=>z.hp);Z.forEach((z,i)=>{if(ZP[i])z.hp=PZB[ZP[i]-1]});
+ /* rééquilibrage v2 : prix (or) au rapport de l’or gagné ; PV des donjons au même rapport que les monstres de leur zone ; PV des raids réduits de S_RAID */
+ const ZF_ORIG={1:0.54,3:2.9,4:5.1,25:8.7,27:7.2,41:0.54,30:0.54,12:0.84,14:5.1,16:6.6,17:5.7,28:8.7,5:8.7,6:10,7:5.7,9:8.7,15:8.7,19:8.7},S_RAID=1.6e-4;
+ const r2=c=>{const m=Math.pow(10,Math.max(0,Math.floor(Math.log10(c))-1));return Math.max(1,Math.round(c/m)*m)};
+ Object.keys(DG).forEach(k=>{const d=DG[k],r=Z[d.z].hp/old[d.z],raid=/Raid/.test(d.tag||"");if(d.cost)d.cost=r2(d.cost*r);
+  if(raid)d.hpx=(d.hpx||1)*S_RAID*old[d.z]/Z[d.z].hp;else d.hpx=(d.hpx||1)*PZF[zPal(d.z)-1]/(ZF_ORIG[d.z]||PZF0[zPal(d.z)-1])})}
+["brasseH","maraOH","maraVH","maraDH","aq20H","aq40H"].forEach(k=>delete DG[k]); /* donjons en double */
+const DGAL={brasseH:"brasse",maraOH:"maraO",maraVH:"maraV",maraDH:"maraD",aq20H:"aq20",aq40H:"aq40"};
 const DGZ=z=>Object.keys(DG).filter(k=>DG[k].z===z&&!/Raid/.test(DG[k].tag||""));
 Object.values(DG).forEach(d=>[...d.m,d.b,...Object.values(d.mb||{})].forEach(n=>{if(!IMG[n])IMG[n]="images/"+slug(n)+".png"}));
 const DX=()=>dun.k==="ev"?EVD:DG[dun.k];
@@ -523,11 +586,16 @@ function templeSvg(bs){return `<svg viewBox="0 0 400 300" preserveAspectRatio="x
 function forgeSvg(bs){return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block"><rect width="400" height="300" fill="${bs?'#2a0f0a':'#1a1412'}"/><rect y="230" width="400" height="70" fill="${bs?'#4a1a10':'#2a2420'}"/><rect x="0" y="236" width="400" height="14" fill="#e05a1a" opacity=".55"/><path d="M60 230V60M340 230V60" stroke="#4a4038" stroke-width="16"/><circle cx="60" cy="90" r="22" fill="#e05a1a" opacity=".3"/><circle cx="340" cy="90" r="22" fill="#e05a1a" opacity=".3"/><path d="M160 232h80v-14h-20v-18h-40v18h-20Z" fill="#6a6a72"/><text x="200" y="40" text-anchor="middle" font-size="14" font-family="Georgia,serif" font-weight="bold" fill="#e0a23c">${bs?DX().b:DX().n}</text></svg>`}
 function lavaSvg(bs){return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block"><rect width="400" height="300" fill="${bs?'#3a0a05':'#241010'}"/><path d="M0 210Q100 190 200 215T400 205V300H0Z" fill="#e05a1a"/><path d="M0 235Q120 220 220 240T400 232V300H0Z" fill="#f5a020"/><g fill="#14080a"><path d="M40 210l30-90 30 90Z"/><path d="M300 215l40-120 40 120Z"/></g><text x="200" y="40" text-anchor="middle" font-size="14" font-family="Georgia,serif" font-weight="bold" fill="#f5c842">${bs?DX().b:DX().n}</text></svg>`}
 function dunSvg(bs){if(!dun)return"";const sv=DX().sv;if(sv==="night")return nightSvg(bs);if(sv==="jungle")return jungleSvg(bs);if(sv==="temple")return templeSvg(bs);if(sv==="forge")return forgeSvg(bs);if(sv==="lava")return lavaSvg(bs);return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block"><rect width="400" height="300" fill="${bs?'#2a1218':'#2a2018'}"/><rect y="215" width="400" height="85" fill="${bs?'#3a1c24':'#3a2d20'}"/><rect x="50" width="16" height="300" fill="#5a4228"/><rect x="334" width="16" height="300" fill="#5a4228"/><rect width="400" height="16" fill="#5a4228"/><circle cx="58" cy="90" r="26" fill="${bs?'#e05a4a':'#f5a623'}" opacity=".25"/><circle cx="58" cy="90" r="9" fill="${bs?'#e05a4a':'#f5a623'}"/><circle cx="342" cy="90" r="26" fill="${bs?'#e05a4a':'#f5a623'}" opacity=".25"/><circle cx="342" cy="90" r="9" fill="${bs?'#e05a4a':'#f5a623'}"/><path d="M0 262H400M30 250V275M120 250V275M210 250V275M300 250V275" stroke="#777" stroke-width="3"/><text x="200" y="42" text-anchor="middle" font-size="14" font-family="Georgia,serif" font-weight="bold" fill="#e0a23c">${bs?(DX().b==='Edwin Van Cleef'?'Repaire d’Edwin Van Cleef':DX().b):DX().n}</text></svg>`}
+/* raid cliqué sur la carte de zone : on entre directement s’il est ouvert, sinon on affiche sa fiche (ce qu’il manque) */
+const zRaidK=k=>RAIDS.includes(k)?k:RAIDS.includes(k.replace(/H$/,""))?k.replace(/H$/,""):k;
+function zRaidClick(k){const r=zRaidK(k),d=DG[r];if(dun||conf)return;
+ if(RAIDS.includes(r)&&raidOk(r)&&S.gold>=d.cost){enterDun(r);return}
+ const s=WMS.find(x=>x.ks.includes(r));if(s){wsSel=s.id;wsSig="";uiSig.z="";ui()}else enterDun(r)}
 function dgnUI(){
  const st=$("stage"),ks=(dun||conf)?[]:DGZ(S.zone).concat(Object.keys(DG).filter(k=>DG[k].z===S.zone&&/Raid/.test(DG[k].tag||""))),key=S.zone+"|"+ks.join(",")+"|"+(((dun||conf)?null:evActive())&&evActive().z===S.zone?evActive().slot+evActive().dg:"");
  if(st.dataset.dk!==key){
   st.querySelectorAll(".dgn,.evd").forEach(x=>x.remove());
-  ks.forEach(k=>{const d=DG[k],el=document.createElement("div");const isR=/Raid/.test(d.tag||""),isD=!d.tag||/Donjon/.test(d.tag)||isR;el.className="dgn"+(isD?" ico":"");el.dataset.k=k;el.style.left=d.ent[0]+"%";el.style.top=d.ent[1]+"%";el.title=d.n+" — entrée : "+d.cost+" PO — "+(d.t||60)+" s pour le terminer";const ic=isR?"images/icone-raid":isD?"images/icone-donjon":"images/icone-"+d.img.replace(/^[a-z]+-/,"");el.innerHTML=`<img src="${ic}.${EXT[xi(ic)]}" data-b="${ic}" data-i="${xi(ic)}" data-n="__ico" data-k="${k}" alt="${d.n}" onerror="nx(this)"><b${d.lu?` style="top:auto;bottom:100%;margin:0 0 2px"`:""}>${isR?"🐉 "+d.n:d.needKey&&!(S.keys&&S.keys[d.needKey])?"🔒 "+d.keyName:"💰 "+d.cost}</b>`;if(isR){el.style.pointerEvents="none";el.style.cursor="default";el.title=d.n+" — raid : l’entrée se fait depuis l’onglet Raids"}else el.onclick=()=>enterDun(k);st.appendChild(el)});
+  ks.forEach(k=>{const d=DG[k],el=document.createElement("div");const isR=/Raid/.test(d.tag||""),isD=!d.tag||/Donjon/.test(d.tag)||isR;el.className="dgn"+(isD?" ico":"");el.dataset.k=k;el.style.left=d.ent[0]+"%";el.style.top=d.ent[1]+"%";el.title=d.n+" — entrée : "+d.cost+" PO — "+(d.t||60)+" s pour le terminer";const ic=isR?"images/icone-raid":isD?"images/icone-donjon":"images/icone-"+d.img.replace(/^[a-z]+-/,"");el.innerHTML=`<img src="${ic}.${EXT[xi(ic)]}" data-b="${ic}" data-i="${xi(ic)}" data-n="__ico" data-k="${k}" alt="${d.n}" onerror="nx(this)"><b${d.lu?` style="top:auto;bottom:100%;margin:0 0 2px"`:""}>${isR?"🐉 "+d.n:d.needKey&&!(S.keys&&S.keys[d.needKey])?"🔒 "+d.keyName:"💰 "+d.cost}</b>`;if(isR){const r2=zRaidK(k);el.title=DG[r2].n+" — raid : entrée "+fmtB(DG[r2].cost)+" PO"+(raidOk(r2)?"":" (verrouillé : clique pour voir ce qu’il manque)");el.onclick=()=>zRaidClick(k)}else el.onclick=()=>enterDun(k);st.appendChild(el)});
   {const ea=(dun||conf)?null:evActive();if(ea&&ea.z===S.zone){const el=document.createElement("div");el.className="evd";el.style.left="50%";el.style.top="48%";el.innerHTML="<div class='im'>"+art(ea.dg)+"</div><b><span title='Combat très difficile' style='cursor:help'>💀</span> "+ea.dg+" — Affronter !</b>";el.onclick=()=>evEnter();st.appendChild(el)}}
   st.dataset.dk=key;
  }
@@ -540,7 +608,7 @@ let autoDun=false;
 function dunT(d){return (d.t||60)+(msR().t||0)+(isRaidD(d)?0.5*((S.fg||{}).rS||0):0)}
 function enterDun(k){
  if(k==="ev")return evEnter();
- const d=DG[k];if(!d||dun||conf)return;if(RAIDS.includes(k)&&!raidOk(k)){log("🔒 Raid verrouillé : termine la dernière zone de ton monde et rapporte les composants rares demandés.");ui();return}if(ENDD.includes(k)&&!WLD().includes(d.z)&&!endOk(k)){log("🔒 Donjon de fin de jeu : termine d’abord la dernière zone de ton monde.");ui();return}if((RAIDS.includes(k)||ENDD.includes(k))&&d.z!==S.zone){if(rz===null)rz=S.zone;S.zone=d.z}if(d.needKey&&!(S.keys&&S.keys[d.needKey])){log("🔒 Il vous faut la "+d.keyName+" pour entrer : elle peut tomber sur le boss de la partie humaine (1 chance sur 5).");ui();return}if(S.gold<d.cost)return;
+ const d=DG[k];if(!d||dun||conf)return;if(RAIDS.includes(k)&&!raidOk(k)){log("🔒 Raid verrouillé : termine une zone du palier 9 ("+P9N()+") et rapporte les composants rares demandés.");ui();return}if(ENDD.includes(k)&&!WLD().includes(d.z)&&!endOk(k)){log("🔒 Donjon de fin de jeu : termine d’abord la dernière zone de ton monde.");ui();return}if((RAIDS.includes(k)||ENDD.includes(k))&&d.z!==S.zone){if(rz===null)rz=S.zone;S.zone=d.z}if(d.needKey&&!(S.keys&&S.keys[d.needKey])){log("🔒 Il vous faut la "+d.keyName+" pour entrer : elle peut tomber sur le boss de la partie humaine (1 chance sur 5).");ui();return}if(S.gold<d.cost)return;
  S.gold-=d.cost;dun={i:0,k,end:Date.now()+dunT(d)*1000};try{pre("images/"+d.img);pre("images/"+d.img+"-boss")}catch(e){}log((d.em||"⛏️")+" Vous entrez dans "+d.n+" !");save();spawn();ui();
 }
 function leaveDun(){if(!dun)return;autoDun=false;dun=null;log("🚪 Vous quittez le donjon");spawn();ui()}
@@ -628,10 +696,14 @@ function draw(){
  bar();
 }
 const WORLD={l:[0,1,2,3,4,5,6,7,8,9],d:[10,11,12,13,14,15,16,17,18,19],p:[20,21,22,23,24,25,26,27,28],g:[29,30,31,32,33,34,35,36,37,38],s:[39,30,31,32,33,34,16,17,18,19],w:[40,41,23,24,25,26,27,28]},BASEW=[0,1,2,3,4,5,6,7,8,9];
-const WLD0=c=>WORLD[c===undefined?S.cls:c]||(S.fac==="h"?WORLD.g:BASEW);
+const WLD0=c=>(WORLD[c===undefined?S.cls:c]||(S.fac==="h"?WORLD.g:BASEW)).map(cz); /* ancien monde de la classe : sert encore aux composants de forge */
+/* parcours conseillé par classe (une zone par palier) : l’étoile ★ de la carte suit ce parcours */
+const ROUTE={l:[0,1,2,3,4,5,7,27,9],d:[10,11,12,33,14,15,16,36,19],p:[20,21,22,23,24,26,7,27,28],g:[29,30,13,33,14,17,35,37,19],s:[39,30,12,33,14,15,18,36,19],w:[40,41,22,23,25,26,8,27,28]};
+const RT=c=>ROUTE[c===undefined?S.cls:c]||(S.fac==="h"?ROUTE.g:ROUTE.l);
 /* Zones de fin de jeu : ouvertes à toutes les classes une fois la dernière zone de leur monde vaincue */
 const EXTRAZ=[27,28,9];
-function prLast(){const w=WLD0();return w[w.length-1]}
+function prLast(){const w=RT();return w[w.length-1]}
+const P9N=()=>ZPAL[8].map(i=>Z[i].n).join(", ");
 /* Zone terminée = boss vaincu + 10 victoires sur chaque type de monstre */
 function zCre(i){const z=Z[i];return z.m.reduce((t,m)=>t+Math.min(10,S.bk[z.n+"|"+m[1]]||0),0)}
 /* donjons à terminer pour valider une zone (hors raids, événements et donjons de fin de jeu) */
@@ -642,31 +714,59 @@ const zDun=i=>DGZ(i).filter(k=>!RAIDS.includes(k)&&!ENDD.includes(k)&&(!DG[k].ta
 const dgDone=k=>{const d=DG[k];return !!(S.dd[k]||(S.col[Z[d.z].n+"|"+d.b]&&(S.col[Z[d.z].n+"|"+d.b].n+S.col[Z[d.z].n+"|"+d.b].s>0)))};
 function zPct(i){const z=Z[i],pr=[S.boss[i]?1:0,Math.min(1,zCre(i)/(10*z.m.length))],d=zDun(i);if(d.length)pr.push(d.filter(dgDone).length/d.length);return pr.reduce((a,b)=>a+b,0)/pr.length}
 function zDone(i){return !!S.boss[i]&&zCre(i)>=10*Z[i].m.length&&zDun(i).every(dgDone)}
-function prCan(){return !!S.cls&&zDone(prLast())}
-const WLD=c=>{const w=WLD0(c);return(c===undefined&&prCan())?w.concat(EXTRAZ.filter(i=>!w.includes(i))):w};
-const zOpen=i=>{const w=WLD(),j=w.indexOf(i);return j===0||(j>0&&!!(zDone(w[j-1])&&(i!==2||S.dd[1]||S.col[Z[1].n+"|Edwin Van Cleef"])))};
+function prCan(){return !!S.cls&&ZPAL[8].some(zDone)}
+const WLD=c=>c===undefined?ALLZ:RT(c); /* WLD() : toutes les zones du monde (par palier) ; WLD(c) : parcours conseillé de la classe c */
+/* palier le plus haut débloqué, et retour libre dans les paliers inférieurs une fois une zone du palier 5 terminée (calcul gardé 0,5 s) */
+const ZFREE=5;let ztC={t:0,top:1,free:false};
+const zFront=()=>{const t=Date.now();if(t-ztC.t>500){let top=1;for(let p=2;p<=9;p++)if(ZPAL[p-2].some(zDone))top=p;ztC={t,top,free:ZPAL[ZFREE-1].some(zDone)}}return ztC};
+const zPalOk=i=>{const p=zPal(i);return p===1||ZPAL[p-2].some(zDone)};
+/* zone ouverte : déjà commencée, ou palier débloqué ET (zone du parcours de la classe, ou une zone du palier 5 terminée) */
+const zOpen=i=>{if(ZAL[i]!==undefined||!ZP[i])return false;if((S.kills[i]||0)>0||S.boss[i])return true;if(!zPalOk(i))return false;const f=zFront();if(f.free)return true;return RT().includes(i); /* avant le palier 5 : uniquement le parcours de la classe */};
+/* difficulté pour le joueur : temps estimé pour vaincre un monstre normal de la zone */
+const zSec=i=>Z[i].hp*HPM*ZF(i)/Math.max(0.1,eqD());
+/* champions de créatures obtenus dans la collection de la zone */
+const zChamp=i=>{const z=Z[i];return z.m.filter(m=>S.col[z.n+"|"+m[1]]).length},zChampOk=i=>zChamp(i)>=Z[i].m.length;
+const zDiff=i=>{const t=zSec(i);return t<=2?0:t<=8?1:t<=30?2:3};
+const ZDN=["facile","adaptée","difficile","très difficile"],ZDC=["#3fae5a","#e0c040","#e08030","#d04040"];
+/* zone conseillée : prochaine zone ouverte du parcours de la classe, sinon la zone ouverte non terminée la plus facile */
+const wmRec=()=>{const r=RT().find(i=>zOpen(i)&&!zDone(i));if(r!==undefined)return r;const o=ALLZ.filter(i=>zOpen(i)&&!zDone(i));return o.length?o[0]:null};
+/* bonus d’exploration : +2 % de dégâts (clic et DPS) par zone complète (en vert : validée + tous les champions), remis à zéro à la renaissance */
+const XPLP=2;let xplC={t:0,n:0};const xplN=()=>{const t=Date.now();if(t-xplC.t>1000){xplC={t,n:ALLZ.filter(i=>zDone(i)&&zChampOk(i)).length}}return xplC.n};const XPL=()=>1+XPLP*xplN()/100;
 const PF=["gold","zone","kills","boss","dd","lv","bk","col","mats","fg","ab","keys","es","eb","pn","tk","hf","rc","eq","dq","we","ms","nt"];
-const HFN=[50,100,500,1000],HFR={50:{g:500},100:{g:2000},500:{e:10},1000:{e:20,g:2000000}};
+const HFN=[50,100,500,1000],HFR={50:{g:250},100:{g:600},500:{e:10},1000:{e:20,g:41000}};
 const hfGive=m=>{const r=HFR[m];if(r.g)S.gold+=r.g;if(r.e)S.es=(S.es||0)+r.e};
 const hfTxt=m=>{const r=HFR[m],a=[];if(r.e)a.push(r.e+" essences");if(r.g)a.push(fmt(r.g)+" or");return a.join(" + ")};
 const hfSync=()=>{S.kills.forEach((k,i)=>{const id="z:"+i;if(k>(S.tk[id]||0))S.tk[id]=k});Object.keys(S.tk).forEach(id=>HFN.forEach(m=>{if(S.tk[id]>=m&&!S.hf[id+"|"+m]){S.hf[id+"|"+m]=1;hfGive(m)}}))};
 /* retrait des bonus d’objets « or », « composant » et « clic automatique » : les anciens objets sont convertis (même rareté) */
 const EQMIG={g:["c",1],t:["x",1.5],a:["y",100]};
 function eqMig(){const cv=b=>{if(b&&EQMIG[b.k]){const m=EQMIG[b.k];b.k=m[0];b.v=Math.round(b.v*m[1]*100)/100}};
- const fx=it=>{if(!it||!it.b)return;if(it.id==="cthun"){it.b={k:"y",v:50};it.b2={k:"d",v:30};it.b3={k:"x",v:10};return}cv(it.b);cv(it.b2);if(it.b2&&it.b2.k===it.b.k){it.b.v=Math.round((it.b.v+it.b2.v)*100)/100;delete it.b2}};
+ const fx=it=>{if(!it||!it.b)return;if(it.id==="cthun"){it.b={k:"y",v:17};it.b2={k:"d",v:17};it.b3={k:"x",v:10};return}cv(it.b);cv(it.b2);if(it.b2&&it.b2.k===it.b.k){it.b.v=Math.round((it.b.v+it.b2.v)*100)/100;delete it.b2}};
  if(S.eq){Object.values(S.eq.e||{}).forEach(fx);(S.eq.r||[]).forEach(fx)}}
-const fixP=()=>{eqMig();if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
-if(S.cls&&!WLD().includes(S.zone))S.zone=WLD()[0];
+function owMig(){ /* fusion des zones et donjons en double */
+ Object.keys(ZAL).forEach(a=>{const c=ZAL[a];a=+a;
+  S.kills[c]=Math.max(S.kills[c]||0,S.kills[a]||0);S.kills[a]=0;if(S.boss[a]){S.boss[c]=S.boss[c]||S.boss[a];S.boss[a]=0}
+  if(S.mats&&S.mats[a]){S.mats[c]=(S.mats[c]||0)+S.mats[a];delete S.mats[a]}
+  if(S.zone===a)S.zone=c;
+  if(S.tk&&S.tk["z:"+a]!==undefined){S.tk["z:"+c]=Math.max(S.tk["z:"+c]||0,S.tk["z:"+a]);delete S.tk["z:"+a]}
+  if(S.hf)Object.keys(S.hf).forEach(h=>{if(h.startsWith("z:"+a+"|")){S.hf["z:"+c+h.slice(("z:"+a).length)]=1;delete S.hf[h]}});
+  if(S.dq&&S.dq.q)S.dq.q.forEach(q=>{if(q.z===a)q.z=c})});
+ Object.keys(DGAL).forEach(a=>{const c=DGAL[a];
+  if(S.dd&&S.dd[a]){S.dd[c]=S.dd[c]||S.dd[a];delete S.dd[a]}
+  if(S.tk&&S.tk["d:"+a]!==undefined){S.tk["d:"+c]=Math.max(S.tk["d:"+c]||0,S.tk["d:"+a]);delete S.tk["d:"+a]}
+  if(S.hf)Object.keys(S.hf).forEach(h=>{if(h.startsWith("d:"+a+"|")){S.hf["d:"+c+h.slice(("d:"+a).length)]=1;delete S.hf[h]}});
+  if(S.dq&&S.dq.q)S.dq.q.forEach(q=>{if(q.k===a)q.k=c})})}
+const fixP=()=>{owMig();eqMig();if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
+if(S.cls&&(!WLD().includes(S.zone)||!zOpen(S.zone)))S.zone=RT()[0];
 const freshProf=c=>({gold:0,zone:WLD(c)[0],kills:Z.map(()=>0),boss:Z.map(()=>0),dd:{},lv:{},bk:{},col:{},mats:{},fg:{},ab:{h:0,r:0},keys:{},es:0,eb:{},pn:0,tk:{},hf:{},rc:{},dq:{d:"",q:[]},we:{s:0,d:0,n:0,a:0},ms:{p:0,r:{},f:{}},nt:{},eq:{e:{},r:[],seen:[0,0,0,0,0]}});
 /* === FORGE : composants rares des champions -> améliorations des sorts === */
 const MAT=["Croc d’Elwynn","Épi maudit","Écaille carmin","Poussière spectrale","Griffe de jungle","Essence de marais","Fragment d’obsidienne","Cœur de lave","Éclat gangrené","Braise draconique","Plume de chouette","Perle de Salvassio","Écorce de tréant","Éclat de granit","Poussière de Désolace","Écaille de marécage","Grain de sable doré","Plume de Féralas","Cristal d’Un’Goro","Carapace de Silithus","Fourrure de loup des neiges","Peau de crocolisque de Loch Modan","Insigne de nain Sombrefer","Écaille de naga","Croc d’ogre d’Alterac","Talisman de troll Fanécorce","Plume de griffon sauvage","Essence de spectre","Aile de chauve-souris de peste","Piquant de quilboar","Crinière de lion des Tarides","Plume de harpie","Sève de tréant","Plume des falaises","Éclat de centaure kolkar","Perle d’Azshara","Sève gangrenée","Cristal de givre","Carapace de Silithus rouge","Sabot de Mulgore","Linceul de Tirisfal","Aiguille de pin argenté","Éclat de nécrolithe","Écaille de dragon noir"];
 const XC={scholo:42,stratH:42,stratU:42,pic:43}; /* composants de forge tombant sur les boss finaux des donjons de fin de jeu (mondes à moins de 10 zones) */
 const MAXF=5,DROP=0.25; /* DROP = chance qu'un champion laisse un composant */
-const GFG=[{id:"gC",n:"🔨 Trempe d’obsidienne",d:"+10 % de dégâts de clic par niveau",z:6},{id:"gD",n:"🌋 Cœur de lave",d:"+10 % de DPS par niveau",z:7},{id:"gA",n:"👿 Éclat gangrené",d:"+10 % de clics automatiques par niveau",z:8},{id:"gT",n:"🐲 Braise draconique",d:"+5 % de dégâts de clic et de DPS par niveau",z:9}];
-const fz=i=>{const w=WLD();return w[Math.min(i,w.length-1)]};
+const GFG=[{id:"gC",n:"🔨 Trempe d’obsidienne",d:"+6 % de dégâts de clic par niveau",z:6},{id:"gD",n:"🌋 Cœur de lave",d:"+6 % de DPS par niveau",z:7},{id:"gA",n:"👿 Éclat gangrené",d:"+6 % de clics automatiques par niveau",z:8},{id:"gT",n:"🐲 Braise draconique",d:"+3 % de dégâts de clic et de DPS par niveau",z:9}];
+const fz=i=>{const w=WLD0();return w[Math.min(i,w.length-1)]};
 /* Améliorations de forge propres à chaque classe (mêmes effets, noms et composants liés à ses zones) */
-const GFGC={d:[{id:"gC",n:"🌵 Grain de sable doré",d:"+10 % de dégâts de clic par niveau",z:16},{id:"gD",n:"🪶 Plume de Féralas",d:"+10 % de DPS par niveau",z:17},{id:"gA",n:"💎 Cristal d’Un’Goro",d:"+10 % de clics automatiques par niveau",z:18},{id:"gT",n:"🪲 Carapace de Silithus",d:"+5 % de dégâts de clic et de DPS par niveau",z:19}],w:[{id:"gC",n:"💀 Éclat de nécrolithe",d:"+10 % de dégâts de clic par niveau",z:42},{id:"gD",n:"🐉 Écaille de dragon noir",d:"+10 % de DPS par niveau",z:43},{id:"gA",n:"👻 Essence spectrale",d:"+10 % de clics automatiques par niveau",z:27},{id:"gT",n:"🦇 Ailes de la peste",d:"+5 % de dégâts de clic et de DPS par niveau",z:28}],s:[{id:"gC",n:"🏺 Totem de sable doré",d:"+10 % de dégâts de clic par niveau",z:16},{id:"gD",n:"🪶 Plume spirituelle de Féralas",d:"+10 % de DPS par niveau",z:17},{id:"gA",n:"💎 Éclat élémentaire d’Un’Goro",d:"+10 % de clics automatiques par niveau",z:18},{id:"gT",n:"🪲 Carapace de Silithus",d:"+5 % de dégâts de clic et de DPS par niveau",z:19}],p:[{id:"gC",n:"💀 Éclat de nécrolithe",d:"+10 % de dégâts de clic par niveau",z:42},{id:"gD",n:"🦅 Plume de griffon sauvage",d:"+10 % de DPS par niveau",z:26},{id:"gA",n:"👻 Essence spectrale",d:"+10 % de clics automatiques par niveau",z:27},{id:"gT",n:"🦇 Ailes de la peste",d:"+5 % de dégâts de clic et de DPS par niveau",z:28}]};
-const recipes=()=>UL().map((u,i)=>({id:u.id,n:"🔨 "+u.n,d:"+20 % d’efficacité de ce sort par niveau",z:fz(i)})).concat(GFGC[S.cls]||GFG.map(g=>({...g,z:fz(g.z)})));
+const GFGC={d:[{id:"gC",n:"🌵 Grain de sable doré",d:"+6 % de dégâts de clic par niveau",z:16},{id:"gD",n:"🪶 Plume de Féralas",d:"+6 % de DPS par niveau",z:17},{id:"gA",n:"💎 Cristal d’Un’Goro",d:"+6 % de clics automatiques par niveau",z:18},{id:"gT",n:"🪲 Carapace de Silithus",d:"+3 % de dégâts de clic et de DPS par niveau",z:19}],w:[{id:"gC",n:"💀 Éclat de nécrolithe",d:"+6 % de dégâts de clic par niveau",z:42},{id:"gD",n:"🐉 Écaille de dragon noir",d:"+6 % de DPS par niveau",z:43},{id:"gA",n:"👻 Essence spectrale",d:"+6 % de clics automatiques par niveau",z:27},{id:"gT",n:"🦇 Ailes de la peste",d:"+3 % de dégâts de clic et de DPS par niveau",z:28}],s:[{id:"gC",n:"🏺 Totem de sable doré",d:"+6 % de dégâts de clic par niveau",z:16},{id:"gD",n:"🪶 Plume spirituelle de Féralas",d:"+6 % de DPS par niveau",z:17},{id:"gA",n:"💎 Éclat élémentaire d’Un’Goro",d:"+6 % de clics automatiques par niveau",z:18},{id:"gT",n:"🪲 Carapace de Silithus",d:"+3 % de dégâts de clic et de DPS par niveau",z:19}],p:[{id:"gC",n:"💀 Éclat de nécrolithe",d:"+6 % de dégâts de clic par niveau",z:42},{id:"gD",n:"🦅 Plume de griffon sauvage",d:"+6 % de DPS par niveau",z:26},{id:"gA",n:"👻 Essence spectrale",d:"+6 % de clics automatiques par niveau",z:27},{id:"gT",n:"🦇 Ailes de la peste",d:"+3 % de dégâts de clic et de DPS par niveau",z:28}]};
+const recipes=()=>UL().map((u,i)=>({id:u.id,n:"🔨 "+u.n,d:"+12 % d’efficacité de ce sort par niveau",z:fz(i)})).concat(GFGC[S.cls]||GFG.map(g=>({...g,z:fz(g.z)})));
 function forge(id){
  const r=recipes().find(x=>x.id===id);if(!r)return;
  const l=S.fg[id]||0,c=l+1;if(l>=MAXF||(S.mats[r.z]||0)<c)return;
@@ -702,9 +802,9 @@ function forgeUI(){
 }
 
 /* === MARCHAND : achat de composants de forge contre de l'or (prix croissant avec l'avancée du monde) === */
-const SHOP_P=[20000,31000,48000,74000,1e6,2.3e6,5.1e6,11.7e6,26.5e6,60e6]; /* prix par rang de zone dans le monde de la classe */
-const shopZones=()=>{const w=WLD(),seen=new Set();recipes().forEach(r=>seen.add(r.z));return [...seen].sort((a,b)=>{const x=w.indexOf(a),y=w.indexOf(b);return (x<0?99:x)-(y<0?99:y)})};
-const shopPrice=z=>{const i=WLD().indexOf(z);return SHOP_P[Math.min(i<0?WLD().length-1:i,SHOP_P.length-1)]};
+const SHOP_P=[18000,19800,21800,24000,97500,133000,173000,240000,543000,732000]; /* rééquilibrage v2 */ /* prix par rang de zone dans le monde de la classe */
+const shopZones=()=>{const seen=new Set();recipes().forEach(r=>seen.add(r.z));const k=z=>z<Z.length?zPal(z):99;return [...seen].sort((a,b)=>k(a)-k(b))};
+const shopPrice=z=>SHOP_P[z<Z.length&&ZP[z]?[0,1,2,3,4,5,6,7,9][zPal(z)-1]:SHOP_P.length-1];
 function shopBuy(z,n){const c=shopPrice(z)*n;if(S.gold<c)return;S.gold-=c;S.mats[z]=(S.mats[z]||0)+n;log("🧺 Acheté : "+n+" × "+MAT[z]+" ("+fmt(c)+" or)");save();ui()}
 /* Sacs : chaque sac acheté chez le marchand ajoute 5 emplacements à la réserve (10 au départ, 50 au maximum). Conservés après une renaissance. */
 const BAGN=8,BAGS=5,BAGP=[50e3,250e3,1e6,5e6,20e6,100e6,500e6,2e9];
@@ -731,14 +831,14 @@ function shopUI(){
 
 /* === PRESTIGE : Renaissance + Essences (par classe) === */
 const GM=()=>msv("g")*GOLDX*(1+0.05*((S.eb||{}).o||0)+EQ("g")/100);
-const ESH=[{id:"p",n:"⚔️ Puissance",d:"+5 % de dégâts de clic et de DPS par niveau",c:2},{id:"o",n:"💰 Prospérité",d:"+5 % d’or gagné par niveau",c:2},{id:"t",n:"💎 Chasseur de trésors",d:"+3 % de chance de composant (accès et forge) et de butin sur les boss de donjon et de raid, par niveau",c:2},{id:"s",n:"🚀 Départ rapide",d:"+200 or au départ de chaque renaissance par niveau",c:1},{id:"a",n:"🤖 Automatisme",d:"+0,3 clic automatique par seconde par niveau (utile surtout en donjon et en raid : en zone, un monstre ne meurt pas avant 1 s)",c:3}];
+const ESH=[{id:"p",n:"⚔️ Puissance",d:"+2 % de dégâts de clic et de DPS par niveau",c:2},{id:"o",n:"💰 Prospérité",d:"+5 % d’or gagné par niveau",c:2},{id:"t",n:"💎 Chasseur de trésors",d:"+3 % de chance de composant (accès et forge) et de butin sur les boss de donjon et de raid, par niveau",c:2},{id:"s",n:"🚀 Départ rapide",d:"+100 or au départ de chaque renaissance par niveau",c:1},{id:"a",n:"🤖 Automatisme",d:"+0,3 clic automatique par seconde par niveau (utile surtout en donjon et en raid : en zone, un monstre ne meurt pas avant 1 s)",c:3}];
 const tcm=()=>1+0.03*((S.eb||{}).t||0); /* Chasseur de trésors : multiplicateur de chance sur les boss de donjon et de raid */
 const ESMAX=20,escost=(h,l)=>Math.ceil(h.c*Math.pow(1.329,l));
-const prGain=()=>{const z=WLD().filter(i=>S.boss[i]).length,dd=Object.keys(S.dd||{}).filter(x=>/^\d+$/.test(x)).length,k=WLD().reduce((t,i)=>t+(S.kills[i]||0),0);return Math.ceil((3*z+2*dd+Math.floor(k/50))*msv("e")*(1+SB("e")/100))};
+const prGain=()=>{const zb=WLD().filter(i=>S.boss[i]),z=new Set(zb.map(zPal)).size+(zb.length-new Set(zb.map(zPal)).size)/3,dd=Object.keys(S.dd||{}).filter(x=>/^\d+$/.test(x)).length,k=WLD().reduce((t,i)=>t+(S.kills[i]||0),0);return Math.ceil((3*z+2*dd+Math.floor(k/50))*msv("e")*(1+SB("e")/100))};
 function rebirth(){
  if(!prCan())return;const g=prGain();
  if(!confirm("Renaissance : ton or, tes sorts, tes zones, tes donjons, ton équipement, tes clés et tes composants d’accès aux donjons et aux raids repartent de zéro. Tu gardes la forge, la collection, les hauts faits, tes sacs et tes essences, et tu gagnes "+g+" essences. Continuer ?"))return;
- S.es+=g;S.pn++;{const ke={};Object.keys(S.eq.e).forEach(k=>{if(S.eq.e[k]&&S.eq.e[k].u)ke[k]=S.eq.e[k]});S.eq.e=ke}S.eq.r=S.eq.r.filter(x=>x.u);eqSig="";S.gold=200*((S.eb||{}).s||0);S.zone=WLD()[0];S.kills=Z.map(()=>0);S.boss=Z.map(()=>0);S.dd={};S.lv={};S.ab={h:0,r:0};S.keys={};S.rc={};
+ S.es+=g;S.pn++;{const ke={};Object.keys(S.eq.e).forEach(k=>{if(S.eq.e[k]&&S.eq.e[k].u)ke[k]=S.eq.e[k]});S.eq.e=ke}S.eq.r=S.eq.r.filter(x=>x.u);eqSig="";S.gold=100*((S.eb||{}).s||0);S.zone=RT()[0];S.kills=Z.map(()=>0);S.boss=Z.map(()=>0);xplC.t=0;ztC.t=0;S.dd={};S.lv={};S.ab={h:0,r:0};S.keys={};S.rc={};
  conf=null;dun=null;rz=null;autoDun=false;abReady=0;buffEnd=0;bleedEnd=0;wReady={h:0,r:0};prSig="";
  log("🌟 Renaissance ! +"+g+" essences (total "+S.es+")");save();spawn();ui();abUI();
 }
@@ -749,7 +849,7 @@ function prUI(){
  const sig=JSON.stringify([S.cls,S.es,S.eb,S.pn,prCan(),prGain()]);if(sig===prSig)return;prSig=sig;
  if(!S.cls){box.style.display="none";return}box.style.display="block";
  $("prinfo").textContent="Essences : "+S.es+" · Renaissances : "+S.pn;
- const rb=$("rebirth");rb.disabled=!prCan();rb.textContent=prCan()?"🌟 Renaissance (+"+prGain()+" essences)":"🌟 Renaissance (terminer la zone "+Z[prLast()].n+" : boss + 10 de chaque monstre)";
+ const rb=$("rebirth");rb.disabled=!prCan();rb.textContent=prCan()?"🌟 Renaissance (+"+prGain()+" essences)":"🌟 Renaissance (terminer une zone du palier 9 : "+P9N()+")";
  const sh=$("esshop");sh.innerHTML="";
  ESH.forEach(h=>{const l=S.eb[h.id]||0,c=escost(h,l),d=document.createElement("div");d.className="up";
   d.innerHTML=`<div>${h.n} <span class="mut">niv. ${l}/${ESMAX}<br>${h.d}</span></div>`;
@@ -825,11 +925,12 @@ function cityUI(){
  }
 }
 let curV="zone";
+function wmSide(){const z=$("zones");document.body.classList.toggle("wmside",curV==="zone"&&!!z&&!z.classList.contains("cl"))}
 function setView(v){
  if(curV==="eq"&&v!=="eq"&&S.eq&&S.eq.r){S.eq.r.forEach(x=>{delete x.nw});eqSig=""}
- curV=v;if(S.nt){if(v==="raid")S.nt.r=1;if(v==="mastery")S.nt.m=1}
+ curV=v;if(S.nt){if(v==="raid")S.nt.r=1;if(v==="mastery")S.nt.m=1}eqSig="";try{eqUI()}catch(e){}
  $("zoneView").style.display=v=="zone"?"":"none";$("cityView").style.display=v=="ville"?"":"none";$("raidView").style.display=v=="raid"?"":"none";$("eqView").style.display=v=="eq"?"":"none";$("questView").style.display=v=="quest"?"":"none";$("masteryView").style.display=v=="mastery"?"":"none";$("tabM").className=v=="mastery"?"on":"";msSig="";msUI();$("tabQ").className=v=="quest"?"on":"";dqSig="";dqUI();$("tabE").className=v=="eq"?"on":"";$("tabR").className=v=="raid"?"on":"";raidSig="";raidUI();
- $("tabZ").className=v=="zone"?"on":"";$("tabV").className=v=="ville"?"on":"";cityUI();
+ $("tabZ").className=v=="zone"?"on":"";wmSide();$("tabV").className=v=="ville"?"on":"";cityUI();
 }
 ["raidView","eqView"].forEach(id=>{const rv=$(id);if(rv){const n=document.createElement("div");n.className="mut";n.style.cssText="margin:4px 0 8px;font-size:13px";n.textContent="⏸ Zone en pause tant que tu restes sur cet onglet : plus aucun monstre n’est tué ni aucun butin ramassé en zone.";rv.insertBefore(n,rv.firstChild)}});
 /* confort : à la fin d’un raid lancé depuis l’onglet Raids, on revient sur cet onglet */
@@ -912,7 +1013,7 @@ const EV_SLOT=2*3600*1000,EV_X=1.5;
 const EVD={z:0,n:"Événement mondial",floors:1,unit:"boss",em:"🌍",fin:"Événement vaincu",tag:"🌍 Événement",t:60,bm:40,hpx:1,cost:0,b:"",mm:2.5};
 function evAt(slot){
  let h=Math.imul(slot,2654435761)>>>0;h^=h>>>15;h=Math.imul(h,2246822519)>>>0;h^=h>>>13;
- const pool=WLD().slice(0,-4);if(!pool.length||h%100>=60)return null;
+ const pool=WLD().slice(0,-4).filter(zOpen);if(!pool.length||h%100>=60)return null;
  return{slot,z:pool[(h>>>8)%pool.length],dg:EV_DRG[(h>>>20)%4],end:(slot+1)*EV_SLOT};
 }
 const evActive=()=>{try{if(!S.cls||!prCan())return null;const e=evCur();return e&&!e.done?e:null}catch(x){return null}};
@@ -962,9 +1063,9 @@ const MSP={mc:1,bwl:2,aq40:2,aq40H:2,Emeriss:1,Lethon:1,Taerar:1,Ysondre:1},MSFI
 const MSN={mc:"Ragnaros",bwl:"Nefarian",aq40:"C’Thun",aq40H:"C’Thun",Emeriss:"Emeriss",Lethon:"Lethon",Taerar:"Taerar",Ysondre:"Ysondre"};
 const MST=[
  {b:"⚔️ Puissance",l:[
-  {id:"c",n:"Frappe maîtrisée",d:"+5 % de dégâts de clic",m:10},
-  {id:"d",n:"Puissance dévastatrice",d:"+5 % de DPS",m:10},
-  {id:"w",n:"Maître d’armes",d:"+2 % de dégâts de clic et de DPS",m:10}]},
+  {id:"c",n:"Frappe maîtrisée",d:"+2 % de dégâts de clic",m:10},
+  {id:"d",n:"Puissance dévastatrice",d:"+2 % de DPS",m:10},
+  {id:"w",n:"Maître d’armes",d:"+0,8 % de dégâts de clic et de DPS",m:10}]},
  {b:"⚡ Cadence",l:[
   {id:"a",n:"Mains vives",d:"+0,2 clic automatique par seconde",m:10},
   {id:"r",n:"Réflexes",d:"−3 % de temps de recharge des capacités",m:10},
@@ -987,7 +1088,7 @@ function msReset(){if(!msSpent())return;S.ms.r={};save();msSig="";ui()}
 let msSig="";
 function msUI(){
  const tb=$("tabM");if(!tb||!S.cls)return;
- const ok=prCan()||S.ms.p>0;tb.disabled=!ok;tb.title=ok?"":"Disponible après la dernière zone de ton monde (" +Z[prLast()].n+")";
+ const ok=prCan()||S.ms.p>0;tb.disabled=!ok;tb.title=ok?"":"Disponible après avoir terminé une zone du palier 9 ("+P9N()+")";
  tb.style.display=ok?"":"none";tb.innerHTML="🎓 Maîtrise"+(msFree()>0?" ("+msFree()+")":"")+(ok&&!(S.nt||{}).m?" <span class='nwb'>🆕 Nouveau</span>":"");
  if(!ok&&$("masteryView").style.display!=="none"){setView("zone");return}
  const sig=JSON.stringify([S.cls,S.ms]);if(sig===msSig)return;msSig=sig;
@@ -1047,7 +1148,7 @@ const endOk=k=>ENDD.includes(k)&&prCan()&&!(DG[k].needKey&&!(S.keys&&S.keys[DG[k
 let raidSig="";
 function raidUI(){
  const tb=$("tabR");if(!tb)return;
- const can=prCan();tb.disabled=!can;tb.title=can?"":"Disponible après la dernière zone de ton monde";tb.style.display=can?"":"none";tb.innerHTML="🐉 Raids"+(can&&!(S.nt||{}).r?" <span class='nwb'>🆕 Nouveau</span>":"");
+ const can=prCan();tb.disabled=!can;tb.title=can?"":"Disponible après avoir terminé une zone du palier 9";tb.style.display="none";tb.innerHTML="🐉 Raids"+(can&&!(S.nt||{}).r?" <span class='nwb'>🆕 Nouveau</span>":"");
  if(!can&&$("raidView").style.display!=="none"){setView("zone")}
  const sig=JSON.stringify([S.cls,can,S.rc,RAIDS.concat(ENDD).map(k=>[raidDone(k),S.gold>=DG[k].cost]),(S.keys||{}).stratkey||0]);if(sig===raidSig)return;raidSig=sig;
  const mk=(box,list,okf,reqf)=>{box.innerHTML="";list.forEach(k=>{const d=DG[k],ok=okf(k),dn=raidDone(k),r=document.createElement("div");r.className="up";
@@ -1064,8 +1165,8 @@ const EQS=[{k:"w",n:"Arme",i:"⚔️"},{k:"h",n:"Tête",i:"🪖"},{k:"s",n:"Épa
 const EQR=[{n:"Commun",c:"#8a8a8a"},{n:"Peu commun",c:"#2e9e22"},{n:"Rare",c:"#1a66cc"},{n:"Épique",c:"#8e35c9"},{n:"Légendaire",c:"#e07a10"}];
 const EQBASE={w:{g:"Hache",p:"Sceptre",l:"Marteau",d:"Bâton druidique",s:"Masse",w:"Bâton de sorcier"},h:"Heaume",s:"Épaulières",b:"Plastron",g:"Gantelets",j:"Jambières",t:"Talisman",r:"Anneau"};
 const EQADJ=[["usé","simple","rouillé"],["renforcé","solide","robuste"],["runique","sculpté","ancien"],["du vétéran","de l’ombre","du champion"],["des Titans","d’Azeroth","du Roi des cendres","des Anciens dieux"]];
-const EQK={c:{n:"dégâts de clic",u:"%",b:[2,3.5,5.5,8,12]},d:{n:"DPS",u:"%",b:[2,3.5,5.5,8,12]},x:{n:"de chance de critique",u:"%",b:[1,1.5,2.5,4,6]},y:{n:"de dégâts critiques",u:"%",b:[10,18,28,40,60]}};
-const eqTier=zi=>Math.max(1,Math.round(Math.log10(Z[zi].hp)));
+const EQK={c:{n:"dégâts de clic",u:"%",b:[1.2,2.1,3.3,4.7,7]},d:{n:"DPS",u:"%",b:[1.2,2.1,3.3,4.7,7]},x:{n:"de chance de critique",u:"%",b:[1,1.5,2.5,4,6]},y:{n:"de dégâts critiques",u:"%",b:[4,6,10,13,20]}}; /* rééquilibrage v2 */
+const eqTier=zi=>[1,2,2,3,3,4,4,5,5][zPal(zi)-1]||1; /* niveau d’objet selon le palier de la zone (rééquilibrage v2) */
 const eqRoll=w=>{let t=w.reduce((a,b)=>a+b,0),r=Math.random()*t;for(let i=0;i<w.length;i++){if((r-=w[i])<0)return i}return w.length-1};
 const eqVal=(it,k)=>it&&it.b?((it.b.k===k?it.b.v:0)+(it.b2&&it.b2.k===k?it.b2.v:0)+(it.b3&&it.b3.k===k?it.b3.v:0)):0;
 const EQ=k=>EQS.reduce((t,sl)=>t+eqVal(S.eq.e[sl.k],k),0);
@@ -1073,9 +1174,9 @@ const EQ=k=>EQS.reduce((t,sl)=>t+eqVal(S.eq.e[sl.k],k),0);
 const SETP=["h","s","b","g","j"];
 const SETN={g:["du seigneur de guerre","du Courroux","du Conquérant"],l:["du Croisé","du Jugement","du Rédempteur"],p:["du Prophète","de la Transcendance","de la Foi éternelle"],d:["du gardien sauvage","de la Rage sylvestre","du Marcheur du rêve"],s:["du marcheur des esprits","des Dix Tempêtes","du Brise-terre"],w:["du maître des ombres","du Croc-de-sang","de la Faux d’ossements"]};
 const SETX=Object.fromEntries(Object.keys(SETN).map(k=>[k,SETN[k][0]]));
-const SETT1=[{n:2,c:5},{n:4,d:7,e:5},{n:5,c:10,d:10,e:10}];
-const SETT2=[{n:2,c:8},{n:4,d:11,e:8},{n:5,c:16,d:16,e:16}];
-const SETT3=[{n:2,c:12},{n:4,d:17,e:12},{n:5,c:24,d:24,e:24}];
+const SETT1=[{n:2,c:3},{n:4,d:4.1,e:3},{n:5,c:5.9,d:5.9,e:5.9}];
+const SETT2=[{n:2,c:4.7},{n:4,d:6.5,e:4.7},{n:5,c:9.3,d:9.3,e:9.3}];
+const SETT3=[{n:2,c:7},{n:4,d:9.9,e:7},{n:5,c:13.8,d:13.8,e:13.8}];
 const SETTS=[null,SETT1,SETT2,SETT3],SETT=SETT1;
 const SETRAID={mc:1,bwl:2,aq40:3,aq40H:3},SETSRC={1:"Cœur du Magma",2:"Repaire de l’Aile noire",3:"Temple d’Ahn’Qiraj"},SETSTAT={1:1,2:1.25,3:1.5};
 const itTier=it=>it&&it.tier||1;
@@ -1092,7 +1193,7 @@ function eqGen(rar,tier,src){
 }
 const eqTxtI=it=>eqTxt(it.b)+(it.b2?" · "+eqTxt(it.b2):"")+(it.b3?" · "+eqTxt(it.b3):"");
 const eqTxt=b=>"+"+b.v.toLocaleString("fr-FR")+(EQK[b.k].u==="%"?" % ":" ")+EQK[b.k].n;
-const eqPrice=it=>Math.ceil(Math.pow(10,it.l)*0.05*(it.r+1)*10);
+const EQPB=[4.5,20,65,230,800],eqPrice=it=>Math.ceil((EQPB[(it.l||1)-1]||800)*(it.r+1)); /* prix de vente (rééquilibrage v2) */
 function eqGive(it){
  S.eq.seen[it.r]=(S.eq.seen[it.r]||0)+1;if(S.eq.as&&it.r<S.eq.as&&!it.u){S.gold+=eqPrice(it);log("💰 Vente automatique : "+it.n+" ("+EQR[it.r].n.toLowerCase()+") vendu "+fmt(eqPrice(it))+" or");eqSig="";return}it.nw=1;S.eq.r.push(it); /* le nouvel objet va en bas de la liste : les objets déjà en réserve ne bougent plus */
  while(S.eq.r.length>eqCap()){let j=S.eq.r.length-1;while(j>0&&S.eq.r[j].u)j--;if(S.eq.r[j].u)break;const o=S.eq.r.splice(j,1)[0];S.gold+=eqPrice(o)}
@@ -1117,12 +1218,12 @@ function eqDrop(zi,src,kind,dk){
 const SULF=0.02; /* chance que Ragnaros laisse Sulfuras (une seule fois par classe) */
 function sulGive(){
  S.eq.sul=1;
- const it={id:"sulfuras",s:"w",r:4,l:eqTier(DG.mc.z),n:"🔥 Sulfuras, Main de Ragnaros",b:{k:"d",v:60},b2:{k:"c",v:20},src:"Ragnaros (Cœur du Magma) — arme légendaire unique, conservée après la renaissance",u:1};
+ const it={id:"sulfuras",s:"w",r:4,l:eqTier(DG.mc.z),n:"🔥 Sulfuras, Main de Ragnaros",b:{k:"d",v:33},b2:{k:"c",v:12},src:"Ragnaros (Cœur du Magma) — arme légendaire unique, conservée après la renaissance",u:1};
  eqGive(it);log("🔥🔥 SULFURAS, MAIN DE RAGNAROS ! L’arme légendaire est à toi.");
 }
 function cthGive(){
  S.eq.cth=1;
- const it={id:"cthun",s:"t",r:4,l:eqTier(DG.aq40.z),n:"👁️ Cœur de C’Thun",b:{k:"y",v:50},b2:{k:"d",v:30},b3:{k:"x",v:10},src:"C’Thun (Temple d’Ahn’Qiraj) — bijou légendaire unique, conservé après la renaissance",u:1};
+ const it={id:"cthun",s:"t",r:4,l:eqTier(DG.aq40.z),n:"👁️ Cœur de C’Thun",b:{k:"y",v:17},b2:{k:"d",v:17},b3:{k:"x",v:10},src:"C’Thun (Temple d’Ahn’Qiraj) — bijou légendaire unique, conservé après la renaissance",u:1};
  eqGive(it);log("👁️👁️ LE CŒUR DE C’THUN ! Le bijou légendaire est à toi.");
 }
 function eqEquip(id){
@@ -1136,7 +1237,7 @@ const EQSL={c:"clic",d:"DPS",x:"crit.",y:"dég. crit."};
 const eqShort=b=>({v:"+"+(Math.round(b.v*10)/10).toLocaleString("fr-FR")+(EQK[b.k].u==="%"?" %":""),l:EQSL[b.k]||""});
 /* === Score d’un objet : variation (en %) des dégâts estimés par seconde si on l’équipait à la place de la pièce de son emplacement ===
    dégâts estimés = DPS (critique inclus) + clics (automatiques + 3 clics manuels par seconde) × dégâts de clic × critique */
-const eqD=()=>{const ar=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.1*(S.fg.gA||0));return dps()+(ar+3)*cd()*critE()};
+const eqD=()=>{const ar=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.06*(S.fg.gA||0));return dps()+(ar+3)*cd()*critE()};
 function eqScore(it){const o=S.eq.e[it.s],d0=eqD();S.eq.e[it.s]=it;let d1;try{d1=eqD()}finally{if(o)S.eq.e[it.s]=o;else delete S.eq.e[it.s]}return d0>0?(d1/d0-1)*100:0}
 const eqPct=n=>(n>0?"+":n<0?"−":"")+(Math.abs(n)<10?(Math.round(Math.abs(n)*10)/10):Math.round(Math.abs(n))).toLocaleString("fr-FR")+" %";
 /* valeur propre d’une pièce (sans l’effet des panoplies) */
@@ -1150,7 +1251,7 @@ function eqCmp(it,plans){const sc=eqScore(it),st=sc>0.05?1:sc<-0.05?-1:0,pl=plan
  if(st<=0&&pl&&pl.pick[it.s]===it)return{sc,st:2,a:"◆",plan:pl,key:pl.gain,tip:"Panoplie T"+pl.t+" : seule, cette pièce fait perdre le bonus de ta panoplie actuelle ("+eqPct(sc)+"), mais en équipant tes "+pl.n+" pièces T"+pl.t+" (« Panoplie T"+pl.t+" » en haut du panneau Équipement), tes dégâts estimés passent à "+eqPct(pl.gain)+"."}
  return{sc,st,key:sc,a:st>0?"▲":st<0?"▼":"=",tip:(S.eq.e[it.s]?"":"Emplacement libre — ")+"Dégâts estimés : "+eqPct(sc)+" si tu l’équipes"}}
 function eqApplyPlan(t){const pl=eqPlan(t);if(!pl)return;Object.keys(pl.pick).forEach(k=>{const it=pl.pick[k],i=S.eq.r.indexOf(it);if(i<0)return;S.eq.r.splice(i,1);const old=S.eq.e[k];S.eq.e[k]=it;delete it.nw;if(old){delete old.nw;S.eq.r.splice(i,0,old)}});eqSig="";save();ui()}
-let eqFlt="all",eqSrt="sc",eqSel={},eqUndo=null;
+let eqFlt="all",eqSrt="sc",eqSel={},eqUndo=null,eqFoc=null,eqSM=false,eqSlotF=null,eqSetT=0;
 function eqSellSel(){const ids=Object.keys(eqSel);if(!ids.length)return;const out=S.eq.r.filter(x=>eqSel[x.id]&&!x.u&&!x.lk);if(!out.length)return;let g=0;out.forEach(x=>g+=eqPrice(x));S.eq.r=S.eq.r.filter(x=>!out.includes(x));S.gold+=g;eqSel={};eqUndo={items:out,gold:g,t:Date.now()};setTimeout(()=>{if(eqUndo&&Date.now()-eqUndo.t>=10000){eqUndo=null;eqSig="";ui()}},10300);eqSig="";save();ui()}
 function eqUndoSell(){if(!eqUndo)return;if(S.gold<eqUndo.gold){log("↶ Annulation impossible : tu as déjà dépensé cet or.");return}if(S.eq.r.length+eqUndo.items.length>eqCap()){log("↶ Annulation impossible : la réserve n’a plus assez de place.");return}S.gold-=eqUndo.gold;S.eq.r.push(...eqUndo.items);eqUndo=null;eqSig="";save();ui()}
 function eqEquipBest(){for(let pass=0;pass<3;pass++){let n=0;EQS.forEach(sl=>{let best=null,bs=0.05;S.eq.r.filter(x=>x.s===sl.k).forEach(x=>{const sc=eqScore(x);if(sc>bs){bs=sc;best=x}});if(best){const i=S.eq.r.indexOf(best),old=S.eq.e[sl.k];S.eq.r.splice(i,1);S.eq.e[sl.k]=best;delete best.nw;if(old){delete old.nw;S.eq.r.splice(i,0,old)}n++}});if(!n)break}eqSig="";save();ui()}
@@ -1160,9 +1261,20 @@ const eqCard=(it,cmp)=>{
  return `<div${it.u?` title="Objet légendaire unique : il ne disparaît pas lors d’une renaissance."`:""}><span style="color:${c};font-weight:700">${sl.i} ${it.n}</span>${it.nw?` <span style="color:#d35400;font-weight:700;font-size:11px">🆕 Nouveau</span>`:""}${it.set?` <span style="color:#2e7d32;font-size:11px;font-weight:600">(T${itTier(it)})</span>`:""}${it.u?` <span class="mut" style="font-size:12px;cursor:help">ⓘ</span>`:""} <span class="mut">${EQR[it.r].n} · niv. ${it.l}</span>${it.set?` <span style="color:#2e7d32;font-size:12px" title="${setN(itTier(it))} : bonus à 2, 4 et 5 pièces">🧩 ${setN(itTier(it))}</span>`:""}<br><span>${eqTxtI(it)}</span> ${diff}<br><span class="mut" style="font-size:12px">${it.src}</span></div>`;
 };
 let eqSig="";
+/* infobulle détaillée d’un objet du sac : bonus, effet réel sur la puissance, le DPS et le clic, pièce remplacée */
+function eqSwap(it){const k=it.s,old=S.eq.e[k],a={P:eqD(),d:dps(),c:cd()};S.eq.e[k]=it;let b;try{b={P:eqD(),d:dps(),c:cd()}}finally{if(old)S.eq.e[k]=old;else delete S.eq.e[k]}return{a,b}}
+function eqTipShow(id,e){const it=S.eq.r.find(x=>x.id===id);if(!it)return;let t=$("eqTip");if(!t){t=document.createElement("div");t.id="eqTip";document.body.appendChild(t)}
+ const esc=v=>String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;"),sl=EQS.find(x=>x.k===it.s),c=EQR[it.r].c,cur=S.eq.e[it.s],cp=eqCmp(it,eqPlans()),{a,b}=eqSwap(it);
+ const ln=(l,x,y)=>{const d=x>0?(y/x-1)*100:0,col=Math.abs(d)<0.05?"var(--mut)":d>0?"#3fae5a":"#e05a4a";return `<div class="tl"><span>${l}</span><span>${fmtB(x)} → <b style="color:${col}">${fmtB(y)}</b> <span style="color:${col}">${Math.abs(d)<0.05?"=":(d>0?"+":"")+(Math.round(d*10)/10).toLocaleString("fr-FR")+" %"}</span></span></div>`};
+ const st=it.set?`<div style="color:#3fae5a">Panoplie T${itTier(it)} : ${setCnt(itTier(it))+((cur&&cur.set===S.cls&&itTier(cur)===itTier(it))?0:1)}/5 une fois équipée</div>`:"";
+ t.style.borderColor=c;
+ t.innerHTML=`<b style="color:${c};font-size:14px">${esc(it.n)}</b><div class="mut">${EQR[it.r].n} · ${sl.n}${it.set?` · <b style="color:#3fae5a">T${itTier(it)}</b>`:""}</div><div style="margin:4px 0">${[it.b,it.b2,it.b3].filter(Boolean).map(x=>esc(eqTxt(x))).join("<br>")}</div><div class="mut" style="font-size:11px">Source : ${esc(it.src)}</div><hr><div class="mut" style="margin-bottom:2px">Si tu l’équipes :</div>${ln("Puissance",a.P,b.P)}${ln("DPS",a.d,b.d)}${ln("Dégâts de clic",a.c,b.c)}${cp.st===2&&cp.tip?`<div style="color:#e67e22">${esc(cp.tip)}</div>`:""}${st}<hr><div><span class="mut">À la place de :</span> ${cur?`<span style="color:${EQR[cur.r].c}">${esc(cur.n)}</span><br><span class="mut">${[cur.b,cur.b2,cur.b3].filter(Boolean).map(x=>esc(eqTxt(x))).join(" · ")}</span>`:"emplacement vide"}</div><div class="mut" style="font-size:11px;margin-top:4px">Clic : détail et actions · double-clic : équiper${it.lk?" · 🔒 bloqué":""}</div>`;
+ t.style.display="block";eqTipMove(e)}
+function eqTipMove(e){const t=$("eqTip");if(!t||t.style.display!=="block")return;const w=t.offsetWidth,h=t.offsetHeight;let x=e.clientX+18,y=e.clientY+18;if(x+w>innerWidth-8)x=e.clientX-w-18;if(y+h>innerHeight-8)y=Math.max(8,innerHeight-h-8);t.style.left=x+"px";t.style.top=y+"px"}
+function eqTipHide(){const t=$("eqTip");if(t)t.style.display="none"}
 function eqUI(){
  const box=$("eqbox");if(!box)return;
- const sig=JSON.stringify([S.cls,S.eq,eqFlt,eqSrt,Object.keys(eqSel).join(),eqUndo&&eqUndo.t,Math.round(dps()),cd(),critP(),critM()]);if(sig===eqSig)return;eqSig=sig;
+ const sig=JSON.stringify([S.cls,S.eq,eqFlt,eqSrt,Object.keys(eqSel).join(),eqUndo&&eqUndo.t,Math.round(dps()),cd(),critP(),critM(),curV,eqFoc,eqSM,eqSlotF,eqSetT,xplN(),PAN()]);if(sig===eqSig)return;eqSig=sig;
  {const ep0=$("eqPanel");if(ep0)ep0.style.display=S.cls?"":"none"}
  if(!S.cls){box.innerHTML="";return}
  let h="";
@@ -1171,58 +1283,202 @@ function eqUI(){
  const cmpAll=S.eq.r.map(x=>({x,sc:eqScore(x)})),up={};cmpAll.forEach(c=>{if(c.sc>0.05&&(!up[c.x.s]||c.sc>up[c.x.s]))up[c.x.s]=c.sc});
  const plansP=eqPlans(),planTile={};Object.values(plansP).forEach(pl=>Object.keys(pl.pick).forEach(k=>{if(!planTile[k]||pl.gain>planTile[k].gain)planTile[k]=pl}));
  const nUp=Object.keys(up).length,D0=eqD();let gainAll=0;if(nUp){const sv=JSON.parse(JSON.stringify(S.eq.e)),sr=S.eq.r;try{const tmp={};EQS.forEach(sl=>{let best=null,bs=0.05;sr.filter(x=>x.s===sl.k).forEach(x=>{const sc=eqScore(x);if(sc>bs){bs=sc;best=x}});if(best)S.eq.e[sl.k]=best});gainAll=(eqD()/D0-1)*100}finally{S.eq.e=sv}}
- {const esc=t=>String(t||"").replace(/"/g,"&quot;"),cell=k=>{const sl=EQS.find(x=>x.k===k),it=S.eq.e[k];
-  if(!it)return `<div class="pdc pde" style="grid-area:${k}" title="${sl.n} — vide"><div>${sl.i}</div><div class="mut" style="font-size:11px">${sl.n}</div></div>`;
-  const c=EQR[it.r].c,sb=eqShort(it.b),ex=(it.b2?" · "+eqShort(it.b2).v+" "+eqShort(it.b2).l:"")+(it.b3?" · "+eqShort(it.b3).v+" "+eqShort(it.b3).l:""),bu=up[k];
-  return `<div class="pdc pdt" style="grid-area:${k};border-color:${c}" title="${esc(it.n)} — ${sl.n} · ${EQR[it.r].n}&#10;${esc(eqTxtI(it))}&#10;${esc(it.src)}${it.set?"&#10;"+esc(setN(itTier(it))):""}${it.u?"&#10;Objet légendaire unique : conservé après une renaissance":""}">${!bu&&planTile[k]?`<span class="pdu" style="background:#e67e22" title="Pièce de la panoplie T${planTile[k].t} disponible en réserve : voir le bouton « Panoplie T${planTile[k].t} » en haut du panneau">◆ T${planTile[k].t}</span>`:""}${bu?`<span class="pdu" title="Un objet de ta réserve est meilleur pour cet emplacement : ${eqPct(bu)} de dégâts estimés">▲ ${eqPct(bu).replace("+","")}</span>`:""}<div class="pdh"><span>${sl.n}</span>${it.set?`<span style="color:${c}">T${itTier(it)}</span>`:""}</div><b style="color:${c};font-size:15px">${sb.v}</b><span class="mut pdl">${sb.l}${ex}</span></div>`};
-  const kk=(v,l)=>`<div class="pdk"><b>${v}</b><span>${l}</span></div>`,cr=Math.round(critP()*10)/10,cm=Math.round(critM()*100)/100;
-  const chips=(tot.d?kk("+"+(Math.round(tot.d*10)/10).toLocaleString("fr-FR")+" %","DPS"):"")+(tot.c?kk("+"+(Math.round(tot.c*10)/10).toLocaleString("fr-FR")+" %","dégâts de clic"):"")+kk(cr.toLocaleString("fr-FR")+" % · ×"+cm.toLocaleString("fr-FR"),"critique");
-  const sh=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t),act=SETTS[t].filter(x=>n>=x.n),nxt=SETTS[t].find(x=>n<x.n),det=SETTS[t].map(x=>(n>=x.n?"✔":"○")+" "+x.n+" p. : "+["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")).join("&#10;");
+ /* === PANNEAU DE DROITE : feuille de personnage compacte (emplacements autour du personnage) === */
+ const esc=t=>String(t||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"),fr=v=>(Math.round(v*10)/10).toLocaleString("fr-FR");
+ const sTxt=it=>[it.b,it.b2,it.b3].filter(Boolean).map(x=>{const q=eqShort(x);return q.v+" "+q.l}).join(" · ");
+ const ico=(it,sl,cl)=>{const c=it?EQR[it.r].c:"";return `<div class="sh-i${cl||""}"${it?` style="border-color:${c};background:${c}2e"`:""}>${sl.i}</div>`};
+ const slot=k=>{const sl=EQS.find(x=>x.k===k),it=S.eq.e[k];
+  if(!it)return `<div class="sh-s sh-v" data-pslot="${k}" title="${sl.n} — emplacement vide. Les boss de zone, de donjon et de raid laissent des objets${SETP.includes(k)?" ; les pièces de panoplie tombent dans les raids":""}. Clique pour voir ton sac pour cet emplacement.">${ico(null,sl," sh-e")}<div style="min-width:0"><div class="sh-n mut">${sl.n}</div><div class="sh-d">vide</div></div></div>`;
+  const c=EQR[it.r].c,bu=up[k],pl=!bu&&planTile[k];
+  return `<div class="sh-s" data-pslot="${k}" style="border-color:${c}66" title="${esc(it.n)} — ${sl.n} · ${EQR[it.r].n}&#10;${esc(eqTxtI(it))}&#10;${esc(it.src)}${it.set?"&#10;"+esc(setN(itTier(it))):""}${it.u?"&#10;Objet légendaire unique : conservé après une renaissance":""}${bu?"&#10;▲ Ton sac contient mieux : "+eqPct(bu)+" de dégâts estimés":""}&#10;Clique pour voir ton sac pour cet emplacement.">${ico(it,sl)}<div style="min-width:0"><div class="sh-n" style="color:${c}">${esc(it.n)}</div><div class="sh-d">${it.set?`<b style="color:#3fae5a">T${itTier(it)}</b> · `:""}${esc(sTxt(it))}</div></div>${bu?`<span class="sh-b">▲ ${eqPct(bu).replace("+","")}</span>`:pl?`<span class="sh-b" style="background:#e67e22">◆ T${pl.t}</span>`:""}</div>`};
+ const stat=(l,v,t)=>`<div class="sh-k" title="${t}"><span>${l}</span><b>${v}</b></div>`,xp=xplN()*XPLP,pn=PAN();
+ const center=`<div class="sh-c"><div class="sh-p">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b><div class="sh-g" style="margin-top:6px">${stat("DPS","+"+fr(tot.d||0)+" %","Bonus de DPS de tes objets")}${stat("Clic","+"+fr(tot.c||0)+" %","Bonus de dégâts de clic de tes objets")}${stat("Critique",fr(critP())+" %","Chance de coup critique (5 % de base + objets)")}${stat("Dégâts crit.","×"+(Math.round(critM()*100)/100).toLocaleString("fr-FR"),"Multiplicateur d’un coup critique (classe + objets)")}</div><div class="sh-o">Bonus actifs : objets <b>+${fr(tot.d||0)} %</b> DPS · panoplie <b>+${fr(SB("d"))} %</b> DPS, <b>+${fr(SB("c"))} %</b> clic · exploration <b>+${xp} %</b>${pn?` · panthéon <b>+${pn} %</b>`:""}</div></div>`;
+ const setL=[1,2,3].filter(t=>setCnt(t)>0).map(t=>{const n=setCnt(t),act=SETTS[t].filter(x=>n>=x.n),nxt=SETTS[t].find(x=>n<x.n),det=SETTS[t].map(x=>(n>=x.n?"✔":"○")+" "+x.n+" p. : "+["c","d","e"].filter(k=>x[k]).map(k=>"+"+x[k]+" % "+(k==="c"?"clic":k==="d"?"DPS":"essences")).join(" · ")).join("&#10;");
    return `<div class="pds" title="${esc(setN(t))} — ${n}/5 pièces. Les pièces tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent.&#10;${det}"><span>T${t} · ${(SETN[S.cls]||[])[t-1]||"panoplie"}</span><span class="pdp">${"●".repeat(n)}<span class="mut">${"○".repeat(5-n)}</span></span><span class="mut" style="font-size:11px">${act.length?"palier "+act[act.length-1].n+" p. actif":"aucun palier"}${nxt?" · suivant : "+nxt.n+" p.":""}</span></div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:8px">Aucune pièce de panoplie</div>`;
-  const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pdb"><span title="Dégâts par seconde estimés : DPS, clics et critiques réunis"><b>Puissance ${fmt(Math.round(D0))}</b>${nUp?` <span style="color:#2e7d32;font-size:11px">${eqPct(gainAll)} possible</span>`:""}</span>${Object.values(plansP).map(pl=>`<button data-plan="${pl.t}" style="background:#e67e22;border-color:#e67e22" title="Équipe tes ${pl.n} pièces T${pl.t} (${Object.keys(pl.pick).length} à changer) : les bonus de la panoplie T${pl.t} remplacent ceux de ta panoplie actuelle. Dégâts estimés : ${eqPct(pl.gain)}">◆ Panoplie T${pl.t} (${pl.n}/5) ${eqPct(pl.gain)}</button>`).join(" ")}${nUp?`<button id="eqall" title="Équipe d’un coup la meilleure pièce de ta réserve pour chaque emplacement amélioré">Tout équiper ▲ (${nUp})</button>`:""}</div><div class="pd cp">`+["t","h","r","s","j","b","w","g"].map(cell).join("")+`<div class="pdm"><div style="font-size:26px;line-height:1">${CL[S.cls].i}</div><b>${CL[S.cls].n}</b>${chips}</div></div>${sh}`}
+ {const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pdb"><span title="Dégâts par seconde estimés : DPS, clics et critiques réunis"><b>Puissance ${fmtB(Math.round(D0))}</b>${nUp?` <span style="color:#2e7d32;font-size:11px">${eqPct(gainAll)} possible</span>`:""}</span>${Object.values(plansP).map(pl=>`<button data-plan="${pl.t}" style="background:#e67e22;border-color:#e67e22" title="Équipe tes ${pl.n} pièces T${pl.t} (${Object.keys(pl.pick).length} à changer) : les bonus de la panoplie T${pl.t} remplacent ceux de ta panoplie actuelle. Dégâts estimés : ${eqPct(pl.gain)}">◆ Panoplie T${pl.t} (${pl.n}/5) ${eqPct(pl.gain)}</button>`).join(" ")}${nUp?`<button id="eqall" title="Équipe d’un coup la meilleure pièce de ton sac pour chaque emplacement amélioré">Tout équiper ▲ (${nUp})</button>`:""}</div><div class="sh shm"><div class="sh-col">${["h","s","b","g"].map(slot).join("")}</div>${center}<div class="sh-col">${["j","r","t","w"].map(slot).join("")}</div></div>${setL}`}
   const plans=eqPlans(),cmps=S.eq.r.map(x=>eqCmp(x,plans));Object.keys(eqSel).forEach(k=>{if(!S.eq.r.find(x=>x.id===k))delete eqSel[k]});
- const idx=S.eq.r.map((x,i)=>i).filter(i=>eqFlt==="all"||(eqFlt==="up"&&(cmps[i].st>0||cmps[i].st===2))||(eqFlt==="dn"&&cmps[i].st<0)),slx=k=>EQS.findIndex(x=>x.k===k);
+ {const ep2=$("eqPanel");if(ep2){ep2.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>eqApplyPlan(+b.dataset.plan));const ea=$("eqall");if(ea)ea.onclick=eqEquipBest;ep2.querySelectorAll("[data-pslot]").forEach(b=>b.onclick=()=>{eqSlotF=eqSlotF===b.dataset.pslot&&curV==="eq"?null:b.dataset.pslot;eqFoc=null;eqSM=false;if(curV!=="eq")setView("eq");else{eqSig="";ui()}})}}
+ if(eqFoc&&!S.eq.r.find(x=>x.id===eqFoc))eqFoc=null;
+ /* sac */
+ const idx=S.eq.r.map((x,i)=>i).filter(i=>(!eqSlotF||S.eq.r[i].s===eqSlotF)&&(eqFlt==="all"||(eqFlt==="up"&&(cmps[i].st>0||cmps[i].st===2))||(eqFlt==="dn"&&cmps[i].st<0))),slx=k=>EQS.findIndex(x=>x.k===k);
  idx.sort((a,b)=>{const A=S.eq.r[a],B=S.eq.r[b],ds=cmps[b].key-cmps[a].key;return eqSrt==="sc"?ds:eqSrt==="r"?(B.r-A.r)||ds:(slx(A.s)-slx(B.s))||ds});
- const selN=Object.keys(eqSel).length,selG=S.eq.r.filter(x=>eqSel[x.id]).reduce((t,x)=>t+eqPrice(x),0),chip=(k,v,l,on)=>`<span class="ch${on?" on":""}" data-${k}="${v}">${l}</span>`;
- h+=`<div class="fb"><h3 style="margin:0">Objets en réserve <span class="mut">${S.eq.r.length}/${eqCap()}</span></h3>`+(S.eq.r.length?`<span style="flex:1"></span>${chip("f","all","Tous",eqFlt==="all")}${chip("f","up","▲ Meilleurs",eqFlt==="up")}${chip("f","dn","▼ Moins bons",eqFlt==="dn")}<span class="mut" style="font-size:11px;margin-left:6px">Trier :</span>${chip("s","sc","Score",eqSrt==="sc")}${chip("s","r","Rareté",eqSrt==="r")}${chip("s","sl","Emplacement",eqSrt==="sl")}`:"")+`</div>`;
- if(S.eq.r.length>=eqCap())h+=`<div style="color:#b03a2e;margin-bottom:6px">Réserve pleine : tu ne ramasses plus d’objets. Équipe, vends ou achète un sac chez le marchand pour faire de la place.</div>`;
- if(!S.eq.r.length)h+=`<div class="mut">Aucun objet pour l’instant. Les boss de zone, de donjon et de raid peuvent en laisser.</div>`;
- else{h+=idx.length?`<div class="rg">`:`<div class="mut">Aucun objet ne correspond à ce filtre.</div>`;idx.forEach(i=>{const it=S.eq.r[i],c=EQR[it.r].c,sl=EQS.find(x=>x.k===it.s),sb=eqShort(it.b),cp=cmps[i],sellable=!it.u&&!it.lk,ex=it.b2?" · "+eqShort(it.b2).v+" "+eqShort(it.b2).l:"";
-  h+=`<div class="rt${eqSel[it.id]?" sel":""}" data-sel="${sellable?it.id:""}" style="border-color:${c}" title="${(it.n+" — "+sl.n+" · "+EQR[it.r].n+"\n"+eqTxtI(it)+"\n"+cp.tip+"\n"+it.src+(it.u?"\nObjet légendaire unique : ne peut pas être vendu":it.lk?"\nObjet bloqué":"\nClique sur la carte pour la sélectionner (vente groupée)")).replace(/"/g,"&quot;")}"><div class="rth"><b style="color:${c};font-size:15px">${eqSel[it.id]?"✔ ":""}${sb.v}</b><span style="color:${cp.st===2?"#d35400":cp.st>0?"#2e7d32":cp.st<0?"#b03a2e":"var(--mut)"};font-weight:700;font-size:12px">${cp.a} ${eqPct(cp.key).replace("+","")}${cp.st===2?" T"+cp.plan.t:""}</span></div><div class="mut pdl">${sb.l}${ex} · ${sl.n}${it.set?` · <b style="color:#2e7d32">T${itTier(it)}</b>`:""}</div><div class="nm" style="color:${c}">${it.nw?"🆕 ":""}${it.n}</div><div class="mut pdl">${it.src}</div><div class="rtf"><button data-eq="${it.id}">Équiper</button><button data-sell="${it.id}"${sellable?"":" disabled"} title="Vendre pour ${fmt(eqPrice(it))} or">💰</button><button data-lock="${it.id}" title="${it.lk?"Objet bloqué : il ne peut pas être vendu. Clique pour le débloquer.":"Bloquer l’objet pour éviter de le vendre par erreur"}">${it.lk?"🔒":"🔓"}</button></div></div>`});if(idx.length)h+=`</div>`;
-  h+=`<div class="bar2"><span>${selN?`<b>${selN} objet${selN>1?"s":""}</b> sélectionné${selN>1?"s":""} · <span style="color:#b9770e">+${fmt(selG)} or</span>`:`<span class="mut">Clique sur des objets pour les sélectionner, puis vends-les ensemble.</span>`}</span><span style="display:flex;gap:6px;flex-wrap:wrap"><button id="eqs1" title="Sélectionne les objets moins bons que ta pièce équipée (hors bloqués)">Les ▼</button><button id="eqs2">Tout</button><button id="eqs3"${selN?"":" disabled"}>Vider</button><button id="eqs4" class="on"${selN?"":" disabled"}>Vendre</button></span></div>`;
-  h+=`<div class="mut" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px"><span>Vente automatique des objets plus faibles que <select id="eqas"><option value="0">— désactivée —</option>${[1,2,3].map(r=>`<option value="${r}"${(S.eq.as||0)===r?" selected":""}>${EQR[r].n}</option>`).join("")}</select></span>${eqUndo&&Date.now()-eqUndo.t<10000?`<button id="equn">↶ Annuler la vente (${eqUndo.items.length} objet${eqUndo.items.length>1?"s":""})</button>`:""}</div>`}
- h+=`<div class="mut" style="font-size:11px;margin-top:6px">▲ meilleur que ta pièce équipée · ▼ moins bon · ◆ pièce de panoplie à équiper avec les autres (le % est le gain une fois la panoplie montée) : le pourcentage est la variation des dégâts estimés si tu l’équipes (DPS, clics et critiques réunis).</div>`;
+ const selN=Object.keys(eqSel).length,selG=S.eq.r.filter(x=>eqSel[x.id]).reduce((t,x)=>t+eqPrice(x),0),chip=(k,v,l,on,t)=>`<span class="ch${on?" on":""}" data-${k}="${v}"${t?` title="${t}"`:""}>${l}</span>`,cap=eqCap();
+ let bag=`<div class="sh-card"><div class="sh-h"><b>Sac</b><span class="mut">${S.eq.r.length}/${cap}</span><span style="flex:1"></span>${chip("f","all","Tous",eqFlt==="all")}${chip("f","up","▲",eqFlt==="up","Meilleurs que ta pièce équipée")}${chip("f","dn","▼",eqFlt==="dn","Moins bons que ta pièce équipée")}<span class="mut" style="font-size:11px;margin-left:4px">Tri :</span>${chip("s","sc","Score",eqSrt==="sc")}${chip("s","r","Rareté",eqSrt==="r")}${chip("s","sl","Empl.",eqSrt==="sl")}</div>`;
+ if(eqSlotF)bag+=`<div style="font-size:12px;margin-top:6px">Emplacement : <b>${EQS.find(x=>x.k===eqSlotF).n}</b> <span class="ch" data-slot="${eqSlotF}">✕ tout le sac</span></div>`;
+ if(S.eq.r.length>=cap)bag+=`<div style="color:#e05a4a;font-size:12px;margin-top:6px">Sac plein : tu ne ramasses plus d’objets. Équipe, vends ou achète un sac chez le marchand.</div>`;
+ bag+=`<div class="sh-bagg">`+idx.map(i=>{const it=S.eq.r[i],c=EQR[it.r].c,sl=EQS.find(x=>x.k===it.s),cp=cmps[i],mk=cp.st===2?`<i class="m" style="background:#e67e22">◆</i>`:cp.st>0?`<i class="m" style="background:#2e7d32">▲</i>`:cp.st<0?`<i class="m" style="background:#8a2a20">▼</i>`:"";
+  const gc=cp.st===2?"#e67e22":cp.st>0?"#3fae5a":cp.st<0?"#e05a4a":"var(--mut)";
+  return `<div class="sh-cell"><div class="sh-it${eqSel[it.id]?" sel":""}${eqFoc===it.id?" foc":""}" data-it="${it.id}" style="border-color:${c};background:${c}26">${sl.i}${mk}${it.set?`<i class="t">T${itTier(it)}</i>`:""}${it.nw?`<i class="nw"></i>`:""}${it.lk?`<i class="lk">🔒</i>`:""}${eqSel[it.id]?`<i class="ok">✔</i>`:""}</div><span style="color:${gc}">${eqPct(cp.key)}</span></div>`}).join("")+(!eqSlotF&&eqFlt==="all"?Array(Math.max(0,cap-S.eq.r.length)).fill(`<div class="sh-cell"><div class="sh-it vide"></div><span></span></div>`).join(""):"")+`</div>`;
+ if(!S.eq.r.length)bag+=`<div class="mut" style="font-size:12px;margin-top:6px">Ton sac est vide : les boss de zone, de donjon et de raid laissent des objets.</div>`;
+ else if(!idx.length)bag+=`<div class="mut" style="font-size:12px;margin-top:6px">Aucun objet ne correspond à ce filtre.</div>`;
+ /* fiche détaillée de l’objet choisi, comparée à la pièce équipée */
+ if(eqFoc&&!eqSM){const i=S.eq.r.findIndex(x=>x.id===eqFoc),it=S.eq.r[i],cp=cmps[i],sl=EQS.find(x=>x.k===it.s),c=EQR[it.r].c,cur=S.eq.e[it.s],sellable=!it.u&&!it.lk,col=cp.st===2?"#e67e22":cp.st>0?"#3fae5a":cp.st<0?"#e05a4a":"var(--mut)";
+  const setL=it.set?`<div style="font-size:12px;color:#3fae5a">Panoplie T${itTier(it)} : ${setCnt(itTier(it))+((cur&&cur.set===S.cls&&itTier(cur)===itTier(it))?0:1)}/5 une fois équipée</div>`:"";
+  bag+=`<div class="sh-det" style="border-color:${c}"><div style="display:flex;gap:10px;align-items:flex-start">${ico(it,sl)}<div style="flex:1;min-width:0"><b style="color:${c};font-size:15px">${it.nw?"🆕 ":""}${esc(it.n)}</b><div class="mut" style="font-size:12px">${EQR[it.r].n} · ${sl.n}${it.set?` · <b style="color:#3fae5a">T${itTier(it)}</b>`:""} · ${esc(it.src)}</div><div style="margin-top:4px">${esc(eqTxtI(it))}</div><div style="margin-top:4px;color:${col};font-weight:700">${cp.a} ${eqPct(cp.key)} de dégâts estimés si tu l’équipes</div><div class="mut" style="font-size:12px">À la place de : ${cur?`<span style="color:${EQR[cur.r].c}">${esc(cur.n)}</span> — ${esc(sTxt(cur))}`:"emplacement vide"}</div>${cp.st===2&&cp.tip?`<div style="font-size:12px;color:#e67e22">${esc(cp.tip)}</div>`:""}${setL}</div></div><div class="sh-dbtn"><button data-eq="${it.id}" class="on">Équiper</button><button data-sell="${it.id}"${sellable?"":" disabled"} title="${it.u?"Objet légendaire unique : il ne peut pas être vendu":it.lk?"Objet bloqué":""}">💰 Vendre ${fmt(eqPrice(it))} or</button><button data-lock="${it.id}">${it.lk?"🔒 Débloquer":"🔓 Bloquer"}</button><button data-x="1" title="Fermer">✕</button></div></div>`}
+ if(S.eq.r.length){
+  bag+=`<div class="bar2"><span>${eqSM?(selN?`<b>${selN} objet${selN>1?"s":""}</b> sélectionné${selN>1?"s":""} · <span style="color:#b9770e">+${fmt(selG)} or</span>`:`<span class="mut">Clique sur les objets à vendre.</span>`):`<span class="mut">Clique sur un objet pour le détail · double-clic pour l’équiper.</span>`}</span><span style="display:flex;gap:6px;flex-wrap:wrap">${eqSM?`<button id="eqs1" title="Sélectionne les objets moins bons que ta pièce équipée (hors bloqués)">Les ▼</button><button id="eqs2">Tout</button><button id="eqs3"${selN?"":" disabled"}>Vider</button><button id="eqs4" class="on"${selN?"":" disabled"}>Vendre</button><button id="eqsm">Terminer</button>`:`<button id="eqsm">💰 Vendre plusieurs objets</button>`}</span></div>`;
+  bag+=`<div class="mut" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px"><span>Vente automatique des objets plus faibles que <select id="eqas"><option value="0">— désactivée —</option>${[1,2,3].map(r=>`<option value="${r}"${(S.eq.as||0)===r?" selected":""}>${EQR[r].n}</option>`).join("")}</select></span>${eqUndo&&Date.now()-eqUndo.t<10000?`<button id="equn">↶ Annuler la vente (${eqUndo.items.length} objet${eqUndo.items.length>1?"s":""})</button>`:""}</div>`}
+ bag+=`<div class="mut" style="font-size:11px;margin-top:6px">▲ meilleur que ta pièce · ▼ moins bon · ◆ pièce de panoplie à monter avec les autres · le pourcentage est la variation des dégâts estimés (DPS, clics et critiques réunis).</div></div>`;
+ h+=bag;
  box.innerHTML=h;
- box.querySelectorAll("[data-eq]").forEach(b=>b.onclick=e=>{e.stopPropagation();eqEquip(b.dataset.eq)});
- box.querySelectorAll("[data-sell]").forEach(b=>b.onclick=e=>{e.stopPropagation();eqSell(b.dataset.sell)});box.querySelectorAll("[data-lock]").forEach(b=>b.onclick=e=>{e.stopPropagation();eqLock(b.dataset.lock)});
- box.querySelectorAll("[data-sel]").forEach(b=>b.onclick=()=>{const id=b.dataset.sel;if(!id)return;if(eqSel[id])delete eqSel[id];else eqSel[id]=1;eqSig="";ui()});
- box.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{eqFlt=b.dataset.f;eqSig="";ui()});box.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{eqSrt=b.dataset.s;eqSig="";ui()});
- const sl1=$("eqs1");if(sl1){sl1.onclick=()=>{eqSel={};S.eq.r.forEach((x,i)=>{if(!x.u&&!x.lk&&cmps[i].st<0)eqSel[x.id]=1});eqSig="";ui()};$("eqs2").onclick=()=>{eqSel={};S.eq.r.forEach(x=>{if(!x.u&&!x.lk)eqSel[x.id]=1});eqSig="";ui()};$("eqs3").onclick=()=>{eqSel={};eqSig="";ui()};$("eqs4").onclick=eqSellSel}
- const asx=$("eqas");if(asx)asx.onchange=()=>{S.eq.as=+asx.value;save();eqSig="";ui()};const unx=$("equn");if(unx)unx.onclick=eqUndoSell;
- const ea=$("eqall");if(ea)ea.onclick=eqEquipBest;{const ep2=$("eqPanel");if(ep2)ep2.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>eqApplyPlan(+b.dataset.plan))}
+ const rr=()=>{eqSig="";ui()};
+ box.querySelectorAll("[data-it]").forEach(b=>{const id=b.dataset.it;b.onmouseenter=e=>eqTipShow(id,e);b.onmousemove=eqTipMove;b.onmouseleave=eqTipHide});
+ box.querySelectorAll("[data-slot]").forEach(b=>b.onclick=()=>{eqSlotF=eqSlotF===b.dataset.slot?null:b.dataset.slot;rr()});
+ box.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>eqApplyPlan(+b.dataset.plan));box.querySelectorAll("[data-all]").forEach(b=>b.onclick=eqEquipBest);
+ box.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{eqSetT=+b.dataset.st;rr()});
+ box.querySelectorAll("[data-foc]").forEach(b=>b.onclick=()=>{eqFoc=b.dataset.foc;eqSlotF=null;eqSM=false;rr()});
+ box.querySelectorAll("[data-it]").forEach(b=>{const id=b.dataset.it;b.onclick=()=>{eqTipHide();if(eqSM){const it=S.eq.r.find(x=>x.id===id);if(!it||it.u||it.lk)return;if(eqSel[id])delete eqSel[id];else eqSel[id]=1}else eqFoc=eqFoc===id?null:id;rr()};b.ondblclick=()=>{if(!eqSM){eqFoc=null;eqEquip(id)}}});
+ box.querySelectorAll("[data-eq]").forEach(b=>b.onclick=()=>{eqFoc=null;eqEquip(b.dataset.eq)});
+ box.querySelectorAll("[data-sell]").forEach(b=>b.onclick=()=>{eqFoc=null;eqSell(b.dataset.sell)});box.querySelectorAll("[data-lock]").forEach(b=>b.onclick=()=>eqLock(b.dataset.lock));
+ box.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{eqFoc=null;rr()});
+ box.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{eqFlt=b.dataset.f;rr()});box.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{eqSrt=b.dataset.s;rr()});
+ const smx=$("eqsm");if(smx)smx.onclick=()=>{eqSM=!eqSM;if(!eqSM)eqSel={};eqFoc=null;rr()};
+ const sl1=$("eqs1");if(sl1){sl1.onclick=()=>{eqSel={};S.eq.r.forEach((x,i)=>{if(!x.u&&!x.lk&&cmps[i].st<0)eqSel[x.id]=1});rr()};$("eqs2").onclick=()=>{eqSel={};S.eq.r.forEach(x=>{if(!x.u&&!x.lk)eqSel[x.id]=1});rr()};$("eqs3").onclick=()=>{eqSel={};rr()};$("eqs4").onclick=eqSellSel}
+ const asx=$("eqas");if(asx)asx.onchange=()=>{S.eq.as=+asx.value;save();rr()};const unx=$("equn");if(unx)unx.onclick=eqUndoSell;
 
 }
 const uiSig={};
+
+
+/* === DONJONS ET RAIDS SUR LA CARTE DU MONDE : un site = une icône (plusieurs entrées possibles) ; position en px de l’image d’origine === */
+const WMSZ={e:[1382,2576],k:[1402,2576]};
+const WMS=[
+ {id:"mort",c:"e",x:340,y:2140,ks:["mort"]},{id:"ombre",c:"e",x:360,y:990,ks:["ombre"]},{id:"scholo",c:"e",x:790,y:805,ks:["scholo"]},
+ {id:"strat",c:"e",x:930,y:575,n:"Stratholme",ks:["stratH","stratU"]},{id:"ulda",c:"e",x:880,y:1630,ks:["ulda"]},
+ {id:"brm",c:"e",x:640,y:1760,n:"Mont Rochenoire",ks:["brd","pic","mc","bwl"]},{id:"atal",c:"e",x:900,y:2065,ks:["atal"]},{id:"zg",c:"e",x:640,y:2250,ks:["zg"]},
+ {id:"lamen",c:"k",x:690,y:1400,ks:["lamen"]},{id:"brasse",c:"k",x:350,y:890,ks:["brasse","brasseH"]},
+ {id:"mara",c:"k",x:210,y:1475,n:"Maraudon",ks:["maraO","maraV","maraD","maraOH","maraVH","maraDH"]},{id:"ony",c:"k",x:900,y:1815,ks:["onyxia"]},
+ {id:"zulf",c:"k",x:800,y:2055,ks:["zulf"]},{id:"dm",c:"k",x:340,y:1765,n:"Hache-Tripes",ks:["dmE","dmO","dmN"]},{id:"aq",c:"k",x:300,y:2270,n:"Ahn’Qiraj",ks:["aq20","aq40"]}
+].filter(x=>x.ks.some(k=>DG[k]));
+let wsSel=null,wsSig="";
+const wsDoneK=k=>RAIDS.includes(k)?raidDone(k):dgDone(k);
+function wsKey(k){const d=DG[k];if(!d)return{vis:0};const inW=WLD().includes(d.z),zo=inW&&zOpen(d.z);
+ if(RAIDS.includes(k)){if(!prCan())return{vis:1,ok:0,why:"Termine d’abord une zone du palier 9 ("+P9N()+")."};if(!raidHas(k))return{vis:1,ok:0,why:"Composants rares manquants (voir ci-dessous)."};return{vis:1,ok:1}}
+ if(/Raid/.test(d.tag||""))return{vis:0};
+ if(ENDD.includes(k)){if(!zo)return{vis:1,ok:0,why:"Débloque d’abord la zone "+Z[d.z].n+" (palier "+zPal(d.z)+")."};if(d.needKey&&!(S.keys&&S.keys[d.needKey]))return{vis:1,ok:0,why:d.keyName+" requise : elle tombe sur le boss de la partie humaine (1 chance sur 5)."};return{vis:1,ok:1}}
+ return zo?{vis:1,ok:1}:{vis:0}}
+const wsVis=s=>s.ks.filter(k=>DG[k]&&wsKey(k).vis);
+const wsList=c=>WMS.filter(s=>s.c===c).map(s=>({s,keys:wsVis(s)})).filter(x=>x.keys.length);
+const wsState=()=>JSON.stringify([wsSel,prCan(),WMS.map(s=>s.ks.map(k=>{if(!DG[k])return 0;const r=wsKey(k);return r.vis?(r.ok?1:2)+(wsDoneK(k)?4:0):0}))]);
+function wsOpen(id){const s=WMS.find(x=>x.id===id);if(!s)return;wsSel=id;const ks=wsVis(s),zs=[...new Set(ks.map(k=>DG[k].z))];
+ if(!dun&&!conf&&zs.length===1&&WLD().includes(zs[0])&&zOpen(zs[0])&&S.zone!==zs[0]){S.zone=zs[0];spawn()}
+ wsSig="";uiSig.z="";ui()}
+function wsEnter(k){const d=DG[k];if(!d||dun||conf)return;if(WLD().includes(d.z)&&zOpen(d.z)&&S.zone!==d.z){S.zone=d.z}enterDun(k);if(dun)wsSel=null;wsSig="";uiSig.z="";ui()}
+function wsUI(){const st=$("stage");if(!st)return;let card=$("wsCard");const s=wsSel&&WMS.find(x=>x.id===wsSel),ks=s?wsVis(s):[];
+ if(!s||!ks.length||curV!=="zone"){if(card)card.remove();if(s&&!ks.length)wsSel=null;wsSig="";return}
+ const sig=JSON.stringify([wsSel,!!dun,!!conf,ks.map(k=>{const r=wsKey(k);return [r.ok,r.why,S.gold>=DG[k].cost,wsDoneK(k)]}),S.rc,(S.keys||{})]);if(card&&sig===wsSig)return;wsSig=sig;
+ if(!card){card=document.createElement("div");card.id="wsCard";st.appendChild(card)}
+ const zn=[...new Set(ks.map(k=>Z[DG[k].z].n))].join(" / ");
+ let h=`<div class="wsh"><b>${s.n||DG[ks[0]].n}</b><span class="mut">${zn}</span><button class="wsx" data-x="1" title="Fermer">✕</button></div>`;
+ ks.forEach(k=>{const d=DG[k],r=wsKey(k),rd=RAIDS.includes(k)||/Raid/.test(d.tag||""),dn=wsDoneK(k),im="images/"+d.img;
+  let req="";
+  if(RAIDS.includes(k)){const q=RQ[k];req=q?`<div>`+(raidRb(k)?"":`<span class="chip" style="background:#e67e2233;border-color:#d68a3c">⚠ Renaissance recommandée</span>`)+q.map(x=>`<span class="chip" style="${S.rc[x.id]?"background:#2e7d3233;border-color:#3fae5a":"opacity:.75"}" title="Tombe sur ${x.boss} (${DG[x.src].n})">${S.rc[x.id]?"✔":"○"} ${x.n}${S.rc[x.id]?"":" — "+x.boss+" ("+DG[x.src].n+")"}</span>`).join("")+`</div>`:`<div class="mut" style="font-size:12px">Aucun composant requis</div>`}
+  const loot=SETRAID[k]?` · butin : panoplie T${SETRAID[k]}`:"";
+  const can=r.ok&&!dun&&!conf&&S.gold>=d.cost;
+  h+=`<div class="wse${r.ok?"":" lk"}"><div class="wsi"><img src="${im}.${EXT[xi(im)]}" data-b="${im}" data-i="${xi(im)}" data-n="__ico" data-k="${k}" alt="" onerror="nx(this)"></div><div class="wst"><b>${d.em||"⚔️"} ${d.n}</b> <span class="chip">${rd?"Raid":"Donjon"}</span>${dn?` <span class="chip" style="background:#2e7d3233;border-color:#3fae5a">✔ déjà vaincu</span>`:""}<br><span class="mut">${d.floors} salles · boss final : ${d.b}${loot} · ${Math.round(dunT(d))} s</span>${r.ok?"":`<div style="color:#e0a040">🔒 ${r.why}</div>`}${req}</div><button data-k="${k}"${can?"":" disabled"} title="${dun||conf?"Termine d’abord ton combat en cours":r.ok?(S.gold>=d.cost?"":"Pas assez d’or"):"Verrouillé"}">${r.ok?"💰 "+fmtB(d.cost)+" · Entrer":"🔒 Verrouillé"}</button></div>`});
+ h+=`<div class="c"><button data-x="1">↩ Retour à la zone</button></div>`;
+ card.innerHTML=h;
+ card.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{wsSel=null;wsSig="";uiSig.z="";ui()});
+ card.querySelectorAll("button[data-k]").forEach(b=>b.onclick=()=>wsEnter(b.dataset.k))}
+/* === CARTE DU MONDE : deux continents, zones cliquables (polygones en % de l’image) === */
+const WMC={e:{img:"images/carte-monde-royaumes.jpg",r:"1382/2576",crop:[11,19.5,87,100],n:"Royaumes de l’Est"},k:{img:"images/carte-monde-kalimdor.jpg",r:"1402/2576",crop:[1,0.5,99.2,97],n:"Kalimdor"}};
+/* contours tracés sur les cartes (en % de l’image) : une zone peut avoir plusieurs morceaux (îles) séparés par | ; lab = position du numéro */
+const WMP=[
+["e",[0],"26.63,72.63 26.34,73.06 26.34,73.56 28,76.32 28,77.02 27.71,77.29 30.75,77.45 31.26,78.77 31.91,79.39 40.74,79.39 44.28,79.19 50.65,79.15 49.93,76.32 50.29,74.57 49.93,73.21 39.51,73.18 39.07,69.22 38.86,69.57 38.86,70.92 38.57,71.12 36.83,71.12 35.38,71.74 33.94,71.89 33.21,72.24 31.11,72.48 29.81,72.48 29.52,72.32 28.22,72.24",[36.47,76.09]],
+["e",[1],"30.75,77.48 27.71,77.33 27.28,77.45 24.75,77.48 23.73,77.83 22.07,78.84 21.64,79.46 20.48,80.43 20.04,81.6 20.04,82.34 20.77,83.66 21.06,83.77 21.35,84.51 21.92,85.02 26.92,84.86 33.36,84.28 32.2,81.64 31.84,79.39 31.19,78.77",[26.27,81.68]],
+["e",[2],"50,73.21 50.36,74.5 50,76.32 50.72,79.15 53.55,78.61 55.93,77.99 67.87,77.29 65.56,76.59 65.63,75.54 65.05,74.5 64.25,74.11 63.39,74.03 63.1,73.8 62.59,73.8 62.3,73.64 62.3,73.21",[54.7,75.66]],
+["e",[3],"50.58,79.23 44.28,79.23 40.74,79.43 31.91,79.43 32.27,81.64 33.43,84.28 50.58,84.2 50.29,81.87",[44.65,81.72]],
+["e",[4],"55.72,85.44 52.89,85.25 50.65,84.24 33.36,84.32 27.5,84.86 22.79,85.09 24.75,85.4 24.96,85.83 26.41,86.8 28.29,87.38 29.45,88.12 30.32,88.08 31.19,87.62 33.21,87.62 33.65,88.35 34.23,88.66 34.37,88.98 34.8,89.09 34.8,89.64 34.59,89.79 32.27,90.06 31.69,90.33 31.55,90.61 30.32,91.5 29.45,93.09 29.52,93.71 30.32,94.37 30.32,95.46 29.74,95.96 29.67,96.7 30.46,97.4 31.4,98.95 31.84,99.15 31.98,99.5 33.72,99.57 35.17,99.38 38.86,99.46 39.73,99.26 40.67,98.45 40.67,97.63 40.3,97.05 39.44,96.66 39.15,96.27 39.15,94.95 40.09,94.57 40.38,94.25 41.68,93.56 42.26,93.4 45.73,93.48 47.61,93.05 48.55,92.47 50.43,92.47 50.65,92.24 53.47,91.61 54.7,91.11 56.73,90.99 57.45,90.64 57.96,90.57 57.45,88.35 56.8,86.96",[43.27,88.82]],
+["e",[5],"69.83,78.49 68.96,77.8 68.02,77.33 55.79,78.07 55.43,80.24 56.08,82.57 59.04,82.22 63.24,82.22 65.99,82.53 68.96,83.35 69.32,83.07 69.46,82.38 70.26,81.72 70.55,81.02 70.55,79.62",[65.85,80.01]],
+["e",[6],"72.5,62.34 55.14,62.54 55.79,63.32 55.93,68.28 66.35,68.71 67.8,68.44 69.03,68.44 69.03,68.17 69.39,68.09 71.56,68.05 72.29,67.7 73.81,67.43 74.02,67.2 74.02,66.3 73.73,65.76 72.94,65.18 72.94,63.66 72.5,63.51",[64.33,65.57]],
+["e",[7],"55.07,62.54 50.87,62.73 38.78,62.62 38.49,66.77 38.21,67.16 38.28,68.25 38.71,68.36 39.07,68.25 55.86,68.28 55.72,63.32",[43.85,65.45]],
+["e",[8],"68.89,83.35 65.99,82.57 63.24,82.26 59.04,82.26 56.15,82.61 56.15,84.24 55.72,85.4 56.87,86.96 57.53,88.35 58.03,90.53 61.07,89.95 62.74,89.48 62.95,89.25 64.62,89.01 66.57,88.08 67.15,87.42 67.15,85.95 66.71,84.98 66.71,83.85 68.45,83.54",[61.43,85.21]],
+["e",[9],"38.86,68.4 39.29,69.41 39.65,73.18 62.3,73.18 62.74,72.9 62.95,71.58 62.74,71.23 62.74,69.99 62.08,69.25 62.08,68.63 62.3,68.56 52.1,68.28 39.07,68.28",[43.99,70.73]],
+["e",[20],"22.36,58.04 22.36,58.35 23.73,58.81 24.53,60.25 25.98,60.25 26.41,60.64 26.63,61.34 27.21,61.41 27.71,61.92 28.15,61.96 28.15,63 28.65,63.98 28.44,65.49 28.73,65.64 28.8,65.99 30.75,66.03 33.65,66.34 37.34,66.23 37.92,66.38 37.92,66.89 38.21,67.12 38.42,66.77 38.78,62.58 50.87,62.69 54.99,62.46 54.63,60.83 54.78,56.02 47.03,55.94 43.63,55.4 41.68,54.5 39.15,54.93 38.13,54.93 37.12,54.74 35.6,53.96 34.23,53.92 30.17,54.77 27.71,54.74 26.34,54.97 26.27,56.02 25.98,56.09 26.05,57.69 25.25,58.42 24.24,58.42 22.94,58.04",[34.15,58.89]],
+["e",[21],"54.85,56.02 54.7,60.83 55.07,62.5 72.5,62.31 72.65,61.02 73.01,60.64 72.79,57.96 71.27,56.72 69.97,56.21 69.54,56.17 69.46,55.94 63.6,55.94 60.35,55.75",[61,59.08]],
+["e",[22],"40.88,52.33 40.88,53.11 42.04,53.84 42.04,54.39 41.75,54.5 43.63,55.36 47.03,55.9 55.35,55.98 60.35,55.71 63.6,55.9 69.46,55.9 69.46,55.55 70.26,55.28 70.69,54.74 70.77,54.27 71.64,54.19 71.64,53.38 72.07,53.03 72.07,52.48 71.49,51.59 71.56,50.47 70.77,49.61 70.62,48.76 70.19,48.6 69.03,48.56 68.31,47.98 67.51,47.59 67.51,47.01 50.58,46.93 48.7,47.83 45.3,48.37 44.36,48.76 43.05,49.96 42.76,51.36 41.32,51.82",[53.62,51.48]],
+["e",[23],"53.11,33.39 52.82,33.39 48.48,34.98 45.88,35.75 42.98,36.34 40.81,37.23 37.63,37.69 31.04,38.24 31.19,40.02 30.68,41.96 30.97,42.04 31.11,43.09 31.77,43.28 32.56,43.28 33.94,42.78 34.59,42.27 36.54,42.24 37.41,42 39.29,41.93 40.09,41.77 40.52,41.54 41.97,41.54 42.62,41.73 43.13,42.12 44.5,42.74 44.79,43.21 49.93,39.6 50.94,38.66 52.1,38.2 52.82,36.88 53.4,34.94",[44.28,39.13]],
+["e",[24],"52.75,33.35 47.61,33.35 44.21,33.11 41.53,32.18 40.52,30.71 38.78,30.94 38.13,33.58 37.12,34.47 35.02,35.05 32.85,35.13 31.33,35.33 31.04,36.61 31.04,38.2 37.63,37.66 40.81,37.19 42.98,36.3 45.73,35.75 48.12,35.05",[41.39,34.51]],
+["e",[25],"44.79,43.25 45.37,44.14 45.66,44.29 47.18,44.57 48.48,45.15 48.55,45.42 49.49,46.04 50.87,46.31 50.87,46.86 50.65,46.93 67.51,46.97 68.16,46.08 69.25,45.69 70.62,44.68 70.48,42.43 70.84,41.07 71.64,40.84 72.14,40.22 73.23,39.6 73.52,38.94 68.89,39.21 64.98,39.64 54.27,39.05 51.09,38.63 50,39.6",[54.99,43.01]],
+["e",[26],"79.23,31.83 72.87,31.64 66.79,31.64 61.94,31.91 61.43,32.65 59.26,32.92 56.15,33.04 53.26,33.31 53.47,34.94 52.89,36.88 52.17,38.2 51.3,38.63 54.27,39.01 64.98,39.6 68.89,39.17 73.44,38.9 73.59,37.85 73.81,37.54 74.24,37.34 74.31,37 74.6,36.8 74.46,35.56 74.89,35.21 74.89,34.24 77.42,33.11 77.79,32.73 78.29,32.61 78.29,32.18",[66.28,35.56]],
+["e",[27],"57.31,21.55 55.35,22.32 54.41,23.14 52.89,23.14 50,22.83 47.61,22.83 47.47,22.59 46.45,22.52 46.38,25.23 45.59,27.45 44.21,29.04 42.11,30.2 40.59,30.71 41.68,32.22 44.21,33.07 47.61,33.31 51.95,33.23 53.11,33.35 56.15,33 59.26,32.88 61.51,32.57 61.87,31.91 61.87,31.09 61.29,30.28 61,30.09 58.18,29.85 57.45,28.88 56.8,27.33 56.58,25.04 57.16,23.29",[51.09,29.66]],
+["e",[28],"84.44,23.37 83.86,23.21 83.29,22.79 81.84,22.71 81.69,22.52 80.9,22.24 79.81,21.58 79.81,21.16 79.23,20.89 74.6,21.04 73.73,21.23 71.35,21.27 70.33,21.55 68.16,21.55 66.57,21.2 64.91,21 61.22,21 58.61,21.2 57.38,21.51 57.24,23.29 56.66,25.04 56.87,27.33 57.53,28.88 58.18,29.77 58.39,29.89 61.22,30.12 61.94,31.09 61.94,31.87 66.79,31.6 72.87,31.6 79.31,31.79 79.52,31.6 81.19,31.6 82.05,31.41 83.29,31.37 84.23,31.06 84.59,30.63 84.59,29.97 84.01,29.5 83.79,28.69 83.29,28.26 83.07,27.76 83.21,26.63 84.59,25.31 84.66,23.68",[73.3,26.44]],
+["e",[40],"46.38,22.52 43.99,22.67 42.84,22.94 40.01,23.14 39.22,23.37 36.69,23.41 35.67,23.76 34.66,23.76 33.94,23.6 32.05,22.86 30.68,22.98 27.86,22.94 25.83,23.8 25.69,24.69 25.11,24.92 25.04,25.47 24.6,25.82 23.44,25.78 22,24.96 19.32,25 18.74,25.12 17.58,25.66 14.54,26.32 13.68,26.79 13.68,27.8 13.1,28.88 13.31,29.54 14.11,30.24 16.06,30.2 27.28,30.71 30.75,31.06 37.77,30.98 40.59,30.67 42.11,30.16 44.14,29.04 45.51,27.45 46.31,25.23",[31.48,27.25]],
+["e",[41],"14.18,30.24 14.83,30.71 15.99,31.21 19.18,31.52 19.54,31.72 19.9,32.3 20.55,32.49 21.27,33.42 20.77,36.68 21.2,37.5 22.36,38.51 22.36,39.09 21.78,39.4 21.49,39.83 21.49,40.57 21.78,40.72 22.94,40.88 23.23,41.07 25.25,41.3 26.12,41.54 28.73,41.61 29.67,41.73 29.96,41.96 30.61,41.96 31.11,40.02 30.97,36.61 31.26,35.33 32.34,35.13 35.02,35.02 37.05,34.47 38.06,33.58 38.64,30.98 30.75,31.09 27.79,30.78 23.66,30.55",[26.7,33.66]],
+["k",[10],"17.33,2.14 17.12,2.33 17.26,3.88 17.9,4.23 17.9,4.81 16.33,4.89 15.12,4.66 14.27,4.74 14.12,5.71 15.69,5.86 15.76,6.48 15.48,6.6 13.12,6.48 12.84,6.68 12.84,7.41 12.27,7.45 11.91,7.65 11.27,8.39 11.27,8.73 11.98,9.28 12.2,9.78 12.13,10.4 11.13,10.91 11.48,11.96 12.27,12.58 13.98,12.69 14.41,13.63 15.48,14.71 32.31,14.71 35.88,14.52 36.31,14.4 36.66,14.13 36.73,13.47 36.16,12.77 36.16,11.65 37.02,11.57 37.16,11.22 37.95,10.99 38.3,10.4 39.23,10.13 39.23,9.78 38.66,9.28 38.87,7.76 37.59,7.65 36.88,7.45 36.88,6.91 38.59,6.21 38.59,5.9 37.59,5.55 36.88,5.55 36.16,5.86 35.09,5.86 34.81,5.75 34.81,5.2 35.73,4.46 35.73,4.15 34.52,3.45 33.52,3.45 33.17,3.34 33.17,2.52 32.6,2.17 30.39,2.02 28.96,2.06 27.67,2.33 26.53,3.38 25.53,3.38 25.32,3.26 25.39,2.17 25.18,2.06 23.04,2.14 22.54,1.94 20.97,1.82 19.69,2.25 18.69,2.25 18.12,2.06",[25.32,9.05]],
+["k",[11],"49.22,16.07 46.79,16.07 43.51,16.58 41.3,17.55 40.87,18.21 40.73,19.02 39.16,19.33 35.81,19.41 33.74,19.6 32.24,20.15 30.96,21.51 30.6,22.44 30.74,27.41 30.46,29.19 30.03,30.28 29.17,31.02 28.17,32.34 25.53,32.61 24.89,33.04 23.97,33.04 23.82,33.62 28.53,34.16 31.95,34.36 37.8,34.32 39.09,21.78 42.51,21.27 46.5,21.16 49.57,20.92 49.22,18.94",[33.52,31.91]],
+["k",[12,32],"23.82,33.66 23.89,34.05 25.53,34.16 25.96,34.36 25.96,35.02 25.61,35.29 25.53,36.57 24.68,37.15 23.25,37.42 22.4,38.04 25.68,38.78 28.6,41.19 31.6,42.93 35.66,43.67 42.72,44.25 49.43,44.45 57.56,44.45 63.98,44.25 63.98,42.35 64.48,40.8 65.19,39.25 66.69,37.62 66.69,36.1 65.98,34.2 65.76,34.12 65.12,34.28 61.41,34.59 57.28,34.78 53.5,34.78 49.57,34.16 45.44,34.78 37.95,34.36 31.95,34.39 28.53,34.2",[49.64,39.4]],
+["k",[13,31],"15.19,41.42 15.19,42.16 15.76,42.43 16.48,43.91 17.26,44.18 18.76,44.18 19.9,44.49 19.76,45.11 17.48,45.11 17.48,45.5 17.9,46.08 17.9,46.93 17.05,48.25 16.98,49.03 17.76,50.35 17.76,50.85 23.97,50.93 28.32,51.2 31.38,51.82 39.09,52.02 44.15,51.98 43.44,48.76 42.8,44.29 35.66,43.71 31.46,42.93 28.53,41.19 25.68,38.82 22.4,38.08 22.18,38.7 21.33,38.94 20.4,38.98 18.97,39.56 18.33,39.67 17.33,40.26 17.05,40.64",[27.39,46.78]],
+["k",[14,34],"17.76,50.89 16.41,52.1 14.48,52.87 14.41,53.96 14.19,54.23 13.55,54.46 11.98,54.74 11.27,55.16 10.56,55.94 9.27,58.23 9.2,58.97 10.13,59.39 10.2,60.02 9.42,60.71 9.2,61.72 15.05,61.53 27.32,61.53 30.74,61.34 30.81,56.72 31.38,51.86 28.32,51.24 23.97,50.97",[21.97,56.68]],
+["k",[15],"57.49,62.15 57.13,63.43 56.99,65.33 57.06,71.7 60.49,72.48 62.05,72.63 67.33,72.9 73.25,72.94 73.18,72.09 73.68,71.2 73.61,70.03 68.19,69.8 67.76,69.6 67.48,68.67 68.05,68.05 70.33,68.13 71.54,67.82 71.83,67.24 71.26,66.65 68.4,66.46 68.97,65.99 69.04,65.3 68.33,63.63 67.48,62.58 65.26,61.8",[62.91,65.37]],
+["k",[16],"53.21,78.14 53.57,80.9 52.85,86.14 50,92.27 49.93,92.86 52.07,92.86 52.5,93.25 53.28,93.59 55.21,93.79 57.06,94.25 59.13,94.02 60.34,93.67 61.41,93.67 62.05,94.02 62.55,94.76 63.27,95.19 64.55,95.57 66.69,95.42 67.97,95.15 68.97,94.72 70.33,92.78 70.33,92.47 69.83,92.16 69.83,91.61 70.19,91.38 70.97,91.3 72.47,89.01 73.89,88.2 73.89,88 74.39,87.69 75.32,87.42 76.32,86.49 77.39,85.95 77.6,85.6 77.53,85.05 76.25,85.02 75.82,84.7 75.68,84.16 73.82,83.97 73.89,82.41 73.54,81.6 73.61,80.63 72.82,80.09 72.82,79.46 73.04,79.23 70.4,79.08 65.26,79.08 61.34,78.92 57.35,78.45 | 76.89,81.44 76.11,82.07 76.32,82.53 77.03,82.49",[63.69,85.6]],
+["k",[17],"44.65,66.03 38.45,66.03 33.52,65.61 31.38,63.7 30.74,61.37 27.32,61.57 15.05,61.57 9.13,61.84 9.13,64.95 9.27,65.72 9.77,66.27 9.77,67.27 10.63,67.62 10.91,67.93 12.34,68.4 14.55,68.67 15.55,69.33 15.62,72.28 16.76,74.03 16.69,74.84 15.91,76.16 15.91,77.52 37.02,77.64 37.66,74.34 39.94,73.76 42.08,72.75 42.94,71.04 42.8,69.22 43.58,67.59 | 6.35,68.21 6.13,68.36 6.06,68.87 4.49,70.3 4.14,71.97 3,72.94 2.92,73.41 3.5,74.15 3.92,75.85 5.42,79.04 6.06,79.58 6.06,80.32 7.49,80.86 10.84,80.78 11.48,80.67 12.84,79.81 13.41,77.64 13.41,77.1 12.27,76.32 12.34,75.23 11.63,74.46 11.34,73.52 11.34,72.71 12.27,71.43 12.2,70.11 11.7,69.6 10.2,69.14 9.99,68.44 7.63,68.48 6.92,68.21",[27.39,71.08]],
+["k",[18],"53.14,78.14 48.86,77.76 37.09,77.64 35.66,79.62 35.02,81.37 35.02,84.16 35.73,88.2 35.95,95.03 36.52,94.88 36.73,94.53 37.52,94.02 38.37,92.86 38.94,92.51 39.37,92.43 39.51,92 40.66,91.96 42.51,91.46 44.08,91.38 45.36,91.77 47.72,92.04 49.22,92.7 49.93,92.82 49.93,92.27 52.78,86.14 53.5,80.9",[44.08,82.65]],
+["k",[19,38],"15.91,77.56 15.62,78.49 15.48,80.55 14.34,81.79 13.12,82.65 12.27,83.77 11.55,84.36 10.41,86.06 10.63,86.92 12.2,88.04 12.27,88.7 10.84,89.56 10.2,90.14 10.13,91.07 11.84,93.28 12.41,94.68 13.55,95.23 14.12,95.23 14.34,95.07 15.69,95.07 16.62,95.26 18.4,95.26 19.47,95.54 20.19,95.54 22.04,95.23 23.25,95.23 23.89,95.38 25.61,95.26 28.03,95.26 28.74,95.38 30.46,95.26 34.45,95.34 35.16,95.23 35.38,95.03 35.88,95.03 35.66,88.2 34.95,84.16 34.95,81.37 35.59,79.62 37.02,77.68",[23.47,86.26]],
+["k",[29],"64.12,43.32 64.76,52.48 65.48,53.92 66.41,54.74 67.76,55.55 69.47,55.98 71.47,56.02 74.39,55.55 75.04,56.29 75.32,58.39 76.75,58.54 77.25,58.31 78.17,57.38 78.89,57.18 79.46,56.72 79.74,56.25 79.74,55.09 80.1,54.7 80.1,54.19 79.81,53.92 78.32,53.49 76.82,52.68 75.89,51.32 75.53,47.59 75.82,47.2 76.11,45.81 76.75,45.26 77.82,45.11 77.82,44.76 76.89,44.25 74.89,44.18 74.89,43.48 74.61,43.44 75.68,43.13",[70.19,46.39]],
+["k",[30],"42.87,44.29 44.22,52.02 45.15,53.57 45.65,55.24 45.86,57.65 45.72,61.49 45.08,65.22 44.72,66.19 43.65,67.59 42.87,69.29 44.94,69.53 47,70.23 50,70.96 53.35,71.2 56.99,71.7 56.92,65.33 57.35,62.19 57.85,62.07 65.12,61.76 64.91,61.65 65.55,59.9 65.91,54.66 66.33,54.7 65.41,53.92 64.76,52.87 64.05,44.37 63.27,44.29 57.56,44.49 49.43,44.49",[54.21,50.12]],
+["k",[33],"37.73,74.34 37.16,77.41 37.3,77.64 48.86,77.72 57.35,78.42 61.34,78.88 65.26,79.04 70.4,79.04 73.04,79.19 73.32,78.8 73.4,78.03 72.97,77.21 72.04,76.86 70.04,76.82 69.76,76.67 69.76,75.47 68.47,74.42 68.54,73.84 72.11,73.72 72.33,74.11 72.97,74.11 73.47,73.84 73.32,72.94 67.33,72.94 60.7,72.55 57.06,71.74 53.35,71.23 50,71 47,70.26 44.94,69.57 42.87,69.33 43.01,71.04 42.08,72.83 39.94,73.8",[48,74.26]],
+["k",[35],"96.29,30.63 93.44,29.46 92.15,29.11 90.3,29.11 88.8,29.43 86.52,29.66 84.17,29.7 82.95,29.46 82.24,29.46 79.67,30.36 78.53,30.51 78.39,31.25 77.53,32.73 66.05,34.16 66.76,36.1 66.76,37.62 65.26,39.25 64.05,42.35 64.12,43.28 75.82,43.09 77.03,42.74 78.53,42.55 79.03,42.08 80.03,42.08 80.81,42.39 82.45,42.24 85.09,42.2 86.45,42.59 87.3,42.59 89.87,42.12 92.01,42.16 92.51,42.04 92.8,41.85 92.8,41.46 92.3,41.11 91.87,40.49 90.16,39.64 90.16,39.09 87.73,39.13 85.52,39.01 82.17,38.47 80.81,37.81 80.39,36.92 80.39,35.64 81.24,34.08 81.6,33.7 82.38,33.35 84.74,33 87.09,33.15 88.87,33.5 91.01,34.39 91.58,35.09 91.73,35.68 91.94,35.75 92.15,37 93.15,37 93.51,36.68 93.51,36.22 93.08,35.83 93.08,35.09 93.44,34.78 93.51,34.39 94.22,34.05 94.29,33.27 94.65,33.07 95.65,33.07 96.15,33.39 96.22,33.77 97.36,33.85 97.65,33.7 97.5,32.76",[73.68,39.05]],
+["k",[36],"53.85,21.31 49.43,20.96 46.5,21.2 42.51,21.31 39.16,21.78 37.87,34.32 45.65,34.74 49.57,34.12 49.22,31.44 49.22,27.8 49.93,26.01 51.43,25.19 53.85,24.81",[44.72,24.46]],
+["k",[37],"72.97,15.22 67.62,15.1 67.12,15.26 64.84,15.22 64.76,15.49 61.55,15.49 61.77,18.63 61.06,20.92 57.77,21.31 53.92,21.31 53.92,24.84 56.99,25.19 60.56,25.78 62.77,26.75 63.91,28.73 63.91,31.37 64.19,33.23 64.41,33.46 65.98,34.16 68.54,33.73 74.89,33.07 77.53,32.69 78.53,30.47 78.03,30.43 78.46,28.77 79.1,27.95 80.6,27.25 81.1,26.36 81.81,25.66 81.6,24.73 80.53,23.14 79.53,22.36 79.53,21.43 80.88,20.03 81.1,19.18 82.03,18.48 82.17,17.93 81.03,17.86 79.32,17 78.96,16.96 78.74,16.73 77.39,16.73 76.82,16.61 75.75,15.76 73.97,15.68",[70.04,23.14]],
+["k",[39],"31.46,51.86 30.88,56.72 30.81,61.26 31.46,63.7 33.67,65.61 38.45,65.99 44.72,65.99 45.29,64.09 45.65,61.49 45.79,57.65 45.58,55.24 45.08,53.57 44.22,52.06 39.09,52.06",[38.3,56.91]]
+].map(x=>({c:x[0],z:x[1],rings:x[2].split(" | ").map(r=>r.split(" ").map(q=>q.split(",").map(Number))),lab:x[3]}));
+const WMZ={};WMP.forEach(o=>o.z.forEach(i=>WMZ[i]=o));
+let wmTab=null,wmLast=null;
+const wmCent=o=>o.lab;
+function wmTitle(i,evA){const z=Z[i],dn=zDone(i),pc=Math.round(zPct(i)*100),dd=zDun(i),p=zPal(i);
+ if(!zOpen(i))return zPalOk(i)?z.n+" — palier "+p+" 🔒 : hors de ton parcours ; toutes les zones s’ouvrent quand tu as terminé une zone du palier "+ZFREE+" ("+ZPAL[ZFREE-1].map(j=>Z[j].n).join(", ")+")":z.n+" — palier "+p+" 🔒 : se débloque en terminant une zone du palier "+(p-1)+" ("+ZPAL[p-2].map(j=>Z[j].n).join(", ")+")";
+ let t=z.n+(evA&&evA.z===i?" 🌍":"")+" — palier "+p+(i===wmRec()?" · ★ zone conseillée":"")+"\n"+(dn?(zChampOk(i)?"zone complète ✔ (tous les champions)":"zone validée · champions "+zChamp(i)+"/"+z.m.length):"progression "+pc+" %")+" · boss "+(S.boss[i]?"✔":"✘")+" · monstres "+zCre(i)+"/"+10*z.m.length+(dd.length?" · donjons "+dd.filter(dgDone).length+"/"+dd.length:"");
+ if(!dn){const t2=zSec(i);t+="\ndifficulté : "+ZDN[zDiff(i)]+" (≈ "+(t2<10?Math.round(t2*10)/10:fmtB(t2))+" s par monstre)"}
+ return t}
+/* quêtes en cours (pas terminées) : par zone (monstres, champions) et par donjon / raid */
+function wmQuests(){const z={},d={};((S.dq&&S.dq.q)||[]).forEach(q=>{if(q.claimed||q.have>=q.need)return;const t=dqTxt(q)+" — "+q.have+"/"+q.need;if(q.t==="mob"||q.t==="champ"){(z[q.z]=z[q.z]||[]).push(t)}else if(DG[q.k]){(d[q.k]=d[q.k]||[]).push(t)}});return{z,d}}
+const wmQSig=()=>((S.dq&&S.dq.q)||[]).map(q=>q.t+q.z+q.k+(q.claimed||q.have>=q.need?"x":"a")).join();
+function wmRender(evA){
+ const w=WLD(),cur=(WMZ[S.zone]||{}).c||"e",tab=wmTab||cur,NS="http://www.w3.org/2000/svg";
+ const box=document.createElement("div");box.id="wm";
+ const tb=document.createElement("div");tb.id="wmT";
+ const WQ=wmQuests(),qOn=c=>Object.keys(WQ.z).some(i=>(WMZ[i]||{}).c===c)||Object.keys(WQ.d).some(k=>WMS.some(s=>s.c===c&&s.ks.includes(k)));
+ ["e","k"].forEach(c=>{const zs=w.filter(i=>(WMZ[i]||{}).c===c);const b=document.createElement("button");b.innerHTML=WMC[c].n+(zs.length?" · "+zs.filter(zDone).length+"/"+zs.length:"")+(qOn(c)?' <span class="wmqt" title="Quête en cours sur ce continent">!</span>':"");b.className=c===tab?"on":"";b.disabled=!zs.length&&!wsList(c).length;b.onclick=()=>{wmTab=c;uiSig.z="";ui()};tb.appendChild(b)});
+ const mp=document.createElement("div");mp.id="wmap";const inn=document.createElement("div");inn.className="wmi";
+ const [W0,H0]=WMSZ[tab],[cx0,cy0,cx1,cy1]=WMC[tab].crop||[0,0,100,100],cw=cx1-cx0,ch=cy1-cy0,PX=x=>(x-cx0)/cw*100+"%",PY=y=>(y-cy0)/ch*100+"%";
+ inn.style.aspectRatio=(cw*W0)+"/"+(ch*H0);inn.style.overflow="hidden";const im=document.createElement("img");im.src=WMC[tab].img;im.alt="";im.style.cssText=`position:absolute;max-width:none;width:${10000/cw}%;height:${10000/ch}%;left:${-cx0/cw*100}%;top:${-cy0/ch*100}%`;im.onerror=()=>{im.style.visibility="hidden";if(!mp.querySelector("#wmerr")){const m=document.createElement("div");m.id="wmerr";m.textContent="Image de la carte introuvable : place "+WMC[tab].img+" à côté du jeu.";mp.appendChild(m)}};inn.appendChild(im);
+ const sv=document.createElementNS(NS,"svg");sv.setAttribute("viewBox",cx0+" "+cy0+" "+cw+" "+ch);sv.setAttribute("preserveAspectRatio","none");
+ const go=i=>{if(!zOpen(i))return;S.zone=i;wmTab=null;wsSel=null;conf=null;dun=null;spawn();ui()},rec=wmRec(),sp=wsList(tab).map(({s})=>[s.x/WMSZ[s.c][0]*100,s.y/WMSZ[s.c][1]*100]);
+ w.forEach((i,n)=>{const o=WMZ[i];if(!o||o.c!==tab)return;
+  const dn=zDone(i),op=zOpen(i),pg=document.createElementNS(NS,"path");
+  pg.setAttribute("d",o.rings.map(r=>"M"+r.map(q=>q.join(",")).join("L")+"Z").join(""));
+  pg.setAttribute("class",(i===S.zone?"on ":"")+(dn?(zChampOk(i)?"dn":"dv"):op?"op":"lk")+(evA&&evA.z===i?" ev":""));
+  const tt=document.createElementNS(NS,"title");tt.textContent=wmTitle(i,evA);pg.appendChild(tt);pg.onclick=()=>go(i);sv.appendChild(pg);
+  if(dn)return; /* zone terminée : le contour vert suffit, pas de pastille */
+  if(!op)return; /* zone verrouillée : assombrie, sans pastille */
+  const rc=i===rec,df=zDiff(i),cy=wmCent(o)[1],b=document.createElement("button");let cx=wmCent(o)[0];{const q=sp.find(q=>Math.abs(q[0]-cx)<6&&Math.abs(q[1]-cy)<2.6);if(q)cx=q[0]+(cx>=q[0]?6.5:-6.5)} /* pastille décalée si une icône de donjon est au même endroit */
+  b.className="zn d"+df+(rc?" rec":"")+(i===S.zone?" on":"");b.textContent=rc?"★":zPal(i);b.title=wmTitle(i,evA);b.style.left=PX(cx);b.style.top=PY(cy);b.onclick=()=>go(i);o.btn=b;inn.appendChild(b)});
+ inn.appendChild(sv);
+ const qMark=(x,y,tip)=>{const m=document.createElement("div");m.className="wmq";m.textContent="!";m.title="📜 Quête en cours :\n"+tip.join("\n");m.style.left=PX(x);m.style.top=PY(y);inn.appendChild(m)};
+ Object.keys(WQ.z).forEach(i=>{const o=WMZ[i];if(!o||o.c!==tab)return;const [x,y]=wmCent(o);qMark(x+(zDone(+i)?0:3.2),y-1.2,WQ.z[i])});
+ WMS.filter(s=>s.c===tab).forEach(s=>{const ks=s.ks.filter(k=>WQ.d[k]);if(!ks.length)return;qMark(s.x/WMSZ[s.c][0]*100+3,s.y/WMSZ[s.c][1]*100-1.2,ks.flatMap(k=>WQ.d[k]))});
+ wsList(tab).forEach(({s,keys})=>{const st=keys.map(wsKey),ok=st.some(r=>r.ok),rd=keys.some(k=>RAIDS.includes(k)),dn=keys.every(wsDoneK),[W,H]=WMSZ[s.c];
+  const b=document.createElement("button");b.className="wms"+(rd?" rd":"")+(ok?"":" lk")+(ok&&dn?" dn":"")+(wsSel===s.id?" sel":"");b.style.left=PX(s.x/W*100);b.style.top=PY(s.y/H*100);
+  const ic=rd?"images/icone-raid":"images/icone-donjon";b.innerHTML=`<img src="${ic}.${EXT[xi(ic)]}" data-b="${ic}" data-i="${xi(ic)}" data-n="__ico" data-k="${keys[0]}" alt="" onerror="nx(this)">`;
+  b.title=(s.n||DG[keys[0]].n)+" — "+keys.map((k,j)=>DG[k].n+(st[j].ok?(wsDoneK(k)?" ✔":""):" 🔒")).join(" · ");b.onclick=e=>{e.stopPropagation();wsOpen(s.id)};inn.appendChild(b)});
+ mp.appendChild(inn);
+ const cz=S.zone,lab=document.createElement("div");lab.id="zLab";lab.innerHTML="<b></b><span></span>";lab.firstChild.textContent=Z[cz].n+(evA&&evA.z===cz?" 🌍":"");lab.lastChild.textContent="palier "+zPal(cz)+" · "+(zDone(cz)?(zChampOk(cz)?"zone complète ✔":"validée · champions "+zChamp(cz)+"/"+Z[cz].m.length):"progression "+Math.round(zPct(cz)*100)+" %");
+ const xn=xplN(),xl=document.createElement("div");xl.id="wmX";xl.title="Bonus d’exploration : +"+XPLP+" % de dégâts de clic et de DPS par zone complète, en vert (validée + tous les champions de la collection) ; remis à zéro à la renaissance";
+ xl.innerHTML=`<span>🧭 Exploration ${xn}/${ALLZ.length} · <b>+${xn*XPLP} %</b> dégâts</span><span class="wml">`+ZDN.map((n,j)=>`<i style="background:${ZDC[j]}"></i>${n}`).join(" ")+` <i class="st">★</i>conseillée</span><span class="wmo">zones :<i class="op" style="border-color:#e0a040"></i>en cours<i style="border-color:#4a9ff5"></i>validée, champions à trouver<i style="border-color:#3fae5a"></i>complète</span>`;
+ $("zones").replaceChildren(tb,mp,lab,xl);
+
+}
 function ui(){msUI();dqUI();evUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hfUI();raidUI();panUI();eqUI();
  $("gold").textContent=fmtB(S.gold);$("cd").textContent=fmtB(cd());$("dps").textContent=fmtB(dps());$("crt").textContent=Math.round(critP()*10)/10;$("crtw").title="Chance de coup critique : "+Math.round(critP()*10)/10+" % — un critique inflige ×"+(Math.round(critM()*100)/100).toLocaleString("fr-FR")+" de dégâts (de base pour ta classe : ×"+String((CL[S.cls]||{}).cdm||2).replace(".",",")+"). Le critique est inclus dans le DPS affiché ; les clics, eux, le tirent au hasard.";
- const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(i=>[zOpen(i),zDone(i),Math.round(zPct(i)*100)]),evA&&evA.z]);
- if(zsig!==uiSig.z){uiSig.z=zsig;const zr=document.createElement("div");zr.id="zRow";
- WLD().forEach((i,n)=>{const z=Z[i];
-  if(n>0){const l=document.createElement("div");l.className="zl"+(zDone(WLD()[n-1])?" zd":"");zr.appendChild(l)}
-  const b=document.createElement("button"),dn=zDone(i),pc=Math.round(zPct(i)*100),dd=zDun(i);b.className="zn";b.textContent=dn?"✓":n+1;if(dn)b.classList.add("zd");if(evA&&evA.z===i)b.classList.add("ev");
-  b.title=z.n+(evA&&evA.z===i?" 🌍":"")+" — "+(dn?"zone terminée":"progression "+pc+" %")+" · boss "+(S.boss[i]?"✔":"✘")+" · monstres "+zCre(i)+"/"+10*z.m.length+(dd.length?" · donjons "+dd.filter(dgDone).length+"/"+dd.length:"");
-  const open=zOpen(i);if(!open&&i===2)b.title="Nécessite : vaincre Vultros et Edwin Van Cleef (Mortemines)";b.disabled=!open;if(!open){const w=WLD(),j=w.indexOf(i),pz=j>0?w[j-1]:null;if(pz!==null&&i!==2){const nd=zDun(pz).filter(k=>!dgDone(k)).map(k=>DG[k].n);b.title=z.n+" — nécessite dans "+Z[pz].n+" : "+[S.boss[pz]?"":"boss",zCre(pz)>=10*Z[pz].m.length?"":"10 victoires par monstre",nd.length?"donjon(s) : "+nd.join(", "):""].filter(Boolean).join(" · ")}}
-  if(i===S.zone)b.classList.add("on");
-  b.onclick=()=>{S.zone=i;conf=null;dun=null;spawn();ui()};
-  zr.appendChild(b)});
- const cz=S.zone,lab=document.createElement("div");lab.id="zLab";lab.innerHTML="<b></b><span></span>";lab.firstChild.textContent=Z[cz].n+(evA&&evA.z===cz?" 🌍":"");lab.lastChild.textContent=zDone(cz)?"zone terminée ✔":"progression "+Math.round(zPct(cz)*100)+" %";
- $("zones").replaceChildren(zr,lab)}
+ const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(i=>[zOpen(i),zDone(i),Math.round(zPct(i)*100),zOpen(i)&&!zDone(i)?zDiff(i):-1,zDone(i)&&zChampOk(i)]),evA&&evA.z,wmRec()]);
+ {const wk=zsig+wmTab+wsState()+wmQSig();if(wk!==uiSig.z){uiSig.z=wk;wmRender(evA)}}wsUI();
  {const w=WLD();$("zProg").textContent="· "+w.filter(zDone).length+"/"+w.length+" terminées"}
  const usig=JSON.stringify([S.cls,S.lv,UL().map(u=>S.gold>=cost(u)&&L(u.id)<maxl(u))]);
  if(usig!==uiSig.u){uiSig.u=usig;$("ups").innerHTML="";
  UL().forEach(u=>{
   const d=document.createElement("div");d.className="up";
-  {const k0=Object.keys(u.fx)[0],nx=u.fx[k0]*(k0=="a"?1:Math.pow(u.g,L(u.id)))*(1+0.2*(S.fg[u.id]||0)),un={d:"DPS",c:"dégâts/clic",m:"% de DPS",a:"clic auto/s"}[k0]||"",vv=k0=="m"?Math.round(nx*1000)/10:k0=="a"?Math.round(nx*100)/100:Math.round(nx),dt=k0=="l"?u.d:"prochain niveau : +"+vv.toLocaleString("fr-FR")+" "+un+(/saignement/.test(u.d)?" (saignement)":"");
+  {const k0=Object.keys(u.fx)[0],nx=u.fx[k0]*(k0=="a"?1:Math.pow(u.g,L(u.id)))*(1+FGS*(S.fg[u.id]||0)),un={d:"DPS",c:"dégâts/clic",m:"% de DPS",a:"clic auto/s"}[k0]||"",vv=k0=="m"?Math.round(nx*1000)/10:k0=="a"?Math.round(nx*100)/100:Math.round(nx),dt=k0=="l"?u.d:"prochain niveau : +"+vv.toLocaleString("fr-FR")+" "+un+(/saignement/.test(u.d)?" (saignement)":"");
   d.innerHTML="<div>"+u.n+" <span class='mut'>niv. "+L(u.id)+"/"+maxl(u)+"<br>"+dt+"</span></div>";}
   const mx=L(u.id)>=maxl(u),b=document.createElement("button");b.textContent=mx?"Max":"💰 "+fmt(cost(u));b.disabled=mx||S.gold<cost(u);
   b.onclick=()=>{if(!mx&&S.gold>=cost(u)){S.gold-=cost(u);S.lv[u.id]=L(u.id)+1;save();ui()}};
@@ -1236,7 +1492,7 @@ function ui(){msUI();dqUI();evUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hf
   tot++;if(e)got++;
   const rd=!dg&&!bo&&k>=nd&&!e;
   const d=document.createElement("div");d.className="pet"+(!e&&k<nd?" no":"")+(e&&e.s?" sh":"")+(rd?" rd":"");
-  d.innerHTML="<div style='width:52px;margin:auto'>"+art(m[1])+"</div>"+m[1]+"<br>"+(e?"×"+e.n+(e.s?" ✨"+e.s:"")+" ":"")+(dg?(e?"":(DG[DGZ(zi)[mi-z.m.length-1]].tag||"🏰 Donjon")):bo?(e?"":"👑 Boss"):k>=nd?"🎲 champion 1/20":k+"/"+nd);
+  d.innerHTML="<div style='width:52px;margin:auto'>"+art(m[1])+"</div>"+m[1]+"<br>"+(e?"×"+e.n+(e.s?" ✨"+e.s:"")+" ":"")+(dg?(e?"":(DG[DGZ(zi)[mi-z.m.length-1]].tag||"🏰 Donjon")):bo?(e?"":"👑 Boss"):k>=nd?"🎲 champion":k+"/"+nd);if(!e&&!dg&&!bo&&k>=nd)d.title="Le champion peut maintenant apparaître dans la zone (1 chance sur 20 à chaque monstre)";
   $("col").appendChild(d);
  })});
  $("cz").textContent=Z[S.zone].n;$("cc").textContent="("+got+"/"+tot+")";}
@@ -1245,8 +1501,9 @@ function save(){try{localStorage.setItem("azer1",JSON.stringify(S))}catch(e){}}
 $("mob").onclick=e=>{const c=critRoll();dmg(cd()*(c?critM():1),e.clientX,e.clientY,c)};
 /* taille des monstres : si le monstre a changé de salle pendant que l’onglet Zones était masqué, on recalcule sa taille au retour */
 try{new ResizeObserver(()=>{const w=$("stage").clientWidth;if(w>0&&prevSW===0&&typeof mob!=="undefined"&&mob)placeMob();prevSW=w}).observe($("stage"))}catch(e){}
-setInterval(()=>{const _n=Date.now(),_dt=_n-lastT;lastT=_n;if(_dt>8000)offlineGain(_dt/1000);if(dun){if(Date.now()>dun.end){log("⌛ Temps écoulé : "+DX().n+" échoué (entrée perdue)");autoDun=false;dun=null;spawn();ui();return}bar()}if(conf){if(Date.now()>conf.end){log("⌛ Confrontation perdue : "+conf.name);conf=null;spawn();ui();return}bar()}let t=dps()/10;if(Date.now()<bleedEnd)t+=cd()*0.5;autoAcc+=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.1*(S.fg.gA||0))/10;while(autoAcc>=0.999){autoAcc-=1;t+=cd()*(critRoll()?critM():1)}if((curV==="raid"||curV==="eq")&&!dun&&!conf)t=0; /* onglet Raids : la zone est en pause (plus de farm d’équipement de bas niveau) */if(t>0)dmg(t)},100);
+setInterval(()=>{const _n=Date.now(),_dt=_n-lastT;lastT=_n;if(_dt>8000)offlineGain(_dt/1000);if(dun){if(Date.now()>dun.end){log("⌛ Temps écoulé : "+DX().n+" échoué (entrée perdue)");autoDun=false;dun=null;spawn();ui();return}bar()}if(conf){if(Date.now()>conf.end){log("⌛ Confrontation perdue : "+conf.name);conf=null;spawn();ui();return}bar()}let t=dps()/10;if(Date.now()<bleedEnd)t+=cd()*0.5;autoAcc+=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.06*(S.fg.gA||0))/10;while(autoAcc>=0.999){autoAcc-=1;t+=cd()*(critRoll()?critM():1)}if((curV==="raid"||curV==="eq")&&!dun&&!conf)t=0; /* onglet Raids : la zone est en pause (plus de farm d’équipement de bas niveau) */if(t>0)dmg(t)},100);
 setInterval(ui,1500);
+if(S.balMsg){delete S.balMsg;log("⚖️ Le jeu a été rééquilibré : des chiffres plus petits du début à la fin. Ta progression (or, sorts, zones, objets, renaissances) repart de zéro ; tes collections et tes hauts faits sont conservés.");try{hfToast("Nouvelle version : jeu rééquilibré")}catch(e){}save()};
 /* === GAINS HORS-LIGNE : récapitulatif de l'or gagné pendant l'absence (50 % du rythme normal en zone, 8 h maximum) === */
 let lastT=S.ls||Date.now();
 setInterval(()=>{S.ls=Date.now();save()},5000);
@@ -1265,14 +1522,14 @@ function offlineGain(sec){
 $("rebirth").onclick=rebirth;
 $("reset").onclick=()=>{if(confirm("Tout réinitialiser ?")){S=S0();conf=null;dun=null;abReady=0;buffEnd=0;bleedEnd=0;save();buildCls();showFac();spawn();ui();abUI()}};
 const CL={
-g:{n:"Guerrier",i:"🛡️",f:"h",cm:1.5,w:"🪓",desc:"Arme : 🪓 hache classique, +50 % de dégâts de clic."},
-p:{n:"Prêtre",i:"✝️",f:"a",cm:1.15,dm:1.7,w:"🪄",desc:"Arme : 🪄 sceptre sacré. +15 % de dégâts de clic et +70 % de DPS."},
-l:{n:"Paladin",i:"🔨",f:"a",cm:1.6,dm:1.6,w:"🔨",desc:"Arme : 🔨 masse. +60 % de dégâts de clic et de DPS."},
-d:{n:"Druide",i:"🐻",f:"a",cm:1.5,dm:1.8,w:"🌿",desc:"Arme : 🌿 bâton de druide. +50 % de dégâts de clic et +80 % de DPS."},
-s:{n:"Chaman",i:"⚡",f:"h",cm:1.5,dm:1.25,ws:"<path d='M19 1L6 18H14L11 31L26 12H17Z' fill='rgb(80,170,255)' stroke='rgb(20,70,160)' stroke-width='1.5' stroke-linejoin='round'/><path d='M18 6L11 17H16L14 25L21 14H16Z' fill='rgb(200,235,255)'/>",w:"🦯",desc:"Arme : éclair bleu. +50 % de dégâts de clic et +25 % de DPS."},
-w:{n:"Démoniste",i:"😈",f:"h",cm:1.5,dm:1.6,ws:"<g fill='rgb(90,200,80)' fill-opacity='.85'><circle cx='8' cy='23' r='8'/><circle cx='24' cy='24' r='8'/><circle cx='16' cy='25' r='7'/><circle cx='6' cy='14' r='5'/></g><text x='9' y='20' font-size='16'>💀</text>",w:"💀",desc:"Arme : tête de mort et nuage vert. +50 % de dégâts de clic et +60 % de DPS."}
+g:{n:"Guerrier",i:"🛡️",f:"h",cm:1.275,w:"🪓",desc:"Arme : 🪓 hache classique, +28 % de dégâts de clic."},
+p:{n:"Prêtre",i:"✝️",f:"a",cm:1.087,dm:1.375,w:"🪄",desc:"Arme : 🪄 sceptre sacré. +9 % de dégâts de clic et +37 % de DPS."},
+l:{n:"Paladin",i:"🔨",f:"a",cm:1.326,dm:1.326,w:"🔨",desc:"Arme : 🔨 masse. +33 % de dégâts de clic et de DPS."},
+d:{n:"Druide",i:"🐻",f:"a",cm:1.275,dm:1.423,w:"🌿",desc:"Arme : 🌿 bâton de druide. +28 % de dégâts de clic et +42 % de DPS."},
+s:{n:"Chaman",i:"⚡",f:"h",cm:1.275,dm:1.143,ws:"<path d='M19 1L6 18H14L11 31L26 12H17Z' fill='rgb(80,170,255)' stroke='rgb(20,70,160)' stroke-width='1.5' stroke-linejoin='round'/><path d='M18 6L11 17H16L14 25L21 14H16Z' fill='rgb(200,235,255)'/>",w:"🦯",desc:"Arme : éclair bleu. +28 % de dégâts de clic et +14 % de DPS."},
+w:{n:"Démoniste",i:"😈",f:"h",cm:1.275,dm:1.326,ws:"<g fill='rgb(90,200,80)' fill-opacity='.85'><circle cx='8' cy='23' r='8'/><circle cx='24' cy='24' r='8'/><circle cx='16' cy='25' r='7'/><circle cx='6' cy='14' r='5'/></g><text x='9' y='20' font-size='16'>💀</text>",w:"💀",desc:"Arme : tête de mort et nuage vert. +28 % de dégâts de clic et +33 % de DPS."}
 };
-Object.assign(CL.g,{cdm:2});Object.assign(CL.l,{cdm:2});Object.assign(CL.s,{cdm:2});Object.assign(CL.w,{cdm:1.5});Object.assign(CL.p,{cdm:1.5});Object.assign(CL.d,{cdm:1.5});
+Object.assign(CL.g,{cdm:1.5});Object.assign(CL.l,{cdm:1.5});Object.assign(CL.s,{cdm:1.5});Object.assign(CL.w,{cdm:1.25});Object.assign(CL.p,{cdm:1.25});Object.assign(CL.d,{cdm:1.25}); /* rééquilibrage v2 : critiques ×1,5 (guerrier, paladin, chaman) et ×1,25 (démoniste, prêtre, druide) */
 Object.keys(CL).forEach(k=>{CL[k].desc+=" Coups critiques : ×"+String(CL[k].cdm).replace(".",",")+" de dégâts de base."});
 const FAC={a:{n:"Alliance",i:"🦁",c:["l","p","d"]},h:{n:"Horde",i:"🐺",c:["g","s","w"]}};
 const WA={h:{n:"Frappe héroïque",c:100,cd:6000,d:"15× tes dégâts de clic"},r:{n:"Pourfendre",c:500,cd:15000,d:"saignement : 5× tes dégâts de clic par seconde pendant 8 s"}};
@@ -1280,9 +1537,9 @@ let abReady=0,buffEnd=0,bleedEnd=0,wReady={h:0,r:0};
 function setCls(c){
  if(S.cls!==c){
   if(S.cls){const o={};PF.forEach(k=>o[k]=S[k]);S.pc[S.cls]=o;const P=S.pc[c]||freshProf(c);PF.forEach(k=>S[k]=P[k]);fixP()}
-  S.cls=c;
+  S.cls=c;xplC.t=0;ztC.t=0;eqSetT=0;eqFoc=null;eqSlotF=null;eqSM=false;eqSel={};
   for(let i=0;i<Z.length;i++){S.kills[i]=S.kills[i]||0;S.boss[i]=S.boss[i]||0}
-  if(!WLD().includes(S.zone))S.zone=WLD()[0];
+  if(!WLD().includes(S.zone)||!zOpen(S.zone)||!S.kills.some(k=>k>0))S.zone=RT(c)[0];
   conf=null;dun=null;autoDun=false;spawn();
  }
  abReady=0;buffEnd=0;bleedEnd=0;wReady={h:0,r:0};save();ui();abUI()}
@@ -1328,7 +1585,7 @@ setTimeout(()=>{try{WLD().forEach((z,n)=>{if(ZM[z]&&ZM[z].img)setTimeout(()=>pre
  document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest(".card[data-ck]>h2");if(!h)return;const c=h.parentNode,k=c.dataset.ck;cl[k]=!cl[k];c.classList.toggle("cl",!!cl[k]);try{localStorage.setItem("azer_cl",JSON.stringify(cl))}catch(x){}})})();
 /* liste des zones repliable : replie = seule la zone choisie reste visible */
 (function(){let c=0;try{c=+localStorage.getItem("azer_zc")||0}catch(e){}
- const ap=()=>{$("zones").classList.toggle("cl",!!c);$("zH").classList.toggle("cl",!!c)};ap();
+ const ap=()=>{$("zones").classList.toggle("cl",!!c);$("zH").classList.toggle("cl",!!c);wmSide()};ap();
  $("zH").onclick=()=>{c=c?0:1;ap();try{localStorage.setItem("azer_zc",c)}catch(e){}}})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5da38fe70342471c8944e1c6dd7a0680"}'></script>
