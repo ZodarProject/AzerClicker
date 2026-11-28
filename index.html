@@ -16,7 +16,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font-family:Georgia,"Times Ne
 @media(min-width:1100px){#zoneView{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:start}#zoneView>*{grid-column:2}#zoneView>#zones{grid-column:1;grid-row:1/span 12;width:auto}#zoneView #wmap .wmi{height:min(calc(100vh - 110px),660px)}}
 @media(min-width:1500px){.wrap{max-width:1880px}#zoneView #wmap .wmi{height:min(calc(100vh - 90px),1000px)}}
 /* grand écran : la carte du monde devient une colonne fixe à gauche, sur toute la hauteur ; le reste de la page se décale à droite */
-@media(min-width:1300px){:root{--mh:calc(100vh - 156px)}body.wmside .wrap{margin-left:calc(var(--mh)*.555 + 34px);margin-right:10px;max-width:none}body.wmside #zoneView{display:block}body.wmside #zoneView>#zones{position:fixed;left:10px;top:10px;bottom:10px;z-index:5;width:calc(var(--mh)*.555 + 14px);box-sizing:border-box;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:6px;display:flex;flex-direction:column;flex-wrap:nowrap;gap:4px;overflow:hidden}body.wmside #zoneView #wmap .wmi{height:var(--mh)}body.wmside #wmT{margin-bottom:0}}
+@media(min-width:1300px){:root{--mh:calc(100vh - 194px)}body.wmside .wrap{margin-left:calc(var(--mh)*.555 + 34px);margin-right:10px;max-width:none}body.wmside #zoneView{display:block}body.wmside #zoneView>#zones{position:fixed;left:10px;top:10px;bottom:10px;z-index:5;width:calc(var(--mh)*.555 + 14px);box-sizing:border-box;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:6px;display:flex;flex-direction:column;flex-wrap:nowrap;gap:4px;overflow:hidden}body.wmside #zoneView #wmap .wmi{height:var(--mh)}body.wmside #wmT{margin-bottom:0}}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px}
 h1{margin:0;font-size:20px;color:var(--ac)}h2{margin:0 0 8px;font-size:15px;color:var(--ac)}
 .top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center}
@@ -50,11 +50,13 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .evd b{display:block;width:max-content;margin:2px auto 0;font-size:11px;background:var(--card);color:var(--tx);border:1px solid #e67e22;border-radius:6px;padding:1px 6px;white-space:nowrap}
 @keyframes evp{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.04)}}
 .zones button.ev{box-shadow:0 0 0 2px #e67e22}
-#zH{cursor:pointer;user-select:none;margin:0 0 6px;font-size:14px}#zH::after{content:" ▾";color:var(--mut);font-size:12px}#zH.cl::after{content:" ▸"}
+#zH{user-select:none;margin:0 0 6px;font-size:14px}.bagT{cursor:pointer;user-select:none}.bagT::after{content:" ▾";color:var(--mut);font-size:12px;font-weight:normal}.bagcl .bagT::after{content:" ▸"}.bagcl>:not(.sh-h){display:none!important}.bagcl .sh-h>:not(.bagT){display:none!important}.bagcl .sh-h>.bagT+.mut{display:inline!important}
 #zones{display:block}#zones.cl #wmT,#zones.cl #wmap{display:none}
 #wmT{display:flex;gap:6px;margin-bottom:6px}#wmT button{flex:1;padding:5px 6px;font-size:12px}#wmT button.on{background:var(--ac);color:#1b150d;border-color:var(--ac)}
 #wmap{display:flex;justify-content:center;background:rgba(0,0,0,.25);border:1px solid var(--bd);border-radius:8px;padding:4px}#wmap .wmi{height:min(560px,72vh)}#wmap .wmi img{height:100%;object-fit:fill}.wmi .wms{position:absolute;transform:translate(-50%,-50%);z-index:3;width:24px;height:24px;padding:0;border-radius:50%;border:2px solid #3a8ee0;background:#10202e;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 5px rgba(0,0,0,.7);overflow:hidden;font-size:13px;line-height:1}
-.wmi .wms img{width:100%;height:100%;border-radius:50%;object-fit:cover}.wmi .wms svg{width:16px;height:16px}
+.wmi .wms.cty{overflow:visible}.cnw{position:absolute;top:-9px;right:-16px;font-size:9px;padding:0 4px;pointer-events:none}
+.wms.cty{width:28px;height:28px;border-color:#e0b040;background:#2a1e08;font-size:16px;z-index:4}
+.wms img{width:100%;height:100%;border-radius:50%;object-fit:cover}.wmi .wms svg{width:16px;height:16px}
 .wmi .wms.rd{border-color:#e05a4a;width:28px;height:28px}.wmi .wms.dn{border-color:#3fae5a}.wmi .wms.lk{filter:grayscale(1) brightness(.7);border-color:#888}
 .wmi .wms.sel{box-shadow:0 0 0 3px #f0a020,0 1px 5px rgba(0,0,0,.7)}.wmi .wms:hover{transform:translate(-50%,-50%) scale(1.15)}
 #wsCard{position:absolute;inset:0;z-index:8;background:rgba(22,16,10,.94);overflow:auto;padding:12px 14px;border-radius:8px}
@@ -76,6 +78,9 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .wmi .zn.zd{border-color:#3fae5a;background:#3fae5a;color:#1b150d}.wmi .zn.d0{background:#3fae5a;border-color:#2a7a3e;color:#0f2414}.wmi .zn.d1{background:#e0c040;border-color:#a08a20;color:#2a2205}.wmi .zn.d2{background:#e08030;border-color:#9a5218;color:#2a1405}.wmi .zn.d3{background:#d04040;border-color:#8a2222;color:#fff}.wmi .zn.rec{background:#2a1f0a;border-color:#f5c842;color:#f5c842;width:26px;height:26px;font-size:15px;z-index:4}.wmi .zn.on{box-shadow:0 0 0 3px #fff,0 0 0 5px rgba(224,160,64,.7)}
 .wmi .wmr{position:absolute;transform:translate(-50%,-50%);z-index:6;font-size:18px;line-height:1;cursor:pointer;filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 2px #000);animation:wmqb 1.6s ease-in-out infinite}
 .rrd{width:11%}.rrd .im{filter:drop-shadow(0 0 7px #dfe6f0) drop-shadow(0 0 2px #fff) drop-shadow(0 2px 4px rgba(0,0,0,.7))}.rrd b{border-color:#c8d0dc}#mob.rrm{filter:drop-shadow(0 0 8px #dfe6f0) drop-shadow(0 0 2px #fff)}
+#wqPop{position:absolute;z-index:20;width:240px;background:#1b140c;border:1px solid #c9a030;border-radius:8px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.7);font-size:12px}#wqPop .wsh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}#wqPop .wqi{border-top:1px solid #3a2e1c;padding:5px 0}#wqPop .wqb{background:#222;border-radius:4px;height:8px;margin:4px 0;overflow:hidden}#wqPop .wqb div{height:100%}#wqPop button{font-size:12px;padding:3px 8px;margin-top:4px}
+#wmBtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}#wmBtns button{font-size:13px;padding:4px 10px}
+.wmq.rdy{color:#ffe15a;cursor:pointer}.wmq{cursor:pointer}
 .wmq{position:absolute;transform:translate(-50%,-50%);z-index:6;font:900 20px Georgia,serif;line-height:1;color:#ffd200;text-shadow:0 0 2px #000,0 0 3px #000,1px 1px 0 #000,-1px -1px 0 #000;cursor:help;animation:wmqb 1.6s ease-in-out infinite}@keyframes wmqb{0%,100%{margin-top:0}50%{margin-top:-3px}}#wmT .wmqt{display:inline-block;background:#1b150d;color:#ffd200;border-radius:50%;width:15px;height:15px;line-height:15px;font-size:11px;font-weight:900;margin-left:4px;text-align:center}
 #wmX{width:0;min-width:100%;box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font-size:11px;color:var(--mut);padding:0 2px}#wmX b{color:#3fae5a}#wmX .wml i{display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 3px 0 6px;vertical-align:0}#wmX .wml i.st{width:auto;height:auto;background:none;color:#f5c842;font-style:normal;margin-left:8px}
 .wmi .zn:disabled{border-color:#555;color:var(--mut);opacity:.85}
@@ -152,17 +157,24 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 .pde{border-style:dashed;align-items:center;justify-content:center;text-align:center;opacity:.65;font-size:22px}
 .pdm{grid-area:c;border:2px solid var(--bd);border-radius:10px;padding:10px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-size:13px}
 #log{font-size:12px;color:var(--mut);height:232px;overflow:hidden}
+.ctop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ctop #cbtns{display:flex;gap:4px;flex-wrap:wrap}.ctop #cbtns button{padding:4px 10px;font-size:13px}.ctop #cbtns button.on{background:var(--ac);color:#1a1208;border-color:var(--ac)}
+.ftab{width:100%;border-collapse:collapse;font-size:13px}.ftab td{padding:5px 6px;vertical-align:middle;border-top:1px solid #3a2e1c}.ftab .fh td{border-top:none;color:var(--mut);font-size:11px;padding-bottom:2px}.ftab td:nth-child(2){width:120px}.ftab td:nth-child(3){width:150px}.ftab td:nth-child(4){width:80px;text-align:right}.ftab .fn{font-weight:600}.ftab .fd{font-size:11px;color:var(--mut)}.ftab tr[title]{cursor:help}.ftab tr[title]:hover td{background:rgba(201,160,48,.06)}.fpp{display:inline-flex;gap:3px}.fpp i{width:10px;height:10px;border-radius:50%;background:#3a3226;border:1px solid #5a4a30;display:inline-block}.fpp i.f{background:#e0b040;border-color:#e0b040}.fpp.sm i{width:7px;height:7px;gap:2px}.okc{color:#2ecc71;font-weight:600}.noc{color:var(--mut)}.fmx{color:#2ecc71;font-size:12px}.ftab button{padding:3px 10px;font-size:12px}
+.qtab td:nth-child(2){width:150px}.qtab td:nth-child(3){width:110px;text-align:right}.qbar{height:7px;background:#2a2218;border-radius:4px;overflow:hidden;margin:2px 0}.qbar div{height:100%}.qtab .qok{border-color:#2ecc71;color:#2ecc71}.qfoot{display:flex;flex-direction:column;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid #3a2e1c;font-size:13px}.qbuy{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.qbuy button{font-size:12px;padding:3px 8px}
+.chtab td:nth-child(2){width:170px}.chtab td:nth-child(3){width:90px}.chtab td:nth-child(4){width:100px;text-align:right}.chtab select{font-size:12px}
+.btgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.btp{border:2px solid #7a5a2a;border-radius:8px;padding:10px;text-align:center;background:#2a2012;display:flex;flex-direction:column;gap:6px}.btp.bt1{border-color:#a8b0bc;background:#22252a}.btp.bt2{border-color:#e0b040;background:#2e2410}.btp.btlk{opacity:.55;filter:grayscale(.6)}.btw{font:900 18px Georgia,serif;letter-spacing:3px;color:#c9a030}.btn{font-weight:600}.btc .mut{font-size:12px}.btr{font-size:12px;color:#e8d6a8}.btact{border:1px solid #e0b040;border-radius:8px;padding:8px;margin-bottom:10px;background:#2e2410}.btact button{font-size:12px;padding:2px 8px;margin-left:4px}.btd .im{filter:drop-shadow(0 0 7px #ff5040) drop-shadow(0 0 2px #fff)}.btd b{border-color:#ff5040}
+@keyframes nwblk{50%{opacity:.35}}.nwb.blk,.cnw{animation:nwblk 1s ease-in-out infinite}
 .pop{position:fixed;pointer-events:none;font-weight:bold;color:var(--ac);animation:u .7s forwards}
 .pop.crit{color:#ff6a3d;font-size:1.35em;text-shadow:0 0 6px rgba(255,106,61,.6)}
 @keyframes u{to{transform:translateY(-40px);opacity:0}}
 </style></head><body>
 <div class="wrap">
 <div class="card top"><h1>⚔️ AzerClicker</h1>
-<div class="stats">💰 <b id="gold">0</b> · Clic <b id="cd">1</b> · DPS <b id="dps">0</b> · <span id="crtw" style="cursor:help">Crit <b id="crt">5</b> %</span></div>
+<div class="stats">💰 <b id="gold">0</b> · <span title="Essences : gagnées sur les boss, les quêtes et les monstres rares ; elles servent au marchand et à acheter des quêtes">✨ <b id="esT">0</b></span> · Clic <b id="cd">1</b> · DPS <b id="dps">0</b> · <span id="crtw" style="cursor:help">Crit <b id="crt">5</b> %</span></div>
+<div class="ctop"><span class="mut" id="facn"></span><div id="cbtns"></div></div>
 <div style="display:flex;gap:6px"><button id="svbtn">💾 Sauvegarde</button><button id="reset">Réinitialiser</button></div></div>
 
 <div class="card">
-<div class="zones" id="tabs" style="margin-bottom:10px"><button id="tabZ" class="on">🗺️ Zones</button><button id="tabV">🏰 Ville</button><button id="tabR">🐉 Raids</button><button id="tabE">🎒 Équipement</button><button id="tabQ">📜 Quêtes</button><button id="tabM">🎓 Maîtrise</button></div>
+<div class="zones" id="tabs" style="display:none" style="margin-bottom:10px"><button id="tabZ" class="on">🗺️ Zones</button><button id="tabV" style="display:none">🏰 Ville</button><button id="tabR">🐉 Raids</button><button id="tabE" style="display:none">🎒 Équipement</button><button id="tabQ">📜 Quêtes</button><button id="tabM">🎓 Maîtrise</button></div>
 <div id="zoneView">
 <h2 id="zH">Zones <span class="mut" id="zProg"></span></h2><div id="evBanner" class="card" style="display:none;margin-bottom:8px;border-color:#e67e22"></div><div id="rrBanner" class="card" style="display:none;margin-bottom:8px;border-color:#c8d0dc"></div><div class="zones" id="zones"></div>
 <div class="c mut" id="zinfo" style="margin-top:4px"></div>
@@ -174,12 +186,13 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <div id="log"></div>
 </div>
 <div id="masteryView" style="display:none">
-<h2>Maîtrise</h2><div id="msBox"></div></div>
+<div style="display:flex;align-items:center;gap:10px"><button class="vback">← Retour à la carte</button><h2 style="margin:0">🎓 Maîtrise</h2></div><div id="msBox" style="margin-top:8px"></div></div>
+<div id="chView" style="display:none"><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><button class="vback">← Retour à la carte</button><h2 style="margin:0">🏁 Défis de donjon</h2></div><div id="chList"></div></div>
+<div id="btView" style="display:none"><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><button class="vback">← Retour à la carte</button><h2 style="margin:0">🎯 Tableau des primes</h2></div><div id="btList"></div></div>
 <div id="questView" style="display:none">
-<h2>Quêtes</h2><div class="mut" style="margin-bottom:8px">De nouvelles quêtes chaque heure (renouvelées à l’heure pile, heure locale). Une quête terminée est conservée jusqu’à ce que tu la récupères. Le coffre du jour et le compteur de quêtes achetées se renouvellent à minuit. Elles dépendent de ta progression. Les raids rapportent les meilleures récompenses.</div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><button class="vback">← Retour à la carte</button><h2 style="margin:0">📜 Journal de quêtes</h2></div><div class="mut" style="margin-bottom:8px">De nouvelles quêtes chaque heure (renouvelées à l’heure pile, heure locale). Une quête terminée est conservée jusqu’à ce que tu la récupères. Le coffre du jour et le compteur de quêtes achetées se renouvellent à minuit. Elles dépendent de ta progression. Les raids rapportent les meilleures récompenses.</div>
 <div id="questList"></div></div>
-<div id="eqView" style="display:none">
-<div id="eqbox"></div></div>
+<div id="eqView" style="display:none"></div>
 <div id="raidView" style="display:none">
 <h2>Raids</h2><div class="mut" style="margin-bottom:8px">Contenu de fin de jeu : ouvert à toutes les classes une fois une zone du palier 9 terminée. Zul’Gurub et les Ruines d’Ahn’Qiraj sont libres. Les autres raids demandent des composants rares, qui tombent sur des boss précis des raids ouverts et des donjons de fin de jeu.</div>
 <div id="evBox" class="card" style="margin-bottom:10px"></div>
@@ -187,12 +200,12 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <h2 style="margin-top:14px">Donjons de fin de jeu</h2><div class="mut" style="margin-bottom:8px">Donjons de haut niveau, ouverts quand leur zone est ouverte. Ils lâchent les composants rares d’accès aux raids.</div>
 <div id="endList"></div></div>
 <div id="cityView" style="display:none">
-<h2 id="cityTtl">Ville</h2><div class="zones" id="cities"></div>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button id="cityBack">← Retour à la carte</button><h2 id="cityTtl" style="margin:0">Ville</h2></div><div class="zones" id="cities" style="display:none"></div>
 <div class="mut" id="cityHint" style="margin-top:8px">Choisis une ville pour y entrer.</div>
 <div id="cstage" style="position:relative;aspect-ratio:3/2;border-radius:10px;overflow:hidden;border:1px solid var(--bd);margin-top:8px;display:none"><div id="cmap" style="position:absolute;inset:0"></div></div>
 <div id="hfView" style="display:none">
 <button id="hback">← Retour</button>
-<h2 style="margin-top:10px">Hauts faits <span class="mut" id="hfinfo"></span></h2><div class="mut" style="margin:4px 0">Récompenses : 50 → 500 or · 100 → 2 000 or · 500 → 10 essences · 1000 → 20 essences + 2 M d’or</div><div id="hfbox"></div></div>
+<h2 style="margin-top:10px">Hauts faits <span class="mut" id="hfinfo"></span></h2><div class="mut" style="margin:4px 0">Récompenses : 50 → 250 or · 100 → 600 or · 500 → 10 essences · 1000 → 20 essences + 41 000 or</div><div id="hfbox"></div></div>
 <div id="shopWin" style="display:none">
 <button id="sback">← Retour</button>
 <h2 style="margin-top:10px" id="sttl">🧺 Marchand de composants</h2>
@@ -205,14 +218,15 @@ button:disabled{opacity:.45;cursor:not-allowed}button.on{background:var(--ac);co
 <button id="fback">← Retour</button>
 <h2 style="margin-top:10px" id="fttl">🔨 Forge</h2>
 <div class="mut" style="margin-bottom:6px">Les champions laissent parfois un composant rare de leur zone. Apporte-les ici pour renforcer tes sorts.</div>
-<div id="mats" style="margin-bottom:6px"></div><div id="rec"></div>
+<div id="mats" style="display:none"></div><div id="rec"></div>
 </div>
 </div>
 </div>
 
 <div>
-<div class="card" data-ck="classe" style="margin-bottom:12px"><h2>Classe <span class="mut" id="facn"></span></h2><div class="zones" id="cbtns"></div><div class="mut" id="cdesc" style="margin:8px 0"></div><button id="ab" style="width:100%">Choisis une classe</button><div id="wab" style="display:none;gap:6px"></div></div>
+<div class="card" data-ck="classe" style="margin-bottom:12px;display:none"><div class="mut" id="cdesc" style="margin:8px 0"></div><button id="ab" style="width:100%">Choisis une classe</button><div id="wab" style="display:none;gap:6px"></div></div>
 <div class="card" id="eqPanel" data-ck="eq" style="margin-bottom:12px"></div>
+<div id="eqBag" style="margin-bottom:12px"><div id="eqbox"></div></div>
 <div class="card" data-ck="ups"><h2>Améliorations</h2><div id="ups"></div></div>
 <div class="card" data-ck="col" style="margin-top:12px"><h2>Collection — <span id="cz"></span> <span class="mut" id="cc"></span></h2><div class="col" id="col"></div></div>
 <div class="card" id="prest" data-ck="prest" style="margin-top:12px;display:none"><h2>Renaissance</h2><div class="mut" id="prinfo" style="margin-bottom:6px"></div><button id="rebirth" style="width:100%;margin-bottom:8px">🌟 Renaissance</button><div id="esshop"></div></div>
@@ -596,7 +610,7 @@ function dgMinFix(){Object.keys(DG).forEach(k=>{const d=DG[k];if(RAIDS.includes(
 const DGKP=[0,0,10,15,20,30,50,60,80,100];
 /* PV totaux visés (zone à 25 victoires et plus) : donjons de fin de jeu faisables vers 1 M de puissance, raids de plus en plus durs ;
    le Cœur du Magma demande une renaissance. La répartition des PV entre les salles est conservée. */
-const HPT={scholo:30e6,stratH:35e6,stratU:35e6,pic:40e6,zg:45e6,onyxia:50e6,aq20:55e6,mc:90e6,bwl:140e6,aq40:220e6};
+const HPT={scholo:30e6,stratH:35e6,stratU:35e6,pic:40e6,zg:45e6*1.15,onyxia:50e6*1.15,aq20:55e6*1.15,mc:250e6,bwl:400e6,aq40:620e6}; /* raids +15 % (28/11) ; puis MC/BWL/AQ40 relevés : un Druide forge complète tuait Ragnaros (103,5 M) avec 28 s d’avance ≈ 3,2 M/s → MC 250 M ≈ 77 s */
 const dgTot=d=>{const z=Z[d.z];let s=0;for(let i=0;i<d.floors;i++){const bo=i===d.floors-1,mb=(!bo&&d.mb)?d.mb[i]:null,m=bo?(d.bm||15):(mb?(d.mbm||10):(d.mm||2.5));s+=Math.ceil(z.hp*2*m)*HPM*(d.hpx||1)}return s};
 const COSTT={mc:16e6}; /* prix d’entrée imposés (Cœur du Magma : 24 M → 16 M) */
 function hpTarget(){Object.keys(HPT).forEach(k=>{const d=DG[k];if(!d)return;d.hpx=(d.hpx||1)*HPT[k]/dgTot(d)});Object.keys(COSTT).forEach(k=>{if(DG[k])DG[k].cost=COSTT[k]})} /* appelé au démarrage, une fois tout défini */
@@ -616,11 +630,12 @@ function zRaidClick(k){const r=zRaidK(k),d=DG[r];if(dun||conf)return;
  if(RAIDS.includes(r)&&raidOk(r)&&S.gold>=d.cost){enterDun(r);return}
  const s=WMS.find(x=>x.ks.includes(r));if(s){wsSel=s.id;wsSig="";uiSig.z="";ui()}else enterDun(r)}
 function dgnUI(){
- const st=$("stage"),ks=(dun||conf)?[]:DGZ(S.zone).concat(Object.keys(DG).filter(k=>DG[k].z===S.zone&&/Raid/.test(DG[k].tag||""))),key=S.zone+"|"+ks.join(",")+"|"+(((dun||conf)?null:evActive())&&evActive().z===S.zone?evActive().slot+evActive().dg:"")+"|"+(((dun||conf)?null:rrActive())&&rrActive().z===S.zone?"rr"+rrActive().s:"");
+ const st=$("stage"),ks=(dun||conf)?[]:DGZ(S.zone).concat(Object.keys(DG).filter(k=>DG[k].z===S.zone&&/Raid/.test(DG[k].tag||""))),key=S.zone+"|"+ks.join(",")+"|"+(((dun||conf)?null:evActive())&&evActive().z===S.zone?evActive().slot+evActive().dg:"")+"|"+(((dun||conf)?null:rrActive())&&rrActive().z===S.zone?"rr"+rrActive().s:"")+"|"+(!(dun||conf)&&S.bt&&S.bt.a&&S.bt.a.z===S.zone?"bt"+S.bt.a.nm:"");
  if(st.dataset.dk!==key){
   st.querySelectorAll(".dgn,.evd").forEach(x=>x.remove());
   ks.forEach(k=>{const d=DG[k],el=document.createElement("div");const isR=/Raid/.test(d.tag||""),isD=!d.tag||/Donjon/.test(d.tag)||isR;el.className="dgn"+(isD?" ico":"");el.dataset.k=k;el.style.left=d.ent[0]+"%";el.style.top=d.ent[1]+"%";el.title=d.n+" — entrée : "+d.cost+" PO — "+(d.t||60)+" s pour le terminer";const ic=isR?"images/icone-raid":isD?"images/icone-donjon":"images/icone-"+d.img.replace(/^[a-z]+-/,"");el.innerHTML=`<img src="${ic}.${EXT[xi(ic)]}" data-b="${ic}" data-i="${xi(ic)}" data-n="__ico" data-k="${k}" alt="${d.n}" onerror="nx(this)"><b${d.lu?` style="top:auto;bottom:100%;margin:0 0 2px"`:""}>${isR?"🐉 "+d.n:d.needKey&&!(S.keys&&S.keys[d.needKey])?"🔒 "+d.keyName:"💰 "+d.cost}</b>`;if(isR){const r2=zRaidK(k);el.title=DG[r2].n+" — raid : entrée "+fmtB(DG[r2].cost)+" PO"+(raidOk(r2)?"":" (verrouillé : clique pour voir ce qu’il manque)");el.onclick=()=>zRaidClick(k)}else el.onclick=()=>enterDun(k);st.appendChild(el)});
   {const ea=(dun||conf)?null:evActive();if(ea&&ea.z===S.zone){const el=document.createElement("div");el.className="evd";el.style.left="50%";el.style.top="48%";el.innerHTML="<div class='im'>"+art(ea.dg)+"</div><b><span title='Combat très difficile' style='cursor:help'>💀</span> "+ea.dg+" — Affronter !</b>";el.onclick=()=>evEnter();st.appendChild(el)}}
+  {const ba=(dun||conf||!S.bt)?null:S.bt.a;if(ba&&ba.z===S.zone){const zm=ZM[S.zone],sp=zm&&zm.spots&&zm.spots.length?zm.spots[(ba.nm.length+3)%zm.spots.length]:[70,40],el=document.createElement("div");el.className="evd rrd btd";el.style.left=sp[0]+"%";el.style.top=sp[1]+"%";el.title="Prime : "+ba.nm+" ("+ba.m+") — "+BTT+" s pour la vaincre";el.innerHTML="<div class='im'>"+art(ba.m)+"</div><b>🎯 "+ba.nm+" — Attaquer !</b>";el.onclick=()=>btEnter();st.appendChild(el)}}
   {const ra=(dun||conf)?null:rrActive();if(ra&&ra.z===S.zone){const zm=ZM[S.zone],sp=zm&&zm.spots&&zm.spots.length?zm.spots[ra.s%zm.spots.length]:[30,60],el=document.createElement("div");el.className="evd rrd";el.style.left=sp[0]+"%";el.style.top=sp[1]+"%";el.title="Monstre rare : "+ra.nm+" ("+ra.m+") — "+RR_T+" s pour le vaincre";el.innerHTML="<div class='im'>"+art(ra.m)+"</div><b>💀 "+ra.nm+" — Attaquer !</b>";el.onclick=()=>rrEnter();st.appendChild(el)}}
   st.dataset.dk=key;
  }
@@ -658,7 +673,7 @@ function spawn(){
  if(!dun&&rz!==null){S.zone=rz;rz=null}
  const z=Z[S.zone],k=S.kills[S.zone];
  champ=false;
- if(dun){const d=DX(),bo=dun.i===d.floors-1,mbn=(!bo&&d.mb)?d.mb[dun.i]:null;isBoss=bo;mob={e:"",n:bo?d.b:(mbn||d.m[Math.floor(Math.random()*d.m.length)]),mid:!!mbn};gmax=Math.ceil(z.hp*Math.min(2,1+k*0.04)*(bo?(d.bm||15):(mbn?(d.mbm||10):(d.mm||2.5))));max=hp=Math.max(1,Math.ceil(gmax*HPM*(d.hpx||1)));draw();return}
+ if(dun){const d=DX(),bo=dun.i===d.floors-1,mbn=(!bo&&d.mb)?d.mb[dun.i]:null;isBoss=bo;mob={e:"",n:bo?d.b:(mbn||d.m[Math.floor(Math.random()*d.m.length)]),mid:!!mbn};gmax=Math.ceil(z.hp*(dun.ch?2:Math.min(2,1+k*0.04))*(bo?(d.bm||15):(mbn?(d.mbm||10):(d.mm||2.5))));max=hp=Math.max(1,Math.ceil(gmax*HPM*(d.hpx||1)*(dun.ch?CHX(dun.ch):1)));draw();return}
  isBoss=k>0&&k%10===9;
  const m=isBoss?z.b:z.m[Math.floor(Math.random()*z.m.length)];
  mob={e:m[0],n:m[1]};
@@ -689,9 +704,10 @@ function addCol(key,txt,g){
 function kill(){
  const z=Z[S.zone];
  if(dun&&dun.k==="ev"){evKill();return}
- if(dun&&dun.k==="rr"){rrKill();return}
+ if(dun&&dun.k==="rr"){if(dun.bt)btKill();else rrKill();return}
+ if(dun&&dun.ch){chKill();return}
  if(dun){
-  hfAdd("d:"+dun.k,DX().n);rcDrop(dun.k,mob.n);rfDrop();if(dun.i>=DX().floors-1&&XC[dun.k]!==undefined&&Math.random()<Math.min(1,0.25*tcm())){const xz=XC[dun.k];S.mats[xz]=(S.mats[xz]||0)+1;log("🔨 "+mob.n+" lâche : "+MAT[xz]+" !");hfToast("Composant de forge : "+MAT[xz])}{const dx=DX(),fin=dun.i>=dx.floors-1,rd=RAIDS.includes(dun.k);if(fin&&dun.k==="mc"&&!(S.eq.sul)&&Math.random()<SULF*(1+0.08*(msR().l||0)))sulGive();if(fin&&(dun.k==="aq40"||dun.k==="aq40H")&&!(S.eq.cth)&&Math.random()<SULF*(1+0.08*(msR().l||0)))cthGive();if(fin||mob.mid)eqDrop(dx.z,mob.n+" ("+dx.n+")",rd?(fin?"rfin":"rmid"):(fin?"dfin":"dmid"),dun.k)}const d=DX(),g=Math.ceil(gmax*GM()/3*(d.gx||1));S.gold+=g;
+  hfAdd("d:"+dun.k,DX().n);rcDrop(dun.k,mob.n);rfDrop();if(dun.i>=DX().floors-1&&XC[dun.k]!==undefined&&matUse(XC[dun.k])&&Math.random()<Math.min(1,0.25*tcm())){const xz=XC[dun.k];S.mats[xz]=(S.mats[xz]||0)+1;log("🔨 "+mob.n+" lâche : "+MAT[xz]+" !");hfToast("Composant de forge : "+MAT[xz])}{const dx=DX(),fin=dun.i>=dx.floors-1,rd=RAIDS.includes(dun.k);if(fin&&dun.k==="mc"&&!(S.eq.sul)&&Math.random()<SULF*(1+0.08*(msR().l||0)))sulGive();if(fin&&(dun.k==="aq40"||dun.k==="aq40H")&&!(S.eq.cth)&&Math.random()<SULF*(1+0.08*(msR().l||0)))cthGive();if(fin||mob.mid)eqDrop(dx.z,mob.n+" ("+dx.n+")",rd?(fin?"rfin":"rmid"):(fin?"dfin":"dmid"),dun.k)}const d=DX(),g=Math.ceil(gmax*GM()/3*(d.gx||1));S.gold+=g;
   if(dun.i>=d.floors-1){
    const key=z.n+"|"+d.b,sh=Math.random()<1/64,e=S.col[key]||(S.col[key]={e:"",n:0,s:0});
    if(sh)e.s++;else e.n++;
@@ -713,7 +729,7 @@ function kill(){
  S.gold+=g;S.kills[S.zone]++;hfAdd("z:"+S.zone,z.n);if(!isBoss)dqAdd(champ?"champ":"mob",mob.n,S.zone);
  const key=z.n+"|"+mob.n;
  if(isBoss){S.boss[S.zone]=1;addCol(key,"👑 Boss vaincu : ",g)}
- else if(champ){addCol(key,"⚔️ Champion vaincu : ",g);eqDrop(S.zone,mob.n+" ("+z.n+")","zone");if(Math.random()<DROP+EQ("t")/100+0.02*(msR().l||0)){S.mats[S.zone]=(S.mats[S.zone]||0)+1;log("💎 Composant rare : "+MAT[S.zone]+" !")}}
+ else if(champ){addCol(key,"⚔️ Champion vaincu : ",g);eqDrop(S.zone,mob.n+" ("+z.n+")","zone");if(matUse(S.zone)&&Math.random()<DROP+EQ("t")/100+0.02*(msR().l||0)){S.mats[S.zone]=(S.mats[S.zone]||0)+1;log("💎 Composant rare : "+MAT[S.zone]+" !")}}
  else{S.bk[key]=(S.bk[key]||0)+1;log("+"+fmt(g)+" or — "+mob.n+" vaincu ("+Math.min(S.bk[key],10)+"/10)")}
  save();spawn();ui();
 }
@@ -723,8 +739,8 @@ function draw(){
  $("mob").innerHTML=art(mob.n);placeMob();
  $("mname").textContent=(champ?"⚔️ CHAMPION : ":isBoss?"👑 BOSS : ":mob.mid?"⚔️ BOSS : ":"")+mob.n;
  $("zinfo").textContent=k+" victoires"+(S.boss[S.zone]?" · boss vaincu ✔":" · boss à la 10ᵉ victoire")+" · monstres "+zCre(S.zone)+"/"+10*z.m.length+(zDun(S.zone).length?" · donjon "+(zDun(S.zone).every(dgDone)?"✔":"à terminer"):"");
- if(dun&&dun.k==="rr"){$("mname").textContent="💀 RARE : "+RRD.rn+" ("+mob.n+")";$("zinfo").textContent="💀 Monstre rare · "+Z[RRD.z].n+" · récompense à ton palier";bar();return}
- if(dun)$("zinfo").textContent=DX().n+" — "+(DX().unit||"salle")+" "+(dun.i+1)+"/"+DX().floors+(!DW()?" — ⚔️ "+fmt(S.tk["d:"+dun.k]||0)+" monstres vaincus"+(()=>{const n=S.tk["d:"+dun.k]||0,nx=HFN.find(m=>m>n);return nx?" (prochain haut fait : "+nx+")":""})():"");
+ if(dun&&dun.k==="rr"){$("mname").textContent=(dun.bt?"🎯 PRIME : ":"💀 RARE : ")+RRD.rn+" ("+mob.n+")";$("zinfo").textContent=(dun.bt?"🎯 Prime · ":"💀 Monstre rare · ")+Z[RRD.z].n+(dun.bt?"":" · récompense à ton palier");bar();return}
+ if(dun)$("zinfo").textContent=(dun.ch?"🏁 Défi niv. "+dun.ch+" · ":"")+DX().n+" — "+(DX().unit||"salle")+" "+(dun.i+1)+"/"+DX().floors+(dun.ch?" — ⏱ "+chFmt((Date.now()-dun.st)/1000):"")+(!DW()&&!dun.ch?" — ⚔️ "+fmt(S.tk["d:"+dun.k]||0)+" monstres vaincus"+(()=>{const n=S.tk["d:"+dun.k]||0,nx=HFN.find(m=>m>n);return nx?" (prochain haut fait : "+nx+")":""})():"");
  bar();
 }
 const WORLD={l:[0,1,2,3,4,5,6,7,8,9],d:[10,11,12,13,14,15,16,17,18,19],p:[20,21,22,23,24,25,26,27,28],g:[29,30,31,32,33,34,35,36,37,38],s:[39,30,31,32,33,34,16,17,18,19],w:[40,41,23,24,25,26,27,28]},BASEW=[0,1,2,3,4,5,6,7,8,9];
@@ -765,7 +781,7 @@ const ZDN=["facile","adaptée","difficile","très difficile"],ZDC=["#3fae5a","#e
 const wmRec=()=>{const r=RT().find(i=>zOpen(i)&&!zDone(i));if(r!==undefined)return r;const o=ALLZ.filter(i=>zOpen(i)&&!zDone(i));return o.length?o[0]:null};
 /* bonus d’exploration : +2 % de dégâts (clic et DPS) par zone complète (en vert : validée + tous les champions), remis à zéro à la renaissance */
 const XPLP=2;let xplC={t:0,n:0};const xplN=()=>{const t=Date.now();if(t-xplC.t>1000){xplC={t,n:ALLZ.filter(i=>zDone(i)&&zChampOk(i)).length}}return xplC.n};const XPL=()=>1+XPLP*xplN()/100;
-const PF=["gold","zone","kills","boss","dd","lv","bk","col","mats","fg","ab","keys","es","eb","pn","tk","hf","rc","eq","dq","we","ms","nt","rr"];
+const PF=["gold","zone","kills","boss","dd","lv","bk","col","mats","fg","ab","keys","es","eb","pn","tk","hf","rc","eq","dq","we","ms","nt","rr","bt","cd"];
 const HFN=[50,100,500,1000],HFR={50:{g:250},100:{g:600},500:{e:10},1000:{e:20,g:41000}};
 const hfGive=m=>{const r=HFR[m];if(r.g)S.gold+=r.g;if(r.e)S.es=(S.es||0)+r.e};
 const hfTxt=m=>{const r=HFR[m],a=[];if(r.e)a.push(r.e+" essences");if(r.g)a.push(fmt(r.g)+" or");return a.join(" + ")};
@@ -788,7 +804,7 @@ function owMig(){ /* fusion des zones et donjons en double */
   if(S.tk&&S.tk["d:"+a]!==undefined){S.tk["d:"+c]=Math.max(S.tk["d:"+c]||0,S.tk["d:"+a]);delete S.tk["d:"+a]}
   if(S.hf)Object.keys(S.hf).forEach(h=>{if(h.startsWith("d:"+a+"|")){S.hf["d:"+c+h.slice(("d:"+a).length)]=1;delete S.hf[h]}});
   if(S.dq&&S.dq.q)S.dq.q.forEach(q=>{if(q.k===a)q.k=c})})}
-const fixP=()=>{owMig();eqMig();if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.rr)S.rr={n:0};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
+const fixP=()=>{owMig();eqMig();if(!S.eq||!S.eq.e)S.eq={e:{},r:[],seen:[0,0,0,0,0]};if(!S.eq.r)S.eq.r=[];if(!S.eq.seen)S.eq.seen=[0,0,0,0,0];if(!S.rc)S.rc={};if(!S.dq||!S.dq.q)S.dq={d:"",q:[]};if(!S.we)S.we={s:0,d:0,n:0,a:0};if(!S.rr)S.rr={n:0};if(!S.bt)S.bt={n:0};if(!S.cd)S.cd={};if(!S.ms||!S.ms.r)S.ms={p:0,r:{},f:{}};if(!S.ms.f)S.ms.f={};if(!S.tk)S.tk={};if(!S.hf)S.hf={};hfSync();try{hfAll(true)}catch(e){}if(typeof S.es!=="number")S.es=0;if(!S.eb)S.eb={};if(typeof S.pn!=="number")S.pn=0;if(!S.nt)S.nt=(S.pn>0||S.ms.p>0||Object.keys(S.rc||{}).length)?{r:1,m:1}:{}};fixP();
 if(S.cls&&(!WLD().includes(S.zone)||!zOpen(S.zone)))S.zone=RT()[0];
 const freshProf=c=>({gold:0,zone:WLD(c)[0],kills:Z.map(()=>0),boss:Z.map(()=>0),dd:{},lv:{},bk:{},col:{},mats:{},fg:{},ab:{h:0,r:0},keys:{},es:0,eb:{},pn:0,tk:{},hf:{},rc:{},dq:{d:"",q:[]},we:{s:0,d:0,n:0,a:0},ms:{p:0,r:{},f:{}},nt:{},eq:{e:{},r:[],seen:[0,0,0,0,0]}});
 /* === FORGE : composants rares des champions -> améliorations des sorts === */
@@ -809,29 +825,29 @@ const matSrc=z=>z===42?"boss final de Scholomance et de Stratholme":z===43?"boss
 /* === FORGE DE RAID : passifs actifs uniquement pendant un raid ; composants rares tombant sur les boss de raid ; conservée après la renaissance === */
 MAT.push("Cendre de Ragnaros","Écaille de Nefarian","Carapace de C’Thun");
 const MAXR=10;
+/* un composant ne tombe plus quand toutes les améliorations de forge qui l’utilisent (pour la classe jouée) sont au niveau maximum */
+const matUse=z=>recipes().some(r=>r.z===z&&(S.fg[r.id]||0)<MAXF)||RFG.some(r=>r.z===z&&(S.fg[r.id]||0)<MAXR);
 const RFG=[{id:"rF",z:44,n:"🌋 Fureur du magma",d:"+1 % de DPS en raid par niveau",src:"boss du Cœur du Magma"},{id:"rS",z:45,n:"🐲 Sang de dragon",d:"+1 % de dégâts de clic et +0,5 s de chronomètre en raid par niveau",src:"boss du Repaire de l’Aile noire"},{id:"rC",z:46,n:"🦂 Chitine des Qiraji",d:"+1 % de DPS et de dégâts de clic en raid par niveau",src:"boss du Temple d’Ahn’Qiraj"}];
 const RFD={mc:44,bwl:45,aq40:46,aq40H:46};
 const inRaid=()=>!!dun&&dun.k!=="ev"&&!!DG[dun.k]&&isRaidD(DG[dun.k]);
 const RFB=k=>{if(!inRaid())return 0;const f=S.fg||{};return (k==="c"?(f.rS||0):(f.rF||0))+(f.rC||0)};
-function rfDrop(){const z=RFD[dun.k];if(z===undefined)return;const d=DX(),fin=dun.i>=d.floors-1,mid=!!(d.mb&&d.mb[dun.i]!==undefined);if(!fin&&!mid)return;
+function rfDrop(){const z=RFD[dun.k];if(z===undefined||!matUse(z))return;const d=DX(),fin=dun.i>=d.floors-1,mid=!!(d.mb&&d.mb[dun.i]!==undefined);if(!fin&&!mid)return;
  if(Math.random()<Math.min(1,(fin?0.10:0.04)*tcm())){S.mats[z]=(S.mats[z]||0)+1;log("🐉 "+mob.n+" lâche : "+MAT[z]+" !");try{hfToast("Composant de forge de raid : "+MAT[z])}catch(e){}}}
 function rforge(id){const r=RFG.find(x=>x.id===id);if(!r)return;const l=S.fg[id]||0,c=l+1;if(l>=MAXR||(S.mats[r.z]||0)<c)return;S.mats[r.z]-=c;S.fg[id]=l+1;save();log("🐉 Forge de raid : "+r.n.replace(/^\S+ /,"")+" (niveau "+(l+1)+")");ui()}
 let fgSig="";
 function forgeUI(){
  const sig=JSON.stringify([S.cls,S.mats,S.fg]);if(sig===fgSig)return;fgSig=sig;
- $("mats").innerHTML=MAT.map((n,i)=>S.mats[i]?`<span class="chip">${n} ×${S.mats[i]}</span>`:"").join("")||"<span class='mut'>Aucun composant pour l’instant.</span>";
- const box=$("rec");box.innerHTML="";
- recipes().forEach(r=>{
-  const l=S.fg[r.id]||0,c=l+1,has=S.mats[r.z]||0,d=document.createElement("div");d.className="up";
-  d.innerHTML=`<div>${r.n} <span class="mut">niv. ${l}/${MAXF}<br>${r.d}</span><div class="mut" style="font-size:11px;margin-top:2px">📍 ${MAT[r.z]} : ${matSrc(r.z)}</div></div>`;
-  const b=document.createElement("button");b.textContent=l>=MAXF?"Max":`${c} × ${MAT[r.z]} (${has})`;b.disabled=l>=MAXF||has<c;b.onclick=()=>forge(r.id);
-  d.appendChild(b);box.appendChild(d);
- });
+ /* forge en tableau : une ligne par amélioration, rang en pastilles, composant au survol */
+ const pips=(l,m)=>`<span class="fpp${m>5?" sm":""}">`+Array.from({length:m},(_,k)=>`<i${k<l?' class="f"':""}></i>`).join("")+`</span>`;
+ const row=(r,l,m,src,fn)=>{const c=l+1,has=S.mats[r.z]||0,mx=l>=m,ok=!mx&&has>=c,nm=r.n.replace(/^🔨 /,"");
+  const tip=MAT[r.z]+" — "+src+(mx?"":"\nProchain rang : "+c+" composant"+(c>1?"s":"")+" (tu en as "+has+")");
+  return `<tr title="${tip.replace(/"/g,"&quot;")}"><td><div class="fn">${nm}</div><div class="fd">${r.d}</div></td><td>${pips(l,m)}<div class="fd">${l}/${m}</div></td><td class="fc">${mx?"—":`<span class="${ok?"okc":"noc"}">${has}/${c}</span><div class="fd">${MAT[r.z]}</div>`}</td><td class="fa">${mx?'<span class="fmx">✔ Max</span>':ok?`<button data-f="${fn}" data-id="${r.id}">Forger</button>`:'<span class="fd">Manque</span>'}</td></tr>`};
+ const tbl=rows=>`<table class="ftab"><tr class="fh"><td>Amélioration</td><td>Rang</td><td>Composant</td><td></td></tr>${rows}</table>`;
+ const box=$("rec");
+ box.innerHTML=tbl(recipes().map(r=>row(r,S.fg[r.id]||0,MAXF,matSrc(r.z),"f")).join(""));
  let rb=$("rfg");if(!rb){rb=document.createElement("div");rb.id="rfg";box.parentNode.appendChild(rb)}
- rb.innerHTML="<h3 style='margin:14px 0 4px'>🐉 Forge de raid</h3><div class='mut' style='font-size:13px;margin-bottom:6px'>Passifs actifs <b>uniquement pendant un raid</b> (ni en donjon, ni sur la carte). Composants rares (4 % par boss intermédiaire, 10 % sur le boss final), non vendus par le marchand. Conservée après une renaissance.</div>";
- RFG.forEach(r=>{const l=S.fg[r.id]||0,c=l+1,has=S.mats[r.z]||0,d=document.createElement("div");d.className="up";
-  d.innerHTML=`<div>${r.n} <span class="mut">niv. ${l}/${MAXR}<br>${r.d}</span><div class="mut" style="font-size:11px;margin-top:2px">📍 ${MAT[r.z]} : ${r.src}</div></div>`;
-  const b=document.createElement("button");b.textContent=l>=MAXR?"Max":`${c} × ${MAT[r.z]} (${has})`;b.disabled=l>=MAXR||has<c;b.onclick=()=>rforge(r.id);d.appendChild(b);rb.appendChild(d)});
+ rb.innerHTML="<h3 style='margin:14px 0 4px'>🐉 Forge de raid</h3><div class='mut' style='font-size:13px;margin-bottom:6px'>Passifs actifs <b>uniquement pendant un raid</b> (ni en donjon, ni sur la carte). Composants rares (4 % par boss intermédiaire, 10 % sur le boss final), non vendus par le marchand. Conservée après une renaissance.</div>"+tbl(RFG.map(r=>row(r,S.fg[r.id]||0,MAXR,r.src,"r")).join(""));
+ [box,rb].forEach(el=>el.querySelectorAll("button[data-id]").forEach(b=>b.onclick=()=>b.dataset.f==="r"?rforge(b.dataset.id):forge(b.dataset.id)));
 }
 
 /* === MARCHAND : achat de composants de forge contre de l'or (prix croissant avec l'avancée du monde) === */
@@ -890,7 +906,10 @@ function prUI(){
 }
 
 /* === HAUTS FAITS : 50 / 100 / 500 / 1000 monstres par zone et par donjon === */
-function hfToast(t){const d=document.createElement("div");d.textContent="🏅 "+t;d.style.cssText="position:fixed;top:14px;right:14px;z-index:9999;background:#2b2418;color:#f1c40f;border:2px solid #c9a030;border-radius:8px;padding:10px 14px;font:600 14px Georgia,serif;box-shadow:0 4px 14px #0008;transition:opacity .6s";document.body.appendChild(d);setTimeout(()=>d.style.opacity=0,3200);setTimeout(()=>d.remove(),3900)}
+/* notifications empilées en haut à droite : chacune sous la précédente, jamais superposées (5 au maximum) */
+function hfToast(t){let w=$("toastBox");if(!w){w=document.createElement("div");w.id="toastBox";w.style.cssText="position:fixed;top:14px;right:14px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none;max-width:min(420px,90vw)";document.body.appendChild(w)}
+ while(w.children.length>=5)w.firstChild.remove();
+ const d=document.createElement("div");d.textContent=(/^\p{Extended_Pictographic}/u.test(t)?"":"🏅 ")+t;d.style.cssText="background:#2b2418;color:#f1c40f;border:2px solid #c9a030;border-radius:8px;padding:10px 14px;font:600 14px Georgia,serif;box-shadow:0 4px 14px #0008;transition:opacity .6s";w.appendChild(d);setTimeout(()=>d.style.opacity=0,3200);setTimeout(()=>d.remove(),3900)}
 function hfAdd(id,label){setTimeout(()=>hfAll(),0);
  S.tk[id]=(S.tk[id]||0)+1;if(id[0]=="z")S.tk[id]=Math.max(S.tk[id],S.kills[+id.slice(2)]||0);const n=S.tk[id];
  HFN.forEach(m=>{const k=id+"|"+m;if(n>=m&&!S.hf[k]){S.hf[k]=1;hfGive(m);log("🏅 Haut fait : "+label+" — "+m+" monstres vaincus ! Récompense : "+hfTxt(m));hfToast("Haut fait : "+label+" — "+m+" monstres · +"+hfTxt(m))}});
@@ -923,9 +942,13 @@ function hfUI(){
  $("hfinfo").textContent=""+done+" / "+(rows.length*HFN.length+hfAllInfo().length);
 }
 /* === VILLES : Stormwind et sa forge === */
-const BLD={haut:{n:"Hauts faits",img:"icone-hauts-faits",icon:'<svg viewBox="0 0 32 32"><circle cx="16" cy="13" r="9" fill="#c9a030" stroke="#5a4310" stroke-width="2"/><path d="M11 21l-3 9 8-4 8 4-3-9" fill="#a02020" stroke="#5a1010" stroke-width="1.5"/><path d="M16 8l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="#fff3b0"/></svg>'},shop:{n:"Marchand",img:"icone-marchand",icon:'<svg viewBox="0 0 32 32"><path d="M5 13h22l-2 14H7Z" fill="#8a5a2a" stroke="#c9a030" stroke-width="2"/><path d="M4 13l2-7h20l2 7Z" fill="#a02020" stroke="#5a1010" stroke-width="1.5"/><circle cx="16" cy="20" r="3.5" fill="#f1c40f" stroke="#5a4310"/></svg>'},forge:{n:"Forge",img:"icone-forge",icon:'<svg viewBox="0 0 32 32"><path d="M4 10h24v4l-6 3v4h4v5H8v-5h4v-4l-8-3Z" fill="#5a5a62" stroke="#c9a030" stroke-width="2"/></svg>'}};
-const CITIES=[{n:"Stormwind",img:"carte-stormwind",only:["l"],b:[{id:"shop",pos:[50,70]},{id:"forge",pos:[68,26]},{id:"haut",pos:[30,40]}]},{n:"Ironforge",img:"carte-ironforge",only:["p"],b:[{id:"shop",pos:[74,50]},{id:"forge",pos:[51,43]},{id:"haut",pos:[30,60]}]},{n:"Darnassus",img:"carte-darnassus",only:["d"],b:[{id:"shop",pos:[66,64]},{id:"forge",pos:[64,19]},{id:"haut",pos:[35,55]}]},{n:"Orgrimmar",img:"carte-orgrimmar",only:["g"],b:[{id:"shop",pos:[47,66]},{id:"forge",pos:[82,16]},{id:"haut",pos:[45,45]}]},{n:"Pitons du Tonnerre",img:"carte-pitons-du-tonnerre",only:["s"],b:[{id:"shop",pos:[40,38]},{id:"forge",pos:[44,58]},{id:"haut",pos:[60,35]}]},{n:"Fossoyeuse",img:"carte-fossoyeuse",only:["w"],b:[{id:"shop",pos:[75,60]},{id:"forge",pos:[51,31]},{id:"haut",pos:[50,58]}]}];
-const cityOk=c=>c.only?c.only.includes(S.cls):!(c.ex&&c.ex.includes(S.cls));
+const BLD={defis:{n:"Défis",img:"icone-defis",icon:'<svg viewBox="0 0 32 32"><path d="M8 4v25" stroke="#7a5a2a" stroke-width="2.5"/><path d="M9 5h17l-4 5 4 5H9z" fill="#e0b040" stroke="#7a4a1a" stroke-width="1.5"/><path d="M12 7h3v3h-3zM18 7h3v3h-3zM15 10h3v3h-3z" fill="#2b2418"/></svg>'},primes:{n:"Primes",img:"icone-primes",icon:'<svg viewBox="0 0 32 32"><rect x="5" y="3" width="22" height="26" rx="1" fill="#e8d6a8" stroke="#7a4a1a" stroke-width="2"/><text x="16" y="11" font-size="5.5" text-anchor="middle" font-weight="900" fill="#7a2a1a">WANTED</text><circle cx="16" cy="19" r="5" fill="none" stroke="#a02020" stroke-width="2"/><path d="M16 12v14M9 19h14" stroke="#a02020" stroke-width="1.5"/></svg>'},quetes:{n:"Quêtes",img:"icone-quetes",icon:'<svg viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="24" rx="2" fill="#e8d6a8" stroke="#7a5a2a" stroke-width="2"/><path d="M10 10h12M10 15h12M10 20h8" stroke="#7a5a2a" stroke-width="2"/><text x="23" y="29" font-size="14" font-weight="900" fill="#ffd200" stroke="#000" stroke-width=".8">!</text></svg>'},maitrise:{n:"Maîtrise",img:"icone-maitrise",icon:'<svg viewBox="0 0 32 32"><path d="M3 12l13-6 13 6-13 6z" fill="#3a5fa0" stroke="#c9a030" stroke-width="1.5"/><path d="M8 15v6c0 2 4 4 8 4s8-2 8-4v-6l-8 4z" fill="#2a4580" stroke="#c9a030" stroke-width="1.5"/><path d="M27 13v8" stroke="#c9a030" stroke-width="2"/><circle cx="27" cy="22" r="2" fill="#e0b040"/></svg>'},haut:{n:"Hauts faits",img:"icone-hauts-faits",icon:'<svg viewBox="0 0 32 32"><circle cx="16" cy="13" r="9" fill="#c9a030" stroke="#5a4310" stroke-width="2"/><path d="M11 21l-3 9 8-4 8 4-3-9" fill="#a02020" stroke="#5a1010" stroke-width="1.5"/><path d="M16 8l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="#fff3b0"/></svg>'},shop:{n:"Marchand",img:"icone-marchand",icon:'<svg viewBox="0 0 32 32"><path d="M5 13h22l-2 14H7Z" fill="#8a5a2a" stroke="#c9a030" stroke-width="2"/><path d="M4 13l2-7h20l2 7Z" fill="#a02020" stroke="#5a1010" stroke-width="1.5"/><circle cx="16" cy="20" r="3.5" fill="#f1c40f" stroke="#5a4310"/></svg>'},forge:{n:"Forge",img:"icone-forge",icon:'<svg viewBox="0 0 32 32"><path d="M4 10h24v4l-6 3v4h4v5H8v-5h4v-4l-8-3Z" fill="#5a5a62" stroke="#c9a030" stroke-width="2"/></svg>'}};
+const CITIES=[{n:"Stormwind",fac:"a",c:"e",x:430,y:1877,img:"carte-stormwind",only:["l"],b:[{id:"shop",pos:[50,70]},{id:"quetes",pos:[62,55]},{id:"primes",pos:[36,62]},{id:"defis",pos:[78,48]},{id:"maitrise",pos:[45,48]},{id:"forge",pos:[68,26]},{id:"haut",pos:[30,40]}]},{n:"Ironforge",fac:"a",c:"e",x:607,y:1475,img:"carte-ironforge",only:["p"],b:[{id:"shop",pos:[74,50]},{id:"quetes",pos:[70,28]},{id:"primes",pos:[44,26]},{id:"defis",pos:[22,40]},{id:"maitrise",pos:[55,74]},{id:"forge",pos:[51,43]},{id:"haut",pos:[30,60]}]},{n:"Darnassus",fac:"a",c:"k",x:226,y:280,img:"carte-darnassus",only:["d"],b:[{id:"shop",pos:[66,64]},{id:"quetes",pos:[52,78]},{id:"primes",pos:[28,78]},{id:"defis",pos:[78,40]},{id:"maitrise",pos:[45,32]},{id:"forge",pos:[64,19]},{id:"haut",pos:[35,55]}]},{n:"Orgrimmar",fac:"h",c:"k",x:981,y:1145,img:"carte-orgrimmar",only:["g"],b:[{id:"shop",pos:[47,66]},{id:"quetes",pos:[28,62]},{id:"primes",pos:[60,28]},{id:"defis",pos:[30,30]},{id:"maitrise",pos:[66,40]},{id:"forge",pos:[82,16]},{id:"haut",pos:[45,45]}]},{n:"Pitons du Tonnerre",fac:"h",c:"k",x:506,y:1449,img:"carte-pitons-du-tonnerre",only:["s"],b:[{id:"shop",pos:[40,38]},{id:"quetes",pos:[24,52]},{id:"primes",pos:[80,52]},{id:"defis",pos:[72,22]},{id:"maitrise",pos:[64,62]},{id:"forge",pos:[44,58]},{id:"haut",pos:[60,35]}]},{n:"Fossoyeuse",fac:"h",c:"e",x:476,y:776,img:"carte-fossoyeuse",only:["w"],b:[{id:"shop",pos:[75,60]},{id:"quetes",pos:[24,30]},{id:"primes",pos:[30,70]},{id:"defis",pos:[80,30]},{id:"maitrise",pos:[28,44]},{id:"forge",pos:[51,31]},{id:"haut",pos:[50,58]}]}];
+const cityOk=c=>!!S.cls&&c.fac===S.fac; /* villes de sa faction : Alliance = Stormwind, Ironforge, Darnassus ; Horde = Orgrimmar, Pitons du Tonnerre, Fossoyeuse */
+const msOk=()=>!!S.cls&&(prCan()||((S.ms&&S.ms.p)||0)>0),msNew=()=>msOk()&&!(S.nt||{}).m; /* Maîtrise : bâtiment dans les villes, « NEW » tant qu’on ne l’a pas ouverte */
+let msFromCity=false;
+const qRdy=()=>((S.dq&&S.dq.q)||[]).filter(x=>!x.claimed&&x.have>=x.need).length;
+function cityOpen(i){if(!CITIES[i]||!cityOk(CITIES[i]))return;cityI=i;inForge=false;inHF=false;inShop=false;$("cstage").dataset.c="";setView("ville")}
 let citySig="";
 let cityI=null,inForge=false,inHF=false,inShop=false;
 function citySvg(){
@@ -936,25 +959,26 @@ function citySvg(){
 function cityUI(){
  const vis=CITIES.map((c,i)=>cityOk(c)?i:-1).filter(i=>i>=0),sg=vis.join(",");
  if(sg!==citySig){citySig=sg;const bx=$("cities");bx.innerHTML="";vis.forEach(i=>{const b=document.createElement("button");b.dataset.i=i;b.textContent="🏰 "+CITIES[i].n;b.onclick=()=>{cityI=i;inForge=false;inHF=false;inShop=false;cityUI()};bx.appendChild(b)});if(cityI!==null&&!vis.includes(cityI)){cityI=null;inForge=false;inHF=false;inShop=false}$("cstage").dataset.c=""}
- if(cityI===null&&vis.length===1)cityI=vis[0]; /* une seule ville par classe : on y entre directement */
- $("cities").style.display=vis.length>1?"":"none";$("cityTtl").textContent=vis.length===1&&cityI!==null?"🏰 "+CITIES[cityI].n:"Ville";
+ if(cityI===null&&vis.length)cityI=vis[0]; /* on entre dans une ville par la carte du monde */
+ $("cities").style.display="none";$("cityTtl").textContent=cityI!==null?"🏰 "+CITIES[cityI].n:"Ville";
  $("cities").querySelectorAll("button").forEach(x=>{x.className=cityI===+x.dataset.i?"on":""});
  if(cityI!==null){$("fttl").textContent="🔨 Forge de "+CITIES[cityI].n;$("hback").textContent="← Retour à "+CITIES[cityI].n;$("fback").textContent="← Retour à "+CITIES[cityI].n;$("sback").textContent="← Retour à "+CITIES[cityI].n}
- $("cityHint").textContent=vis.length?"Choisis une ville pour y entrer. La forge et les hauts faits se trouvent à "+vis.map(i=>CITIES[i].n).join(" et à ")+".":"Aucune ville pour l’instant.";
+ $("cityHint").textContent="Clique sur une ville 🏰 de ta faction sur la carte du monde pour y entrer.";
  const st=$("cstage");
  st.style.display=(cityI!==null&&!inForge&&!inHF&&!inShop)?"block":"none";$("shopWin").style.display=inShop?"block":"none";if(inShop)shopUI()
  $("forgeWin").style.display=inForge?"block":"none";$("hfView").style.display=inHF?"block":"none";if(inHF){hfSig="";hfUI()}
  $("cityHint").style.display=cityI===null?"block":"none";
- if(cityI!==null&&!inForge&&!inHF&&!inShop&&st.dataset.c!==String(cityI)){
+ if(cityI!==null&&!inForge&&!inHF&&!inShop&&st.dataset.c!==cityI+"|"+msOk()+"|"+msNew()+"|"+qRdy()+"|"+btOk()+btNew()+!!(S.bt&&S.bt.a)+chOk()+chNew()){
   const C=CITIES[cityI];
   $("cmap").innerHTML=`<img src="images/${C.img}.${EXT[xi(C.img)]}" data-b="images/${C.img}" data-i="${xi(C.img)}" data-n="__city" alt="${C.n}" style="width:100%;height:100%;object-fit:cover" onerror="nx(this)">`;
   st.querySelectorAll(".dgn").forEach(x=>x.remove());
   C.b.forEach(bd=>{
+   if(bd.id==="maitrise"&&!msOk())return;if(bd.id==="primes"&&!btOk())return;if(bd.id==="defis"&&!chOk())return;
    const B=BLD[bd.id],el=document.createElement("div");el.className="dgn";el.style.left=bd.pos[0]+"%";el.style.top=bd.pos[1]+"%";el.title=B.n;
-   el.innerHTML=`<img src="images/${B.img}.${EXT[xi(B.img)]}" data-b="images/${B.img}" data-i="${xi(B.img)}" data-n="__bld" data-k="${bd.id}" alt="${B.n}" onerror="nx(this)"><b>${B.n}</b>`;
-   el.onclick=()=>{if(bd.id=="forge")inForge=true;else if(bd.id=="shop")inShop=true;else inHF=true;cityUI()};st.appendChild(el);
+   el.innerHTML=`<img src="images/${B.img}.${EXT[xi(B.img)]}" data-b="images/${B.img}" data-i="${xi(B.img)}" data-n="__bld" data-k="${bd.id}" alt="${B.n}" onerror="nx(this)"><b>${B.n}${bd.id==="maitrise"&&msNew()?' <span class="nwb">NEW</span>':""}${bd.id==="defis"&&chNew()?' <span class="nwb blk">NEW</span>':""}${bd.id==="primes"&&btNew()?' <span class="nwb blk">NEW</span>':""}${bd.id==="primes"&&S.bt&&S.bt.a?" 🎯":""}${bd.id==="quetes"&&qRdy()?' <span class="nwb">? '+qRdy()+'</span>':""}</b>`;
+   el.onclick=()=>{if(bd.id=="defis"){S.cd.seen=1;save();msFromCity=true;document.querySelector("#chView .vback").textContent="← Retour à "+CITIES[cityI].n;chSig="";setView("challenge");return}if(bd.id=="primes"){S.bt.seen=1;save();msFromCity=true;document.querySelector("#btView .vback").textContent="← Retour à "+CITIES[cityI].n;btSig="";setView("bounty");uiSig.z="";return}if(bd.id=="maitrise"||bd.id=="quetes"){const v=bd.id=="maitrise"?"mastery":"quest";msFromCity=true;document.querySelector("#"+v+"View .vback").textContent="← Retour à "+CITIES[cityI].n;setView(v);return}if(bd.id=="forge")inForge=true;else if(bd.id=="shop")inShop=true;else inHF=true;cityUI()};st.appendChild(el);
   });
-  st.dataset.c=cityI;
+  st.dataset.c=cityI+"|"+msOk()+"|"+msNew()+"|"+qRdy()+"|"+btOk()+btNew()+!!(S.bt&&S.bt.a)+chOk()+chNew();
  }
 }
 let curV="zone";
@@ -962,14 +986,14 @@ function wmSide(){const z=$("zones");document.body.classList.toggle("wmside",cur
 function setView(v){
  if(curV==="eq"&&v!=="eq"&&S.eq&&S.eq.r){S.eq.r.forEach(x=>{delete x.nw});eqSig=""}
  curV=v;if(S.nt){if(v==="raid")S.nt.r=1;if(v==="mastery")S.nt.m=1}eqSig="";try{eqUI()}catch(e){}
- $("zoneView").style.display=v=="zone"?"":"none";$("cityView").style.display=v=="ville"?"":"none";$("raidView").style.display=v=="raid"?"":"none";$("eqView").style.display=v=="eq"?"":"none";$("questView").style.display=v=="quest"?"":"none";$("masteryView").style.display=v=="mastery"?"":"none";$("tabM").className=v=="mastery"?"on":"";msSig="";msUI();$("tabQ").className=v=="quest"?"on":"";dqSig="";dqUI();$("tabE").className=v=="eq"?"on":"";$("tabR").className=v=="raid"?"on":"";raidSig="";raidUI();
+ $("zoneView").style.display=v=="zone"?"":"none";$("cityView").style.display=v=="ville"?"":"none";$("raidView").style.display=v=="raid"?"":"none";$("eqView").style.display=v=="eq"?"":"none";$("questView").style.display=v=="quest"?"":"none";$("btView").style.display=v=="bounty"?"":"none";$("chView").style.display=v=="challenge"?"":"none";if(v=="challenge"){chSig="";chUI()}if(v=="bounty"){btSig="";btUI()}$("masteryView").style.display=v=="mastery"?"":"none";$("tabM").className=v=="mastery"?"on":"";msSig="";msUI();$("tabQ").className=v=="quest"?"on":"";dqSig="";dqUI();$("tabE").className=v=="eq"?"on":"";$("tabR").className=v=="raid"?"on":"";raidSig="";raidUI();
  $("tabZ").className=v=="zone"?"on":"";wmSide();$("tabV").className=v=="ville"?"on":"";cityUI();
 }
 ["raidView","eqView"].forEach(id=>{const rv=$(id);if(rv){const n=document.createElement("div");n.className="mut";n.style.cssText="margin:4px 0 8px;font-size:13px";n.textContent="⏸ Zone en pause tant que tu restes sur cet onglet : plus aucun monstre n’est tué ni aucun butin ramassé en zone.";rv.insertBefore(n,rv.firstChild)}});
 /* confort : à la fin d’un raid lancé depuis l’onglet Raids, on revient sur cet onglet */
 let retRaid=0,wasDun=0;
 setInterval(()=>{if(dun)wasDun=1;else if(wasDun){wasDun=0;if(retRaid){retRaid=0;if($("zoneView").style.display!=="none")setView("raid")}}},200);
-$("tabZ").onclick=()=>setView("zone");$("tabV").onclick=()=>setView("ville");$("tabR").onclick=()=>setView("raid");$("tabE").onclick=()=>setView("eq");$("tabQ").onclick=()=>setView("quest");$("tabM").onclick=()=>setView("mastery");$("fback").onclick=()=>{inForge=false;cityUI()};$("sback").onclick=()=>{inShop=false;cityUI()};$("hback").onclick=()=>{inHF=false;cityUI()};
+$("tabZ").onclick=()=>setView("zone");$("tabV").onclick=()=>setView("ville");$("cityBack").onclick=()=>setView("zone");document.querySelectorAll(".vback").forEach(b=>b.onclick=()=>{if((curV==="mastery"||curV==="quest"||curV==="bounty"||curV==="challenge")&&msFromCity&&cityI!==null){msFromCity=false;$("cstage").dataset.c="";setView("ville")}else setView("zone")});$("tabR").onclick=()=>setView("raid");$("tabE").onclick=()=>setView("eq");$("tabQ").onclick=()=>setView("quest");$("tabM").onclick=()=>setView("mastery");$("fback").onclick=()=>{inForge=false;cityUI()};$("sback").onclick=()=>{inShop=false;cityUI()};$("hback").onclick=()=>{inHF=false;cityUI()};
 
 
 /* === QUÊTES QUOTIDIENNES : monstres, champions, donjons, raids === */
@@ -1001,10 +1025,10 @@ function dqCheck(){
 }
 function dqRew(q){
  if(q.t==="mob")return{g:Math.ceil(Z[q.z].hp*2*GM()/3*q.need*6)}; /* 20 monstres (au lieu de 30) : même récompense en or qu’avant */
- if(q.t==="champ")return{g:Math.ceil(Z[q.z].hp*6*GM()/2*q.need*3),es:2,mat:q.z};
+ if(q.t==="champ")return{g:Math.ceil(Z[q.z].hp*6*GM()/2*q.need*3),es:2,mat:matUse(q.z)?q.z:undefined};
  const d=DG[q.k];
  if(q.t==="dun")return{g:Math.ceil(d.cost*q.need*1.5),es:3,item:"dfin"};
- return{g:Math.ceil(d.cost*q.need*2.5),es:12,item:"rfin",mat:XC[q.k]!==undefined?XC[q.k]:undefined,xm:1};
+ return{g:Math.ceil(d.cost*q.need*2.5),es:12,item:"rfin",mat:XC[q.k]!==undefined&&matUse(XC[q.k])?XC[q.k]:undefined,xm:1};
 }
 function dqAdd(t,k,z){
  if(!S.dq||!S.dq.q)return;
@@ -1025,6 +1049,10 @@ function dqClaim(i){
  log("📜 Récompense de quête : +"+fmt(r.g)+" or"+(r.es?", +"+r.es+" essences":"")+(r.mat!==undefined?", "+MAT[r.mat]:""));
  save();dqSig="";ui();
 }
+/* « Y aller » : emmène dans la zone de la quête (donjon / raid : ouvre sa fiche sur la carte) */
+function dqGo(i){const q=S.dq.q[i];if(!q)return;
+ if(q.t==="mob"||q.t==="champ"){if(!zOpen(q.z)){hfToast("🔒 "+Z[q.z].n+" n’est pas encore ouverte");return}S.zone=q.z;wmTab=null;wsSel=null;conf=null;dun=null;setView("zone");spawn();uiSig.z="";ui();return}
+ const d=DG[q.k];if(!d)return;const s=WMS.find(x=>x.ks.includes(q.k));if(zOpen(d.z)){S.zone=d.z;conf=null;dun=null}setView("zone");if(s){wmTab=s.c;spawn();uiSig.z="";ui();wsOpen(s.id)}else{spawn();uiSig.z="";ui()}}
 function dqUI(){
  if(!S.cls)return;
  dqCheck();
@@ -1033,12 +1061,15 @@ function dqUI(){
  const sig=S.dq.h+"|"+q.map(x=>x.have+","+(x.claimed||0)+x.k).join(";")+"|"+(S.dq.b||0)+"|"+(S.dq.nb||0)+"|"+(S.es||0);
  if(sig===dqSig)return;dqSig=sig;
  const ic={mob:"🗡️",champ:"⚔️",dun:"🏰",raid:"🐉"};
- $("questList").innerHTML=(q.every(x=>x.claimed)?"<div class='card mut' style='margin-bottom:8px'>✅ Toutes tes quêtes sont terminées ("+q.length+"/"+q.length+"). Reviens à la prochaine heure pleine, ou achète-en d’autres avec des essences.</div>":"")+q.map((x,i)=>{if(x.claimed)return "";const ok=x.have>=x.need,pc=Math.min(100,x.have/x.need*100);
-  return "<div class='card' style='margin-bottom:8px;display:flex;gap:10px;align-items:center'><div style='font-size:28px'>"+ic[x.t]+"</div><div style='flex:1'><b>"+dqTxt(x)+"</b><div style='background:#222;border-radius:4px;height:10px;margin:5px 0;overflow:hidden'><div style='width:"+pc+"%;height:100%;background:"+(ok?"#2ecc71":"#c9a030")+"'></div></div><div class='mut'>"+Math.min(x.have,x.need)+" / "+x.need+" — "+dqRTxt(x)+"</div></div>"+(x.claimed?"<span class='mut'>✅ Récupérée</span>":"<button data-q='"+i+"'"+(ok?"":" disabled")+">Récupérer</button>")+"</div>"}).join("")
-  +"<div class='card'>"+(S.dq.b?"<span class='mut'>🎁 Coffre du jour récupéré</span>":all?"<button data-q='b'>🎁 Ouvrir le coffre du jour (+8 essences)</button>":"<span class='mut'>🎁 Termine et récupère les quatre premières quêtes pour ouvrir le coffre du jour (+8 essences).</span>")+"</div>"
-  +"<div class='card'><b>Quêtes supplémentaires</b> <span class='mut'>(achetées avec des essences — le prix augmente de 1 à chaque achat, "+(S.dq.nb||0)+"/"+DQMAX+" aujourd’hui ; tu as ✨ "+(S.es||0)+")</span><div style='margin-top:8px;display:flex;gap:6px;flex-wrap:wrap'>"+Object.keys(DQB).map(t=>{const c=DQB[t]+(S.dq.nb||0),no=(S.dq.nb||0)>=DQMAX||(S.es||0)<c||!dqMk[t]();return "<button data-t='"+t+"'"+(no?" disabled":"")+">"+ic[t]+" "+DQN[t]+" — ✨ "+c+"</button>"}).join("")+"</div></div>";
+ const loc=x=>x.t==="mob"||x.t==="champ"?Z[x.z].n:x.t==="dun"?"Donjon":"Raid";
+ const nm=x=>x.t==="mob"?"Tuer "+x.need+" × "+x.k:x.t==="champ"?"Vaincre "+x.need+" fois le champion "+x.k:x.t==="dun"?"Terminer "+x.need+" fois "+DG[x.k].n:"Terminer "+x.need+" fois "+DG[x.k].n;
+ const rows=q.map((x,i)=>{if(x.claimed)return "";const ok=x.have>=x.need,pc=Math.min(100,x.have/x.need*100);
+  return "<tr title='Récompense : "+dqRTxt(x).replace(/'/g,"&#39;")+"'><td><div class='fn'>"+ic[x.t]+" "+nm(x)+"</div><div class='fd'>"+loc(x)+" · "+dqRTxt(x)+"</div></td><td><div class='qbar'><div style='width:"+pc+"%;background:"+(ok?"#2ecc71":"#c9a030")+"'></div></div><div class='fd'>"+Math.min(x.have,x.need)+" / "+x.need+"</div></td><td class='fa'>"+(ok?"<button data-q='"+i+"' class='qok'>✅ Rendre</button>":"<button data-g='"+i+"'>📍 Y aller</button>")+"</td></tr>"}).join("");
+ $("questList").innerHTML=(q.every(x=>x.claimed)?"<div class='card mut' style='margin-bottom:8px'>✅ Toutes tes quêtes sont terminées ("+q.length+"/"+q.length+"). Reviens à la prochaine heure pleine, ou achète-en d’autres avec des essences.</div>":"<table class='ftab qtab'><tr class='fh'><td>Quête</td><td>Avancée</td><td></td></tr>"+rows+"</table>")
+  +"<div class='qfoot'><div>"+(S.dq.b?"<span class='mut'>🎁 Coffre du jour récupéré</span>":all?"<button data-q='b'>🎁 Ouvrir le coffre du jour (+8 essences)</button>":"<span class='mut'>🎁 Coffre du jour (+8 ✨) : rends les quatre premières quêtes.</span>")+"</div>"
+  +"<div class='qbuy'><span class='mut'>Quêtes en plus <span title='Achetées avec des essences — le prix augmente de 1 à chaque achat'>("+(S.dq.nb||0)+"/"+DQMAX+" aujourd’hui)</span> :</span>"+Object.keys(DQB).map(t=>{const c=DQB[t]+(S.dq.nb||0),no=(S.dq.nb||0)>=DQMAX||(S.es||0)<c||!dqMk[t]();return "<button data-t='"+t+"'"+(no?" disabled":"")+">"+ic[t]+" "+DQN[t]+" ✨"+c+"</button>"}).join("")+"</div></div>";
 }
-$("questList").onclick=e=>{const bt=e.target.closest("button[data-t]");if(bt&&!bt.disabled){const t=bt.dataset.t,c=DQB[t]+(S.dq.nb||0);if((S.dq.nb||0)>=DQMAX||(S.es||0)<c)return;let q=null;for(let i=0;i<8;i++){const x=dqMk[t]();if(x&&!S.dq.q.some(y=>y.t===x.t&&y.k===x.k&&y.z===x.z)){q=x;break}}if(!q)q=dqMk[t]();if(!q)return;S.es-=c;S.dq.nb=(S.dq.nb||0)+1;S.dq.q.push(q);log("📜 Nouvelle quête achetée : "+dqTxt(q)+" (−"+c+" essences)");save();dqSig="";ui();return}const b=e.target.closest("button[data-q]");if(!b||b.disabled)return;const k=b.dataset.q;if(k==="b"){if(S.dq.b||!S.dq.q.every(x=>x.claimed))return;S.dq.b=1;S.es=(S.es||0)+8;log("🎁 Coffre du jour : +8 essences");save();dqSig="";ui()}else dqClaim(+k)};
+$("questList").onclick=e=>{{const g=e.target.closest("button[data-g]");if(g){dqGo(+g.dataset.g);return}}const bt=e.target.closest("button[data-t]");if(bt&&!bt.disabled){const t=bt.dataset.t,c=DQB[t]+(S.dq.nb||0);if((S.dq.nb||0)>=DQMAX||(S.es||0)<c)return;let q=null;for(let i=0;i<8;i++){const x=dqMk[t]();if(x&&!S.dq.q.some(y=>y.t===x.t&&y.k===x.k&&y.z===x.z)){q=x;break}}if(!q)q=dqMk[t]();if(!q)return;S.es-=c;S.dq.nb=(S.dq.nb||0)+1;S.dq.q.push(q);log("📜 Nouvelle quête achetée : "+dqTxt(q)+" (−"+c+" essences)");save();dqSig="";ui();return}const b=e.target.closest("button[data-q]");if(!b||b.disabled)return;const k=b.dataset.q;if(k==="b"){if(S.dq.b||!S.dq.q.every(x=>x.claimed))return;S.dq.b=1;S.es=(S.es||0)+8;log("🎁 Coffre du jour : +8 essences");save();dqSig="";ui()}else dqClaim(+k)};
 
 
 /* === ÉVÉNEMENTS MONDIAUX : un boss enragé dans une zone de bas niveau, aussi fort que Ragnaros (×1,5), toutes les ~2 h === */
@@ -1115,7 +1146,7 @@ function rrKill(){
  const z=RRD.z,top=zFront().top,T=[1,2,2,3,3,4,4,5,5][top-1]||1,g=Math.ceil(PZB[top-1]*20*GM());
  S.gold+=g;S.es=(S.es||0)+2;S.rr.d=dun.slot;S.rr.n=(S.rr.n||0)+1;
  log("💀 "+RRD.rn+" est vaincu ! +"+fmt(g)+" or, +2 essences");
- if(S.eq.r.length<eqCap())eqGive(eqGen(eqRoll([0,40,45,15]),T,"Rare : "+RRD.rn+" ("+Z[z].n+")"));else log("🎒 Sac plein : l’objet de "+RRD.rn+" est perdu");
+ if(S.eq.r.length<eqCap())eqGive(eqGen(eqRoll(T>=5?[0,40,45,15]:[0,40,60,0]),T,"Rare : "+RRD.rn+" ("+Z[z].n+")"));else log("🎒 Sac plein : l’objet de "+RRD.rn+" est perdu");
  try{hfToast("💀 Rare vaincu : "+RRD.rn)}catch(e){}
  dun=null;autoDun=false;save();spawn();ui();
 }
@@ -1128,6 +1159,80 @@ function rrUI(){
   if(show){bn.innerHTML="💀 <b>Monstre rare</b> — <b>"+r.nm+"</b> <span class='mut'>("+r.m+")</span> rôde dans <b>"+Z[r.z].n+"</b> <span class='mut'>(encore <span id='rrT'></span>)</span><div class='mut' style='margin:3px 0 4px'>"+(here?"Il est là ! Clique dessus sur la carte pour l’attaquer ("+RR_T+" s).":"Récompense à ton palier : or, un objet, 2 essences.")+(S.rr.n?" · Rares vaincus : "+S.rr.n:"")+"</div>"+(here?"":"<button id='rrGo'>🗺️ Aller en "+Z[r.z].n+"</button>");
    const b=$("rrGo");if(b)b.onclick=()=>{if(dun)return;S.zone=r.z;conf=null;wmTab=null;spawn();ui()}}}
  const t=$("rrT");if(t&&r)t.textContent=evFmt(r.end-Date.now());
+}
+
+/* === PRIMES (chasseurs de primes) : débloquées au palier 6. On achète une affiche « Recherché » avec de l’or (prix selon le palier atteint) ;
+   la cible apparaît dans sa zone (🎯 sur la carte), 20 s pour la vaincre. Récompenses : essences, objets, composants — jamais d’or. === */
+const BTK=[150,450,1200],BTS=[12,18,25],BTN=["🥉 Prime commune","🥈 Prime d’élite","🥇 Prime légendaire"],BTT=20; /* 20 s pour tuer la cible ; PV = 12 / 18 / 25 s des dégâts estimés (DPS + 3 clics/s) : il faut cliquer vite */
+const btLeg=()=>(S.pn||0)>=1; /* prime légendaire : après une première renaissance */
+const btOk=()=>!!S.cls&&(()=>{try{return zFront().top>=6}catch(e){return false}})();
+const btNew=()=>btOk()&&!(S.bt&&S.bt.seen);
+const btTop=()=>{try{return zFront().top}catch(e){return 6}};
+const btTier=()=>[1,2,2,3,3,4,4,5,5][btTop()-1]||4;
+const btPrice=t=>{const v=PZB[btTop()-1]*2/3*GM()*BTK[t];return v<1e5?Math.round(v/100)*100:v<1e7?Math.round(v/1000)*1000:Math.round(v/1e5)*1e5};
+function btMk(t){const zs=WLD().filter(z=>zOpen(z));if(!zs.length)return null;const z=zs[Math.floor(Math.random()*zs.length)],m=Z[z].m[Math.floor(Math.random()*Z[z].m.length)];
+ return{t,z,m:m[1],nm:RRN[Math.floor(Math.random()*RRN.length)]}}
+function btCheck(){if(!S.bt)S.bt={n:0};const h=dqHour();if(S.bt.h!==h||!S.bt.o){S.bt.h=h;S.bt.o=[0,1,2].map(btMk)}}
+const btRewTxt=t=>{const T=btTier();return t===0?"✨ 4 · 🎒 1 objet bleu (T"+T+")":t===1?"✨ 8 · 🎒 1 objet bleu (T"+Math.min(5,T+1)+") · 💎 1 composant":"✨ 15 · 🎒 "+(btTop()>=9?"1 objet de raid épique":"1 objet de donjon T5 (bleu ou épique)")};
+function btBuy(i){btCheck();const o=S.bt.o[i];if(!o||o.bought||S.bt.a||(o.t===2&&!btLeg()))return;const c=btPrice(o.t);if(S.gold<c){hfToast("💰 Pas assez d’or pour cette prime");return}
+ S.gold-=c;o.bought=1;S.bt.a={...o,price:c};log("🎯 Prime achetée : "+o.nm+" ("+o.m+", "+Z[o.z].n+") pour "+fmt(c)+" or. Repère le 🎯 sur la carte !");save();btSig="";ui()}
+function btGo(){const a=S.bt&&S.bt.a;if(!a)return;if(!zOpen(a.z)){hfToast("🔒 "+Z[a.z].n+" n’est pas ouverte");return}S.zone=a.z;wmTab=null;wsSel=null;conf=null;dun=null;setView("zone");spawn();uiSig.z="";ui()}
+function btEnter(){const a=S.bt&&S.bt.a;if(!a||dun||conf)return;
+ S.zone=a.z;const k=S.kills[a.z],g=Math.ceil(Z[a.z].hp*Math.min(2,1+k*0.04)),hp=Math.max(10,eqD()*BTS[a.t]);
+ RRD.z=a.z;RRD.b=a.m;RRD.rn=a.nm;RRD.hpx=hp/(g*HPM);RRD.n="Prime — "+a.nm;
+ dun={i:0,k:"rr",bt:1,end:Date.now()+BTT*1000,slot:-1};log("🎯 Tu attaques la prime "+a.nm+" ("+a.m+") ! Tu as "+BTT+" s.");save();spawn();ui()}
+function btKill(){const a=S.bt.a,T=btTier(),src="Prime : "+a.nm+" ("+Z[a.z].n+")";let es=[4,8,15][a.t];S.es=(S.es||0)+es;
+ const give=it=>{if(S.eq.r.length<eqCap())eqGive(it);else log("🎒 Sac plein : l’objet de la prime est perdu")};
+ if(a.t===0)give(eqGen(2,T,src));
+ else if(a.t===1){give(eqGen(2,Math.min(5,T+1),src));const rz=recipes().map(r=>r.z).filter(z=>matUse(z));if(rz.length){const z=rz[Math.floor(Math.random()*rz.length)];S.mats[z]=(S.mats[z]||0)+1;log("💎 Prime : "+MAT[z])}}
+ else give(eqGen(btTop()>=9?3:eqRoll([0,0,70,30]),5,src));
+ S.bt.n=(S.bt.n||0)+1;S.bt.a=null;log("🎯 Prime remplie : "+a.nm+" est vaincu ! +"+es+" essences");try{hfToast("🎯 Prime remplie : "+a.nm)}catch(e){}
+ dun=null;autoDun=false;save();btSig="";spawn();ui()}
+let btSig="";
+function btUI(){
+ if(!S.cls||!btOk())return;btCheck();
+ const v=$("btList");if(!v||$("btView").style.display==="none")return;
+ const sig=JSON.stringify([S.bt,Math.floor(S.gold/1000),btTop()]);if(sig===btSig)return;btSig=sig;
+ const a=S.bt.a,cls=["bt0","bt1","bt2"];
+ v.innerHTML=(a?`<div class="btact">🎯 <b>Prime en cours :</b> ${a.nm} <span class="mut">(${a.m}, ${Z[a.z].n})</span> · ${BTN[a.t]} <button id="btGo">📍 Y aller</button> <button id="btAb" class="mut">Abandonner</button><div class="mut" style="font-size:12px;margin-top:3px">Va dans la zone et clique sur la cible 🎯 : ${BTT} s pour la vaincre. Une seule prime à la fois.</div></div>`:"")
+  +`<div class="btgrid">`+S.bt.o.map((o,i)=>{if(!o)return "";const c=btPrice(o.t),lk=o.t===2&&!btLeg(),can=!o.bought&&!a&&!lk&&S.gold>=c;
+   return `<div class="btp ${cls[o.t]}${lk?" btlk":""}"><div class="btw">RECHERCHÉ</div><div class="btn">${BTN[o.t]}</div><div class="btc"><b>${o.nm}</b><div class="mut">${o.m} · ${Z[o.z].n}</div></div><div class="btr">${btRewTxt(o.t)}</div>`+(o.bought?`<div class="mut">${a&&a.nm===o.nm?"En cours":"✔ Remplie"}</div>`:(lk?`<div class="mut">🔒 Après une première renaissance</div>`:`<button data-bt="${i}"${can?"":" disabled"}>Acheter · 💰 ${fmt(c)}</button>`))+`</div>`}).join("")+`</div>`
+  +`<div class="mut" style="font-size:12px;margin-top:8px">Nouvelles affiches chaque heure. Le prix suit ton palier. Les primes ne rapportent pas d’or : essences, objets et composants.${S.bt.n?" · Primes remplies : "+S.bt.n:""}</div>`;
+ v.querySelectorAll("button[data-bt]").forEach(b=>b.onclick=()=>btBuy(+b.dataset.bt));
+ const g=$("btGo");if(g)g.onclick=btGo;const ab=$("btAb");if(ab)ab.onclick=()=>{if(confirm("Abandonner cette prime ? L’or dépensé est perdu.")){S.bt.a=null;save();btSig="";ui()}};
+}
+
+/* === DÉFIS : refaire un donjon déjà terminé à un niveau de défi 1 à 10 (PV ×1,5 par niveau, 60 s, entrée gratuite, aucun butin).
+   Récompense : essences à la première réussite de chaque niveau. Record (meilleur niveau + temps) pour se comparer entre joueurs. === */
+const CHMAX=10,CHT=60,CHX=L=>Math.pow(1.5,L);
+const chList=()=>Object.keys(DG).filter(k=>!RAIDS.includes(k)&&!isRaidD(DG[k])&&k!=="ev").sort((a,b)=>zPal(DG[a].z)-zPal(DG[b].z)||DG[a].n.localeCompare(DG[b].n));
+const chOk=()=>!!S.cls&&chList().some(k=>S.dd[k]);
+const chNew=()=>chOk()&&!(S.cd&&S.cd.seen);
+const chEs=(k,L)=>Math.ceil(L/2)*(1+Math.floor((zPal(DG[k].z)-1)/3));
+const chFmt=s=>(Math.round(s*10)/10).toLocaleString("fr-FR")+" s";
+function chEnter(k,L){const d=DG[k];if(!d||dun||conf||!S.dd[k])return;if(!(L>=1&&L<=CHMAX))return; /* tous les niveaux sont ouverts dès le départ */
+ if(d.z!==S.zone){if(rz===null)rz=S.zone;S.zone=d.z}
+ dun={i:0,k,ch:L,st:Date.now(),end:Date.now()+CHT*1000};autoDun=false;try{pre("images/"+d.img);pre("images/"+d.img+"-boss")}catch(e){}
+ log("🏁 Défi : "+d.n+" — niveau "+L+" (PV ×"+(Math.round(CHX(L)*10)/10).toLocaleString("fr-FR")+", "+CHT+" s)");setView("zone");save();spawn();ui()}
+function chKill(){const d=DX();if(dun.i<d.floors-1){dun.i++;save();spawn();ui();return}
+ const k=dun.k,L=dun.ch,t=(Date.now()-dun.st)/1000;if(!S.cd)S.cd={};const r=S.cd[k]||(S.cd[k]={b:0,t:{}});
+ const r0=r.b||0,first=L>r0,best=!r.t[L]||t<r.t[L];if(first)r.b=L;if(best)r.t[L]=Math.round(t*10)/10;
+ let msg="🏁 Défi réussi : "+d.n+" niveau "+L+" en "+chFmt(t)+(best&&!first?" — nouveau record !":"");
+ if(first){let e=0;for(let x=(r0||0)+1;x<=L;x++)e+=chEs(k,x);S.es=(S.es||0)+e;msg+=" · +"+e+" essence"+(e>1?"s":"")+(L-(r0||0)>1?" (niveaux "+((r0||0)+1)+" à "+L+")":"")}
+ log(msg);try{hfToast(msg.replace("🏁 ",""))}catch(e){}
+ dun=null;chSig="";save();spawn();setView("challenge");ui()} /* on reste sur le tableau des défis */
+let chSig="";
+function chUI(){
+ if(!S.cls)return;const v=$("chList");if(!v||$("chView").style.display==="none")return;
+ const sig=JSON.stringify([S.cd,S.dd,S.cls]);if(sig===chSig)return;chSig=sig;const cd=S.cd||{};
+ v.innerHTML=`<table class="ftab chtab"><tr class="fh"><td>Donjon</td><td>Record</td><td>Niveau</td><td></td></tr>`+chList().map(k=>{const d=DG[k],ok=!!S.dd[k],r=cd[k]||{b:0,t:{}},nx=Math.min(CHMAX,(r.b||0)+1);
+  const pips=`<span class="fpp sm">`+Array.from({length:CHMAX},(_,i)=>`<i${i<r.b?' class="f"':""}></i>`).join("")+`</span>`;
+  return `<tr><td><div class="fn">${d.em||"🏰"} ${d.n}</div><div class="fd">Palier ${zPal(d.z)}${d.elite?" · élite":""}</div></td><td>${pips}<div class="fd">${r.b?"niv. "+r.b+" en "+chFmt(r.t[r.b]):"—"}</div></td>`
+   +(ok?`<td><select data-cl="${k}">${Array.from({length:CHMAX},(_,i)=>CHMAX-i).map(L=>{let e=0;for(let x=(r.b||0)+1;x<=L;x++)e+=chEs(k,x);return `<option value="${L}"${L===nx?" selected":""}>${L}${e?" ✨"+e:""}</option>`}).join("")}</select></td><td class="fa"><button data-ch="${k}">🏁 Lancer</button></td>`:`<td colspan="2" class="fd" style="text-align:right">🔒 Termine d’abord ce donjon</td>`)+`</tr>`}).join("")+`</table>`
+  +`<div class="qfoot"><div class="mut">PV ×1,5 par niveau · ${CHT} s · entrée gratuite · pas de butin. Tous les niveaux sont ouverts : réussir un niveau valide aussi tous ceux en dessous (et leurs ✨ essences). Le temps est mesuré de l’entrée à la mort du dernier boss.</div><div><button id="chCopy">📋 Copier mes records</button> <span class="mut" id="chCp"></span></div></div>`;
+ v.querySelectorAll("button[data-ch]").forEach(b=>b.onclick=()=>{const k=b.dataset.ch,s=v.querySelector(`select[data-cl="${k}"]`);chEnter(k,+(s?s.value:1))});
+ const cp=$("chCopy");if(cp)cp.onclick=()=>{const t="AzerClicker — Défis ("+CL[S.cls].n+") : "+chList().filter(k=>cd[k]&&cd[k].b).map(k=>DG[k].n+" niv. "+cd[k].b+" en "+chFmt(cd[k].t[cd[k].b])).join(" · ");
+  try{navigator.clipboard.writeText(t).then(()=>{$("chCp").textContent="Copié !"},()=>{prompt("Copie ce texte :",t)})}catch(e){prompt("Copie ce texte :",t)}};
 }
 
 /* === MAÎTRISE : points gagnés sur les boss de fin de raid (Ragnaros, C'Thun), conservés après la renaissance === */
@@ -1268,8 +1373,10 @@ function eqGen(rar,tier,src){
 const eqTxtI=it=>eqTxt(it.b)+(it.b2?" · "+eqTxt(it.b2):"")+(it.b3?" · "+eqTxt(it.b3):"");
 const eqTxt=b=>"+"+b.v.toLocaleString("fr-FR")+(EQK[b.k].u==="%"?" % ":" ")+EQK[b.k].n;
 const EQPB=[4.5,20,65,230,800],eqPrice=it=>Math.ceil((EQPB[(it.l||1)-1]||800)*(it.r+1)); /* prix de vente (rééquilibrage v2) */
+/* vente automatique : objets de rareté inférieure au seuil (1 = gris, 2 = gris + verts, 3 = gris + verts + bleus), sauf améliorations de ton équipement, pièces de ta panoplie et objets verrouillés */
+const eqAuto=it=>!!S.eq.as&&it.r<S.eq.as&&!it.u&&!it.lk&&it.set!==S.cls&&!(eqScore(it)>0.05);
 function eqGive(it){
- S.eq.seen[it.r]=(S.eq.seen[it.r]||0)+1;if(S.eq.as&&it.r<S.eq.as&&!it.u){S.gold+=eqPrice(it);log("💰 Vente automatique : "+it.n+" ("+EQR[it.r].n.toLowerCase()+") vendu "+fmt(eqPrice(it))+" or");eqSig="";return}it.nw=1;S.eq.r.push(it); /* le nouvel objet va en bas de la liste : les objets déjà en réserve ne bougent plus */
+ S.eq.seen[it.r]=(S.eq.seen[it.r]||0)+1;if(eqAuto(it)){S.gold+=eqPrice(it);log("💰 Vente automatique : "+it.n+" ("+EQR[it.r].n.toLowerCase()+") vendu "+fmt(eqPrice(it))+" or");eqSig="";return}it.nw=1;S.eq.r.push(it); /* le nouvel objet va en bas de la liste : les objets déjà en réserve ne bougent plus */
  while(S.eq.r.length>eqCap()){let j=S.eq.r.length-1;while(j>0&&S.eq.r[j].u)j--;if(S.eq.r[j].u)break;const o=S.eq.r.splice(j,1)[0];S.gold+=eqPrice(o)}
  log("🎒 Objet "+EQR[it.r].n.toLowerCase()+" : "+it.n+" ("+eqTxtI(it)+") — "+it.src);hfToast("🎒 "+EQR[it.r].n+" : "+it.n);
  eqSig="";setTimeout(()=>hfAll(),0);
@@ -1283,12 +1390,14 @@ function eqDrop(zi,src,kind,dk){
  else if(kind==="dfin"){ch=1;w=[0,0,70,30]} /* boss final de donjon : toujours un objet, bleu ou épique */
  else if(kind==="rmid"){ch=.35;w=[0,0,0,1]}
  else if(kind==="rfin"){ch=1;w=[0,0,0,1]}
- if(dk&&DG[dk]&&DG[dk].elite&&(kind==="dmid"||kind==="dfin"))w=kind==="dmid"?[0,0,70,30]:[0,0,40,60]; /* donjon élite : 30 % / 60 % d’épiques */
+ /* épiques : seulement dans les donjons qui lâchent du T5 (paliers 8-9) et dans les raids ; ailleurs, l’épique devient du bleu */
+ let TT=T;if(T<5&&kind!=="rmid"&&kind!=="rfin"){w=w.slice();if(w[3]){w[2]=(w[2]||0)+w[3];w[3]=0}
+  if(dk&&DG[dk]&&DG[dk].elite&&(kind==="dmid"||kind==="dfin"))TT=Math.min(5,T+1);} /* donjon élite (Hache-Tripes Nord) : objets bleus d’un niveau au-dessus (T5) */
  const st=SETRAID[dk];
  if(st&&(kind==="rmid"||kind==="rfin")&&S.cls&&S.eq.r.length<eqCap()&&Math.random()<Math.min(1,(kind==="rfin"?.40:.20)*chm)){
   {const sk=SETP[Math.floor(Math.random()*SETP.length)],it=eqGen(3,T,src);it.s=sk;it.set=S.cls;it.tier=st;it.n=EQBASE[sk]+" "+SETN[S.cls][st-1];[it.b,it.b2].forEach(b=>{if(b)b.v=Math.round(b.v*SETSTAT[st]*100)/100});eqGive(it);return}
  }
- if(Math.random()<Math.min(1,ch*chm))eqGive(eqGen(eqRoll(w),T,src));
+ if(Math.random()<Math.min(1,ch*chm))eqGive(eqGen(eqRoll(w),TT,src));
 }
 const SULF=0.02; /* chance que Ragnaros laisse Sulfuras (une seule fois par classe) */
 function sulGive(){
@@ -1347,6 +1456,7 @@ function eqTipShow(id,e){const it=S.eq.r.find(x=>x.id===id);if(!it)return;let t=
  t.style.display="block";eqTipMove(e)}
 function eqTipMove(e){const t=$("eqTip");if(!t||t.style.display!=="block")return;const w=t.offsetWidth,h=t.offsetHeight;let x=e.clientX+18,y=e.clientY+18;if(x+w>innerWidth-8)x=e.clientX-w-18;if(y+h>innerHeight-8)y=Math.max(8,innerHeight-h-8);t.style.left=x+"px";t.style.top=y+"px"}
 function eqTipHide(){const t=$("eqTip");if(t)t.style.display="none"}
+let bagCl=false;try{bagCl=localStorage.getItem("azer_bag")==="1"}catch(e){} /* sac repliable */
 function eqUI(){
  const box=$("eqbox");if(!box)return;
  const sig=JSON.stringify([S.cls,S.eq,eqFlt,eqSrt,Object.keys(eqSel).join(),eqUndo&&eqUndo.t,Math.round(dps()),cd(),critP(),critM(),curV,eqFoc,eqSM,eqSlotF,eqSetT,xplN(),PAN()]);if(sig===eqSig)return;eqSig=sig;
@@ -1372,13 +1482,13 @@ function eqUI(){
    return `<div class="pds" title="${esc(setN(t))} — ${n}/5 pièces. Les pièces tombent sur les boss de ${SETSRC[t]}. Les bonus se cumulent.&#10;${det}"><span>T${t} · ${(SETN[S.cls]||[])[t-1]||"panoplie"}</span><span class="pdp">${"●".repeat(n)}<span class="mut">${"○".repeat(5-n)}</span></span><span class="mut" style="font-size:11px">${act.length?"palier "+act[act.length-1].n+" p. actif":"aucun palier"}${nxt?" · suivant : "+nxt.n+" p.":""}</span></div>`}).join("")||`<div class="mut" style="font-size:11px;margin-top:8px">Aucune pièce de panoplie</div>`;
  {const ep=$("eqPanel");if(ep)ep.innerHTML=`<h2>🎒 Équipement</h2><div class="pdb"><span title="Dégâts par seconde estimés : DPS, clics et critiques réunis"><b>Puissance ${fmtB(Math.round(D0))}</b>${nUp?` <span style="color:#2e7d32;font-size:11px">${eqPct(gainAll)} possible</span>`:""}</span>${Object.values(plansP).map(pl=>`<button data-plan="${pl.t}" style="background:#e67e22;border-color:#e67e22" title="Équipe tes ${pl.n} pièces T${pl.t} (${Object.keys(pl.pick).length} à changer) : les bonus de la panoplie T${pl.t} remplacent ceux de ta panoplie actuelle. Dégâts estimés : ${eqPct(pl.gain)}">◆ Panoplie T${pl.t} (${pl.n}/5) ${eqPct(pl.gain)}</button>`).join(" ")}${nUp?`<button id="eqall" title="Équipe d’un coup la meilleure pièce de ton sac pour chaque emplacement amélioré">Tout équiper ▲ (${nUp})</button>`:""}</div><div class="sh shm"><div class="sh-col">${["h","s","b","g"].map(slot).join("")}</div>${center}<div class="sh-col">${["j","r","t","w"].map(slot).join("")}</div></div>${setL}`}
   const plans=eqPlans(),cmps=S.eq.r.map(x=>eqCmp(x,plans));Object.keys(eqSel).forEach(k=>{if(!S.eq.r.find(x=>x.id===k))delete eqSel[k]});
- {const ep2=$("eqPanel");if(ep2){ep2.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>eqApplyPlan(+b.dataset.plan));const ea=$("eqall");if(ea)ea.onclick=eqEquipBest;ep2.querySelectorAll("[data-pslot]").forEach(b=>b.onclick=()=>{eqSlotF=eqSlotF===b.dataset.pslot&&curV==="eq"?null:b.dataset.pslot;eqFoc=null;eqSM=false;if(curV!=="eq")setView("eq");else{eqSig="";ui()}})}}
+ {const ep2=$("eqPanel");if(ep2){ep2.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>eqApplyPlan(+b.dataset.plan));const ea=$("eqall");if(ea)ea.onclick=eqEquipBest;ep2.querySelectorAll("[data-pslot]").forEach(b=>b.onclick=()=>{eqSlotF=eqSlotF===b.dataset.pslot?null:b.dataset.pslot;eqFoc=null;eqSM=false;eqSig="";ui()})}}
  if(eqFoc&&!S.eq.r.find(x=>x.id===eqFoc))eqFoc=null;
  /* sac */
  const idx=S.eq.r.map((x,i)=>i).filter(i=>(!eqSlotF||S.eq.r[i].s===eqSlotF)&&(eqFlt==="all"||(eqFlt==="up"&&(cmps[i].st>0||cmps[i].st===2))||(eqFlt==="dn"&&cmps[i].st<0))),slx=k=>EQS.findIndex(x=>x.k===k);
  idx.sort((a,b)=>{const A=S.eq.r[a],B=S.eq.r[b],ds=cmps[b].key-cmps[a].key;return eqSrt==="sc"?ds:eqSrt==="r"?(B.r-A.r)||ds:(slx(A.s)-slx(B.s))||ds});
  const selN=Object.keys(eqSel).length,selG=S.eq.r.filter(x=>eqSel[x.id]).reduce((t,x)=>t+eqPrice(x),0),chip=(k,v,l,on,t)=>`<span class="ch${on?" on":""}" data-${k}="${v}"${t?` title="${t}"`:""}>${l}</span>`,cap=eqCap();
- let bag=`<div class="sh-card"><div class="sh-h"><b>Sac</b><span class="mut">${S.eq.r.length}/${cap}</span><span style="flex:1"></span>${chip("f","all","Tous",eqFlt==="all")}${chip("f","up","▲",eqFlt==="up","Meilleurs que ta pièce équipée")}${chip("f","dn","▼",eqFlt==="dn","Moins bons que ta pièce équipée")}<span class="mut" style="font-size:11px;margin-left:4px">Tri :</span>${chip("s","sc","Score",eqSrt==="sc")}${chip("s","r","Rareté",eqSrt==="r")}${chip("s","sl","Empl.",eqSrt==="sl")}</div>`;
+ let bag=`<div class="sh-card bagc${bagCl?" bagcl":""}"><div class="sh-h"><b class="bagT" title="Réduire ou afficher le sac">Sac</b><span class="mut">${S.eq.r.length}/${cap}</span><span style="flex:1"></span>${chip("f","all","Tous",eqFlt==="all")}${chip("f","up","▲",eqFlt==="up","Meilleurs que ta pièce équipée")}${chip("f","dn","▼",eqFlt==="dn","Moins bons que ta pièce équipée")}<span class="mut" style="font-size:11px;margin-left:4px">Tri :</span>${chip("s","sc","Score",eqSrt==="sc")}${chip("s","r","Rareté",eqSrt==="r")}${chip("s","sl","Empl.",eqSrt==="sl")}</div>`;
  if(eqSlotF)bag+=`<div style="font-size:12px;margin-top:6px">Emplacement : <b>${EQS.find(x=>x.k===eqSlotF).n}</b> <span class="ch" data-slot="${eqSlotF}">✕ tout le sac</span></div>`;
  if(S.eq.r.length>=cap)bag+=`<div style="color:#e05a4a;font-size:12px;margin-top:6px">Sac plein : tu ne ramasses plus d’objets. Équipe, vends ou achète un sac chez le marchand.</div>`;
  bag+=`<div class="sh-bagg">`+idx.map(i=>{const it=S.eq.r[i],c=EQR[it.r].c,sl=EQS.find(x=>x.k===it.s),cp=cmps[i],mk=cp.st===2?`<i class="m" style="background:#e67e22">◆</i>`:cp.st>0?`<i class="m" style="background:#2e7d32">▲</i>`:cp.st<0?`<i class="m" style="background:#8a2a20">▼</i>`:"";
@@ -1392,10 +1502,11 @@ function eqUI(){
   bag+=`<div class="sh-det" style="border-color:${c}"><div style="display:flex;gap:10px;align-items:flex-start">${ico(it,sl)}<div style="flex:1;min-width:0"><b style="color:${c};font-size:15px">${it.nw?"🆕 ":""}${esc(it.n)}</b><div class="mut" style="font-size:12px">${EQR[it.r].n} · ${sl.n}${it.set?` · <b style="color:#3fae5a">T${itTier(it)}</b>`:""} · ${esc(it.src)}</div><div style="margin-top:4px">${esc(eqTxtI(it))}</div><div style="margin-top:4px;color:${col};font-weight:700">${cp.a} ${eqPct(cp.key)} de dégâts estimés si tu l’équipes</div><div class="mut" style="font-size:12px">À la place de : ${cur?`<span style="color:${EQR[cur.r].c}">${esc(cur.n)}</span> — ${esc(sTxt(cur))}`:"emplacement vide"}</div>${cp.st===2&&cp.tip?`<div style="font-size:12px;color:#e67e22">${esc(cp.tip)}</div>`:""}${setL}</div></div><div class="sh-dbtn"><button data-eq="${it.id}" class="on">Équiper</button><button data-sell="${it.id}"${sellable?"":" disabled"} title="${it.u?"Objet légendaire unique : il ne peut pas être vendu":it.lk?"Objet bloqué":""}">💰 Vendre ${fmt(eqPrice(it))} or</button><button data-lock="${it.id}">${it.lk?"🔒 Débloquer":"🔓 Bloquer"}</button><button data-x="1" title="Fermer">✕</button></div></div>`}
  if(S.eq.r.length){
   bag+=`<div class="bar2"><span>${eqSM?(selN?`<b>${selN} objet${selN>1?"s":""}</b> sélectionné${selN>1?"s":""} · <span style="color:#b9770e">+${fmt(selG)} or</span>`:`<span class="mut">Clique sur les objets à vendre.</span>`):`<span class="mut">Clique sur un objet pour le détail · double-clic pour l’équiper.</span>`}</span><span style="display:flex;gap:6px;flex-wrap:wrap">${eqSM?`<button id="eqs1" title="Sélectionne les objets moins bons que ta pièce équipée (hors bloqués)">Les ▼</button><button id="eqs2">Tout</button><button id="eqs3"${selN?"":" disabled"}>Vider</button><button id="eqs4" class="on"${selN?"":" disabled"}>Vendre</button><button id="eqsm">Terminer</button>`:`<button id="eqsm">💰 Vendre plusieurs objets</button>`}</span></div>`;
-  bag+=`<div class="mut" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px"><span>Vente automatique des objets plus faibles que <select id="eqas"><option value="0">— désactivée —</option>${[1,2,3].map(r=>`<option value="${r}"${(S.eq.as||0)===r?" selected":""}>${EQR[r].n}</option>`).join("")}</select></span>${eqUndo&&Date.now()-eqUndo.t<10000?`<button id="equn">↶ Annuler la vente (${eqUndo.items.length} objet${eqUndo.items.length>1?"s":""})</button>`:""}</div>`}
+  bag+=`<div class="mut" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px"><span title="Vend tout seul les objets de ces raretés dès qu’ils tombent (et ceux déjà dans le sac), sauf ceux qui amélioreraient ton équipement et les pièces de ta panoplie">Vente automatique : <select id="eqas">${["— désactivée —","objets gris","gris et verts","gris, verts et bleus"].map((t,r)=>`<option value="${r}"${(S.eq.as||0)===r?" selected":""}>${t}</option>`).join("")}</select></span>${eqUndo&&Date.now()-eqUndo.t<10000?`<button id="equn">↶ Annuler la vente (${eqUndo.items.length} objet${eqUndo.items.length>1?"s":""})</button>`:""}</div>`}
  bag+=`<div class="mut" style="font-size:11px;margin-top:6px">▲ meilleur que ta pièce · ▼ moins bon · ◆ pièce de panoplie à monter avec les autres · le pourcentage est la variation des dégâts estimés (DPS, clics et critiques réunis).</div></div>`;
  h+=bag;
  box.innerHTML=h;
+ {const bt=box.querySelector(".bagT");if(bt)bt.onclick=()=>{bagCl=!bagCl;try{localStorage.setItem("azer_bag",bagCl?1:0)}catch(e){}const c=box.querySelector(".bagc");if(c)c.classList.toggle("bagcl",bagCl)}}
  const rr=()=>{eqSig="";ui()};
  box.querySelectorAll("[data-it]").forEach(b=>{const id=b.dataset.it;b.onmouseenter=e=>eqTipShow(id,e);b.onmousemove=eqTipMove;b.onmouseleave=eqTipHide});
  box.querySelectorAll("[data-slot]").forEach(b=>b.onclick=()=>{eqSlotF=eqSlotF===b.dataset.slot?null:b.dataset.slot;rr()});
@@ -1409,7 +1520,7 @@ function eqUI(){
  box.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{eqFlt=b.dataset.f;rr()});box.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{eqSrt=b.dataset.s;rr()});
  const smx=$("eqsm");if(smx)smx.onclick=()=>{eqSM=!eqSM;if(!eqSM)eqSel={};eqFoc=null;rr()};
  const sl1=$("eqs1");if(sl1){sl1.onclick=()=>{eqSel={};S.eq.r.forEach((x,i)=>{if(!x.u&&!x.lk&&cmps[i].st<0)eqSel[x.id]=1});rr()};$("eqs2").onclick=()=>{eqSel={};S.eq.r.forEach(x=>{if(!x.u&&!x.lk)eqSel[x.id]=1});rr()};$("eqs3").onclick=()=>{eqSel={};rr()};$("eqs4").onclick=eqSellSel}
- const asx=$("eqas");if(asx)asx.onchange=()=>{S.eq.as=+asx.value;save();rr()};const unx=$("equn");if(unx)unx.onclick=eqUndoSell;
+ const asx=$("eqas");if(asx)asx.onchange=()=>{S.eq.as=+asx.value;const out=S.eq.r.filter(eqAuto);if(out.length){eqSel={};out.forEach(x=>eqSel[x.id]=1);const n=out.length;eqSellSel();log("💰 Vente automatique : "+n+" objet"+(n>1?"s":"")+" du sac vendu"+(n>1?"s":"")+" (annulable 10 s)")}save();rr()};const unx=$("equn");if(unx)unx.onclick=eqUndoSell;
 
 }
 const uiSig={};
@@ -1507,8 +1618,14 @@ function wmTitle(i,evA){const z=Z[i],dn=zDone(i),pc=Math.round(zPct(i)*100),dd=z
  if(!dn){const t2=zSec(i);t+="\ndifficulté : "+ZDN[zDiff(i)]+" (≈ "+(t2<10?Math.round(t2*10)/10:fmtB(t2))+" s par monstre)"}
  return t}
 /* quêtes en cours (pas terminées) : par zone (monstres, champions) et par donjon / raid */
-function wmQuests(){const z={},d={};((S.dq&&S.dq.q)||[]).forEach(q=>{if(q.claimed||q.have>=q.need)return;const t=dqTxt(q)+" — "+q.have+"/"+q.need;if(q.t==="mob"||q.t==="champ"){(z[q.z]=z[q.z]||[]).push(t)}else if(DG[q.k]){(d[q.k]=d[q.k]||[]).push(t)}});return{z,d}}
-const wmQSig=()=>((S.dq&&S.dq.q)||[]).map(q=>q.t+q.z+q.k+(q.claimed||q.have>=q.need?"x":"a")).join();
+function wmQuests(){const z={},d={};((S.dq&&S.dq.q)||[]).forEach((q,i)=>{if(q.claimed)return;if(q.t==="mob"||q.t==="champ"){(z[q.z]=z[q.z]||[]).push(i)}else if(DG[q.k]){(d[q.k]=d[q.k]||[]).push(i)}});return{z,d}}
+const wmQSig=()=>((S.dq&&S.dq.q)||[]).map(q=>q.t+q.z+q.k+(q.claimed?"c":q.have>=q.need?"x":"a")).join()+"|"+(S.dq&&S.dq.b)+"|"+((typeof prCan==="function"&&prCan())||(S.ms&&S.ms.p>0)?1:0)+((S.nt||{}).m?"m":"");
+function wqPop(ids,mk){const mp=$("wmap");if(!mp)return;let p=$("wqPop");if(p)p.remove();p=document.createElement("div");p.id="wqPop";
+ const r=mk.getBoundingClientRect(),R=mp.getBoundingClientRect();p.style.left=Math.max(4,Math.min(R.width-244,r.left-R.left-120))+"px";p.style.top=(r.top-R.top+18)+"px";
+ p.innerHTML="<div class='wsh'><b>📜 Quête"+(ids.length>1?"s":"")+"</b><button class='wsx' data-x='1' title='Fermer'>✕</button></div>"+ids.map(i=>{const q=S.dq.q[i],ok=q.have>=q.need,pc=Math.min(100,q.have/q.need*100);
+  return "<div class='wqi'><b>"+dqTxt(q)+"</b><div class='wqb'><div style='width:"+pc+"%;background:"+(ok?"#2ecc71":"#c9a030")+"'></div></div><div class='mut'>"+Math.min(q.have,q.need)+" / "+q.need+" — "+dqRTxt(q)+"</div>"+(ok?"<button data-q='"+i+"'>✅ Rendre la quête</button>":"")+"</div>"}).join("")+"<button data-j='1' class='mut' style='margin-top:4px'>📜 Ouvrir le journal</button>";
+ p.onclick=e=>{e.stopPropagation();const t=e.target.closest("button");if(!t)return;if(t.dataset.x){p.remove();return}if(t.dataset.j){p.remove();msFromCity=false;document.querySelector("#questView .vback").textContent="← Retour à la carte";setView("quest");return}if(t.dataset.q!==undefined){dqClaim(+t.dataset.q);p.remove();dqSig="";uiSig.z="";ui()}};
+ mp.appendChild(p)}
 function wmRender(evA){
  const w=WLD(),cur=(WMZ[S.zone]||{}).c||"e",tab=wmTab||cur,NS="http://www.w3.org/2000/svg";
  const box=document.createElement("div");box.id="wm";
@@ -1530,7 +1647,8 @@ function wmRender(evA){
   const rc=i===rec,df=zDiff(i),cy=wmCent(o)[1],b=document.createElement("button");let cx=wmCent(o)[0];{const q=sp.find(q=>Math.abs(q[0]-cx)<6&&Math.abs(q[1]-cy)<2.6);if(q)cx=q[0]+(cx>=q[0]?6.5:-6.5)} /* pastille décalée si une icône de donjon est au même endroit */
   b.className="zn d"+df+(rc?" rec":"")+(i===S.zone?" on":"");b.textContent=rc?"★":zPal(i);b.title=wmTitle(i,evA);b.style.left=PX(cx);b.style.top=PY(cy);b.onclick=()=>go(i);o.btn=b;inn.appendChild(b)});
  inn.appendChild(sv);
- const qMark=(x,y,tip)=>{const m=document.createElement("div");m.className="wmq";m.textContent="!";m.title="📜 Quête en cours :\n"+tip.join("\n");m.style.left=PX(x);m.style.top=PY(y);inn.appendChild(m)};
+ const qMark=(x,y,ids)=>{const qs=ids.map(i=>S.dq.q[i]),rdy=qs.some(q=>q.have>=q.need),m=document.createElement("div");m.className="wmq"+(rdy?" rdy":"");m.textContent=rdy?"?":"!";m.title=(rdy?"📜 Quête terminée, à rendre :\n":"📜 Quête en cours :\n")+qs.map(q=>dqTxt(q)+" — "+Math.min(q.have,q.need)+"/"+q.need).join("\n")+"\nClique pour voir la quête";m.style.left=PX(x);m.style.top=PY(y);m.onclick=e=>{e.stopPropagation();wqPop(ids,m)};inn.appendChild(m)};
+ {const BA=S.bt&&S.bt.a;if(BA){const o=WMZ[BA.z];if(o&&o.c===tab){const [x,y]=wmCent(o),m=document.createElement("div");m.className="wmr";m.textContent="🎯";m.title="🎯 Prime : "+BA.nm+" ("+BA.m+") — "+Z[BA.z].n+"\nClique pour y aller";m.style.left=PX(x+3.4);m.style.top=PY(y+1.6);m.onclick=()=>go(BA.z);inn.appendChild(m)}}}
  if(RA){const o=WMZ[RA.z];if(o&&o.c===tab){const [x,y]=wmCent(o),m=document.createElement("div");m.className="wmr";m.textContent="💀";m.title="💀 Monstre rare : "+RA.nm+" ("+RA.m+") — "+Z[RA.z].n+"\nClique pour y aller";m.style.left=PX(x-3.4);m.style.top=PY(y-1.2);m.onclick=()=>go(RA.z);inn.appendChild(m)}}
  Object.keys(WQ.z).forEach(i=>{const o=WMZ[i];if(!o||o.c!==tab)return;const [x,y]=wmCent(o);qMark(x+(zDone(+i)?0:3.2),y-1.2,WQ.z[i])});
  WMS.filter(s=>s.c===tab).forEach(s=>{const ks=s.ks.filter(k=>WQ.d[k]);if(!ks.length)return;qMark(s.x/WMSZ[s.c][0]*100+3,s.y/WMSZ[s.c][1]*100-1.2,ks.flatMap(k=>WQ.d[k]))});
@@ -1538,17 +1656,21 @@ function wmRender(evA){
   const b=document.createElement("button");b.className="wms"+(rd?" rd":"")+(ok?"":" lk")+(ok&&dn?" dn":"")+(wsSel===s.id?" sel":"");b.style.left=PX(s.x/W*100);b.style.top=PY(s.y/H*100);
   const ic=rd?"images/icone-raid":"images/icone-donjon";b.innerHTML=`<img src="${ic}.${EXT[xi(ic)]}" data-b="${ic}" data-i="${xi(ic)}" data-n="__ico" data-k="${keys[0]}" alt="" onerror="nx(this)">`;
   b.title=(s.n||DG[keys[0]].n)+" — "+keys.map((k,j)=>DG[k].n+(st[j].ok?(wsDoneK(k)?" ✔":""):" 🔒")).join(" · ");b.onclick=e=>{e.stopPropagation();wsOpen(s.id)};inn.appendChild(b)});
+ CITIES.forEach((C,i)=>{if(C.c!==tab||!cityOk(C))return;const[W,H]=WMSZ[C.c],b=document.createElement("button");b.className="wms cty";b.style.left=PX(C.x/W*100);b.style.top=PY(C.y/H*100);b.innerHTML="🏰"+(msNew()||btNew()||chNew()?'<span class="nwb cnw">NEW</span>':"");b.title=C.n+" — marchand, forge, hauts faits"+(msOk()?", maîtrise":"")+(msNew()?"\n🆕 La Maîtrise est disponible : entre dans une ville !":"")+(btNew()?"\n🆕 Les primes sont disponibles : entre dans une ville !":"")+(chNew()?"\n🆕 Les défis sont disponibles : entre dans une ville !":"");b.onclick=e=>{e.stopPropagation();cityOpen(i)};inn.appendChild(b)});
  mp.appendChild(inn);
  const cz=S.zone,lab=document.createElement("div");lab.id="zLab";lab.innerHTML="<b></b><span></span>";lab.firstChild.textContent=Z[cz].n+(evA&&evA.z===cz?" 🌍":"")+((rrActive()||{}).z===cz?" 💀":"");lab.lastChild.textContent="palier "+zPal(cz)+" · "+(zDone(cz)?(zChampOk(cz)?"zone complète ✔":"validée · champions "+zChamp(cz)+"/"+Z[cz].m.length):"progression "+Math.round(zPct(cz)*100)+" %");
  const xn=xplN(),xl=document.createElement("div");xl.id="wmX";xl.title="Bonus d’exploration : +"+XPLP+" % de dégâts de clic et de DPS par zone complète, en vert (validée + tous les champions de la collection) ; remis à zéro à la renaissance";
  xl.innerHTML=`<span>🧭 Exploration ${xn}/${ALLZ.length} · <b>+${xn*XPLP} %</b> dégâts</span><span class="wml">`+ZDN.map((n,j)=>`<i style="background:${ZDC[j]}"></i>${n}`).join(" ")+` <i class="st">★</i>conseillée</span><span class="wmo">zones :<i class="op" style="border-color:#e0a040"></i>en cours<i style="border-color:#4a9ff5"></i>validée, champions à trouver<i style="border-color:#3fae5a"></i>complète</span>`;
- $("zones").replaceChildren(tb,mp,lab,xl);
+ const bt=document.createElement("div");bt.id="wmBtns";{const q=(S.dq&&S.dq.q)||[],nr=q.filter(x=>!x.claimed&&x.have>=x.need).length,na=q.filter(x=>!x.claimed).length;
+  const b1=document.createElement("button");b1.innerHTML="📜 Journal de quêtes"+(na?" <span class='mut'>("+na+")</span>":"")+(nr?" <b style='color:#ffd200'>? "+nr+"</b>":"");b1.onclick=()=>{msFromCity=false;document.querySelector("#questView .vback").textContent="← Retour à la carte";setView("quest")};bt.appendChild(b1);
+}
+ $("zones").replaceChildren(tb,mp,lab,xl,bt);
 
 }
-function ui(){msUI();dqUI();evUI();rrUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hfUI();raidUI();panUI();eqUI();
- $("gold").textContent=fmtB(S.gold);$("cd").textContent=fmtB(cd());$("dps").textContent=fmtB(dps());$("crt").textContent=Math.round(critP()*10)/10;$("crtw").title="Chance de coup critique : "+Math.round(critP()*10)/10+" % — un critique inflige ×"+(Math.round(critM()*100)/100).toLocaleString("fr-FR")+" de dégâts (de base pour ta classe : ×"+String((CL[S.cls]||{}).cdm||2).replace(".",",")+"). Le critique est inclus dans le DPS affiché ; les clics, eux, le tirent au hasard.";
+function ui(){msUI();dqUI();evUI();rrUI();btUI();chUI();dgnUI();forgeUI();shopUI();cityUI();prUI();hfUI();raidUI();panUI();eqUI();
+ $("gold").textContent=fmtB(S.gold);$("esT").textContent=fmtB(S.es||0);$("cd").textContent=fmtB(cd());$("dps").textContent=fmtB(dps());$("crt").textContent=Math.round(critP()*10)/10;$("crtw").title="Chance de coup critique : "+Math.round(critP()*10)/10+" % — un critique inflige ×"+(Math.round(critM()*100)/100).toLocaleString("fr-FR")+" de dégâts (de base pour ta classe : ×"+String((CL[S.cls]||{}).cdm||2).replace(".",",")+"). Le critique est inclus dans le DPS affiché ; les clics, eux, le tirent au hasard.";
  const evA=evActive(),zsig=JSON.stringify([S.zone,S.cls,WLD().map(i=>[zOpen(i),zDone(i),Math.round(zPct(i)*100),zOpen(i)&&!zDone(i)?zDiff(i):-1,zDone(i)&&zChampOk(i)]),evA&&evA.z,wmRec()]);
- {const wk=zsig+wmTab+wsState()+wmQSig()+rrMSig();if(wk!==uiSig.z){uiSig.z=wk;wmRender(evA)}}wsUI();
+ {const wk=zsig+wmTab+wsState()+wmQSig()+rrMSig()+S.fac+"|"+(S.bt&&S.bt.a?S.bt.a.z+S.bt.a.nm:"")+btNew()+chNew();if(wk!==uiSig.z){uiSig.z=wk;wmRender(evA)}}wsUI();
  {const w=WLD();$("zProg").textContent="· "+w.filter(zDone).length+"/"+w.length+" terminées"}
  const usig=JSON.stringify([S.cls,S.lv,UL().map(u=>S.gold>=cost(u)&&L(u.id)<maxl(u))]);
  if(usig!==uiSig.u){uiSig.u=usig;$("ups").innerHTML="";
@@ -1578,13 +1700,24 @@ function save(){if(svLock)return;try{localStorage.setItem("azer1",JSON.stringify
 $("mob").onclick=e=>{const c=critRoll();dmg(cd()*(c?critM():1),e.clientX,e.clientY,c)};
 /* taille des monstres : si le monstre a changé de salle pendant que l’onglet Zones était masqué, on recalcule sa taille au retour */
 try{new ResizeObserver(()=>{const w=$("stage").clientWidth;if(w>0&&prevSW===0&&typeof mob!=="undefined"&&mob)placeMob();prevSW=w}).observe($("stage"))}catch(e){}
-setInterval(()=>{const _n=Date.now(),_dt=_n-lastT;lastT=_n;if(_dt>8000)offlineGain(_dt/1000);if(dun){if(Date.now()>dun.end){log(dun.k==="rr"?"⌛ Temps écoulé : "+RRD.rn+" t’échappe… Tu peux réessayer tant qu’il rôde dans la zone.":"⌛ Temps écoulé : "+DX().n+" échoué (entrée perdue)");autoDun=false;dun=null;spawn();ui();return}bar()}if(conf){if(Date.now()>conf.end){log("⌛ Confrontation perdue : "+conf.name);conf=null;spawn();ui();return}bar()}let t=dps()/10;if(Date.now()<bleedEnd)t+=cd()*0.5;autoAcc+=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.06*(S.fg.gA||0))/10;while(autoAcc>=0.999){autoAcc-=1;t+=cd()*(critRoll()?critM():1)}if((curV==="raid"||curV==="eq")&&!dun&&!conf)t=0; /* onglet Raids : la zone est en pause (plus de farm d’équipement de bas niveau) */if(t>0)dmg(t)},100);
+setInterval(()=>{const _n=Date.now(),_dt=_n-lastT;lastT=_n;if(_dt>8000)offlineGain(_dt/1000);if(dun){if(Date.now()>dun.end){log(dun.ch?"⌛ Défi échoué : "+DX().n+" niveau "+dun.ch+" (temps écoulé)":dun.k==="rr"?"⌛ Temps écoulé : "+RRD.rn+" t’échappe… "+(dun.bt?"Ta prime reste active : retente quand tu veux.":"Tu peux réessayer tant qu’il rôde dans la zone."):"⌛ Temps écoulé : "+DX().n+" échoué (entrée perdue)");const wasCh=!!dun.ch;autoDun=false;dun=null;spawn();if(wasCh){chSig="";setView("challenge")}ui();return}bar()}if(conf){if(Date.now()>conf.end){log("⌛ Confrontation perdue : "+conf.name);conf=null;spawn();ui();return}bar()}let t=dps()/10;if(Date.now()<bleedEnd)t+=cd()*0.5;autoAcc+=(fx("a")+EQ("a")+0.3*((S.eb||{}).a||0)+0.2*(msR().a||0))*(1+0.06*(S.fg.gA||0))/10;while(autoAcc>=0.999){autoAcc-=1;t+=cd()*(critRoll()?critM():1)}if((curV==="raid"||curV==="eq")&&!dun&&!conf)t=0; /* onglet Raids : la zone est en pause (plus de farm d’équipement de bas niveau) */if(t>0)dmg(t)},100);
 dgMinFix();hpTarget();setInterval(ui,1500);
 if(S.balMsg){delete S.balMsg;log("⚖️ Le jeu a été rééquilibré : des chiffres plus petits du début à la fin. Ta progression (or, sorts, zones, objets, renaissances) repart de zéro ; tes collections et tes hauts faits sont conservés.");try{hfToast("Nouvelle version : jeu rééquilibré")}catch(e){}save()};
 /* === GAINS HORS-LIGNE : récapitulatif de l'or gagné pendant l'absence (50 % du rythme normal en zone, 8 h maximum) === */
 let lastT=S.ls||Date.now();
 setInterval(()=>{S.ls=Date.now();save()},5000);
 window.addEventListener("beforeunload",()=>{S.ls=Date.now();save()});
+/* classes en arrière-plan : la classe qu’on ne joue pas continue de farmer sa zone (or seulement, 25 %, 4 h max), récupéré quand on la reprend */
+const BG_R=0.25,BG_CAP=4*3600;
+function bgGain(sec,from){
+ if(!S.cls||dun||conf)return;
+ const capped=Math.min(sec,BG_CAP),rate=Math.min((dps()+fx("a")*cd())*GM()/(3*HPM*ZF(S.zone))*BG_R,Math.ceil(Z[S.zone].hp*2)*GM()*BG_R),g=Math.floor(rate*capped);
+ if(!(g>0))return;
+ S.gold+=g;save();
+ const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),dur=(h?h+" h ":"")+m+" min";
+ log(CL[S.cls].i+" "+CL[S.cls].n+" : +"+fmt(g)+" or gagnés en arrière-plan dans "+Z[S.zone].n+(from&&CL[from]?" pendant que tu jouais "+CL[from].n:"")+" ("+dur+(sec>BG_CAP?", limité à 4 h":"")+")");
+ try{hfToast(CL[S.cls].i+" "+CL[S.cls].n+" : +"+fmt(g)+" or en arrière-plan ("+dur+")")}catch(e){}
+}
 function offlineGain(sec){
  if(!S.cls||dun||conf)return;
  const capped=Math.min(sec,28800),rate=Math.min((dps()+fx("a")*cd())*GM()/(3*HPM*ZF(S.zone))*0.5,Math.ceil(Z[S.zone].hp*2)*GM()*0.5),g=Math.floor(rate*capped); /* plafond : 1 monstre par seconde au maximum */
@@ -1613,11 +1746,12 @@ const WA={h:{n:"Frappe héroïque",c:100,cd:6000,d:"15× tes dégâts de clic"},
 let abReady=0,buffEnd=0,bleedEnd=0,wReady={h:0,r:0};
 function setCls(c){
  if(S.cls!==c){
-  if(S.cls){const o={};PF.forEach(k=>o[k]=S[k]);S.pc[S.cls]=o;const P=S.pc[c]||freshProf(c);PF.forEach(k=>S[k]=P[k]);fixP()}
+  let bgS=0,bgFrom=S.cls;if(S.cls){const o={};PF.forEach(k=>o[k]=S[k]);o.lt=Date.now();S.pc[S.cls]=o;const P=S.pc[c]||freshProf(c);if(P.lt)bgS=(Date.now()-P.lt)/1000;PF.forEach(k=>S[k]=P[k]);fixP()}
   S.cls=c;xplC.t=0;ztC.t=0;eqSetT=0;eqFoc=null;eqSlotF=null;eqSM=false;eqSel={};
   for(let i=0;i<Z.length;i++){S.kills[i]=S.kills[i]||0;S.boss[i]=S.boss[i]||0}
   if(!WLD().includes(S.zone)||!zOpen(S.zone)||!S.kills.some(k=>k>0))S.zone=RT(c)[0];
   conf=null;dun=null;autoDun=false;spawn();
+  if(bgS>=60)bgGain(bgS,bgFrom);
  }
  abReady=0;buffEnd=0;bleedEnd=0;wReady={h:0,r:0};save();ui();abUI()}
 function useAb(k){
@@ -1632,7 +1766,7 @@ function useAb(k){
  abUI();
 }
 function buy(k){const a=WA[k];if(S.ab[k]||S.gold<a.c||(k=="r"&&!S.ab.h))return;S.gold-=a.c;S.ab[k]=1;save();ui();abUI()}
-function buildCls(){const c=$("cbtns");c.innerHTML="";$("facn").textContent=S.fac?"— "+FAC[S.fac].i+" "+FAC[S.fac].n:"";if(!S.fac)return;FAC[S.fac].c.forEach(k=>{const b=document.createElement("button");b.id="c_"+k;b.textContent=CL[k].i+" "+CL[k].n;b.onclick=()=>setCls(k);c.appendChild(b)})}
+function buildCls(){const c=$("cbtns");c.innerHTML="";$("facn").textContent=S.fac?FAC[S.fac].i+" "+FAC[S.fac].n:"";if(!S.fac)return;FAC[S.fac].c.forEach(k=>{const b=document.createElement("button");b.id="c_"+k;b.textContent=CL[k].i+" "+CL[k].n;b.title=CL[k].n+" — "+(CL[k].desc||"");b.onclick=()=>setCls(k);c.appendChild(b)})}
 function showFac(){$("fac").style.display=S.fac?"none":"flex"}
 function setFac(f){S.fac=f;S.cls=null;abReady=0;buffEnd=0;bleedEnd=0;conf=null;dun=null;S.zone=WLD()[0];spawn();save();buildCls();showFac();ui();abUI()}
 document.querySelectorAll("#fac button").forEach(b=>b.onclick=()=>setFac(b.dataset.f));
@@ -1661,9 +1795,9 @@ setTimeout(()=>{try{WLD().forEach((z,n)=>{if(ZM[z]&&ZM[z].img)setTimeout(()=>pre
  const ap=()=>document.querySelectorAll(".card[data-ck]").forEach(c=>c.classList.toggle("cl",!!cl[c.dataset.ck]));ap();
  document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest(".card[data-ck]>h2");if(!h)return;const c=h.parentNode,k=c.dataset.ck;cl[k]=!cl[k];c.classList.toggle("cl",!!cl[k]);try{localStorage.setItem("azer_cl",JSON.stringify(cl))}catch(x){}})})();
 /* liste des zones repliable : replie = seule la zone choisie reste visible */
-(function(){let c=0;try{c=+localStorage.getItem("azer_zc")||0}catch(e){}
+(function(){let c=0;try{localStorage.removeItem("azer_zc")}catch(e){} /* repli des zones supprimé : la carte reste toujours visible */
  const ap=()=>{$("zones").classList.toggle("cl",!!c);$("zH").classList.toggle("cl",!!c);wmSide()};ap();
- $("zH").onclick=()=>{c=c?0:1;ap();try{localStorage.setItem("azer_zc",c)}catch(e){}}})();
+ })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5da38fe70342471c8944e1c6dd7a0680"}'></script>
 </body></html>
